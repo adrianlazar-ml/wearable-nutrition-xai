@@ -1,0 +1,180 @@
+===============================================================================================
+OURA COMPARISON: API v2 CSVs vs Membership Export CSVs
+Generated: 2026-03-30 20:33
+API dir:    C:\Users\Adrian\disertatie\data
+Export dir: C:\Users\Adrian\disertatie\data\Oura\raw
+===============================================================================================
+
+===============================================================================================
+GRAND SUMMARY — ALL METRICS
+===============================================================================================
+Metric                             N   Exact%   Close%   MeanDiff    MaxDiff     Corr    Verdict
+-----------------------------------------------------------------------------------------------
+readiness_score                  268   100.0%   100.0%     0.0000     0.0000   1.0000  IDENTICAL
+temperature_deviation            268   100.0%   100.0%     0.0000     0.0000   1.0000  IDENTICAL
+temp_trend_deviation             268   100.0%   100.0%     0.0000     0.0000   1.0000  IDENTICAL
+contrib.recovery_index           268   100.0%   100.0%     0.0000     0.0000   1.0000  IDENTICAL
+contrib.hrv_balance              268   100.0%   100.0%     0.0000     0.0000   1.0000  IDENTICAL
+contrib.body_temperature         268   100.0%   100.0%     0.0000     0.0000   1.0000  IDENTICAL
+contrib.previous_night           268   100.0%   100.0%     0.0000     0.0000   1.0000  IDENTICAL
+contrib.resting_heart_rate       268   100.0%   100.0%     0.0000     0.0000   1.0000  IDENTICAL
+contrib.sleep_balance            268   100.0%   100.0%     0.0000     0.0000   1.0000  IDENTICAL
+sleep_score                      268   100.0%   100.0%     0.0000     0.0000   1.0000  IDENTICAL
+average_hrv                      143   100.0%   100.0%     0.0000     0.0000   1.0000  IDENTICAL
+avg_heart_rate                   143   100.0%   100.0%     0.0000     0.0000   1.0000  IDENTICAL
+avg_breath                       143   100.0%   100.0%     0.0000     0.0000   1.0000  IDENTICAL
+lowest_hr                        143   100.0%   100.0%     0.0000     0.0000   1.0000  IDENTICAL
+deep_sleep                       143   100.0%   100.0%     0.0000     0.0000   1.0000  IDENTICAL
+rem_sleep                        143   100.0%   100.0%     0.0000     0.0000   1.0000  IDENTICAL
+light_sleep                      143   100.0%   100.0%     0.0000     0.0000   1.0000  IDENTICAL
+total_sleep                      143   100.0%   100.0%     0.0000     0.0000   1.0000  IDENTICAL
+efficiency                       143   100.0%   100.0%     0.0000     0.0000   1.0000  IDENTICAL
+latency                          143   100.0%   100.0%     0.0000     0.0000   1.0000  IDENTICAL
+awake_time                       143   100.0%   100.0%     0.0000     0.0000   1.0000  IDENTICAL
+time_in_bed                      143   100.0%   100.0%     0.0000     0.0000   1.0000  IDENTICAL
+restless_periods                 143   100.0%   100.0%     0.0000     0.0000   1.0000  IDENTICAL
+sm_average_hrv                   143    91.6%    93.7%    -0.0385     5.5000   0.9789      MATCH
+sm_lowest_hr                     143    97.2%    97.2%    -0.2657    19.0000   0.9642  IDENTICAL
+sm_avg_breath                    143    87.4%    98.6%     0.0253     1.8750   0.9295      MATCH
+sm_avg_hr                        143    83.2%    83.9%    -3.2236    52.9167   0.5372      MATCH
+activity_score                   272    99.6%    99.6%     0.0037     1.0000   1.0000  IDENTICAL
+steps                            272    99.6%    99.6%     0.3897   106.0000   1.0000  IDENTICAL
+active_calories                  272    99.6%    99.6%     0.0699    19.0000   1.0000  IDENTICAL
+total_calories                   272    99.6%    99.6%     0.1728    47.0000   1.0000  IDENTICAL
+average_met                      272   100.0%   100.0%     0.0000     0.0000   1.0000  IDENTICAL
+walking_distance                 272    99.6%    99.6%     0.9154   249.0000   1.0000  IDENTICAL
+high_activity_time               272   100.0%   100.0%     0.0000     0.0000   1.0000  IDENTICAL
+medium_activity_time             272    99.6%    99.6%     0.2206    60.0000   1.0000  IDENTICAL
+low_activity_time                272    99.6%    99.6%     3.5294   960.0000   0.9999  IDENTICAL
+non_wear_time                    272   100.0%   100.0%     0.0000     0.0000   1.0000  IDENTICAL
+sedentary_time                   272    99.6%    99.6%     9.7059  2640.0000   0.9998  IDENTICAL
+resting_time                     272    99.6%    99.6%    30.6618  8340.0000   0.9981  IDENTICAL
+inactivity_alerts                272   100.0%   100.0%     0.0000     0.0000   1.0000  IDENTICAL
+recovery_high                    272    99.6%    99.6%     3.3088   900.0000   0.9998  IDENTICAL
+stress_high                      272   100.0%   100.0%     0.0000     0.0000   1.0000  IDENTICAL
+day_summary                      270   100.0%        —          —          —        —  IDENTICAL
+
+Total metrics compared: 43
+IDENTICAL: 40/43
+
+───────────────────────────────────────────────────────────────────────────────────────────────
+  READINESS (readiness.csv vs dailyreadiness.csv)  (merged: 268 rows)
+───────────────────────────────────────────────────────────────────────────────────────────────
+    readiness_score: exact=268/268 (100.0%), meanDiff=0.0, maxDiff=0.0, corr=1.0 → IDENTICAL
+      API mean=70.948  |  Membership mean=70.948
+    temperature_deviation: exact=268/268 (100.0%), meanDiff=0.0, maxDiff=0.0, corr=1.0 → IDENTICAL
+      API mean=0.03  |  Membership mean=0.03
+    temp_trend_deviation: exact=268/268 (100.0%), meanDiff=0.0, maxDiff=0.0, corr=1.0 → IDENTICAL
+      API mean=0.057  |  Membership mean=0.057
+    contrib.recovery_index: exact=268/268 (100.0%), meanDiff=0.0, maxDiff=0.0, corr=1.0 → IDENTICAL
+      API mean=68.772  |  Membership mean=68.772
+    contrib.hrv_balance: exact=268/268 (100.0%), meanDiff=0.0, maxDiff=0.0, corr=1.0 → IDENTICAL
+      API mean=79.701  |  Membership mean=79.701
+    contrib.body_temperature: exact=268/268 (100.0%), meanDiff=0.0, maxDiff=0.0, corr=1.0 → IDENTICAL
+      API mean=92.067  |  Membership mean=92.067
+    contrib.previous_night: exact=268/268 (100.0%), meanDiff=0.0, maxDiff=0.0, corr=1.0 → IDENTICAL
+      API mean=64.896  |  Membership mean=64.896
+    contrib.resting_heart_rate: exact=268/268 (100.0%), meanDiff=0.0, maxDiff=0.0, corr=1.0 → IDENTICAL
+      API mean=67.776  |  Membership mean=67.776
+    contrib.sleep_balance: exact=268/268 (100.0%), meanDiff=0.0, maxDiff=0.0, corr=1.0 → IDENTICAL
+      API mean=63.877  |  Membership mean=63.877
+
+───────────────────────────────────────────────────────────────────────────────────────────────
+  SLEEP SCORE (sleep.csv vs dailysleep.csv)  (merged: 268 rows)
+───────────────────────────────────────────────────────────────────────────────────────────────
+    sleep_score: exact=268/268 (100.0%), meanDiff=0.0, maxDiff=0.0, corr=1.0 → IDENTICAL
+      API mean=71.91  |  Membership mean=71.91
+
+───────────────────────────────────────────────────────────────────────────────────────────────
+  SLEEP DETAILED (sleep_detailed.csv vs sleepmodel.csv) [long_sleep, period=0]  (merged: 143 rows)
+───────────────────────────────────────────────────────────────────────────────────────────────
+    average_hrv: exact=143/143 (100.0%), meanDiff=0.0, maxDiff=0.0, corr=1.0 → IDENTICAL
+      API mean=16.413  |  Membership mean=16.413
+    avg_heart_rate: exact=143/143 (100.0%), meanDiff=0.0, maxDiff=0.0, corr=1.0 → IDENTICAL
+      API mean=82.944  |  Membership mean=82.944
+    avg_breath: exact=143/143 (100.0%), meanDiff=0.0, maxDiff=0.0, corr=1.0 → IDENTICAL
+      API mean=15.038  |  Membership mean=15.038
+    lowest_hr: exact=143/143 (100.0%), meanDiff=0.0, maxDiff=0.0, corr=1.0 → IDENTICAL
+      API mean=75.671  |  Membership mean=75.671
+    deep_sleep: exact=143/143 (100.0%), meanDiff=0.0, maxDiff=0.0, corr=1.0 → IDENTICAL
+      API mean=5080.909  |  Membership mean=5080.909
+    rem_sleep: exact=143/143 (100.0%), meanDiff=0.0, maxDiff=0.0, corr=1.0 → IDENTICAL
+      API mean=4438.322  |  Membership mean=4438.322
+    light_sleep: exact=143/143 (100.0%), meanDiff=0.0, maxDiff=0.0, corr=1.0 → IDENTICAL
+      API mean=12483.776  |  Membership mean=12483.776
+    total_sleep: exact=143/143 (100.0%), meanDiff=0.0, maxDiff=0.0, corr=1.0 → IDENTICAL
+      API mean=22003.007  |  Membership mean=22003.007
+    efficiency: exact=143/143 (100.0%), meanDiff=0.0, maxDiff=0.0, corr=1.0 → IDENTICAL
+      API mean=82.86  |  Membership mean=82.86
+    latency: exact=143/143 (100.0%), meanDiff=0.0, maxDiff=0.0, corr=1.0 → IDENTICAL
+      API mean=1019.161  |  Membership mean=1019.161
+    awake_time: exact=143/143 (100.0%), meanDiff=0.0, maxDiff=0.0, corr=1.0 → IDENTICAL
+      API mean=5047.685  |  Membership mean=5047.685
+    time_in_bed: exact=143/143 (100.0%), meanDiff=0.0, maxDiff=0.0, corr=1.0 → IDENTICAL
+      API mean=27050.692  |  Membership mean=27050.692
+    restless_periods: exact=143/143 (100.0%), meanDiff=0.0, maxDiff=0.0, corr=1.0 → IDENTICAL
+      API mean=190.853  |  Membership mean=190.853
+
+───────────────────────────────────────────────────────────────────────────────────────────────
+  SLEEP METRICS (sleep_metrics.csv vs sleepmodel.csv)  (merged: 143 rows)
+───────────────────────────────────────────────────────────────────────────────────────────────
+    sm_average_hrv: exact=131/143 (91.6%), meanDiff=-0.0385, maxDiff=5.5, corr=0.978882 → MATCH
+      API mean=16.374  |  Membership mean=16.413
+    sm_lowest_hr: exact=139/143 (97.2%), meanDiff=-0.2657, maxDiff=19.0, corr=0.964199 → IDENTICAL
+      API mean=75.406  |  Membership mean=75.671
+    sm_avg_breath: exact=125/143 (87.4%), meanDiff=0.0253, maxDiff=1.875, corr=0.929545 → MATCH
+      API mean=15.064  |  Membership mean=15.038
+    sm_avg_hr: exact=119/143 (83.2%), meanDiff=-3.2236, maxDiff=52.9167, corr=0.537205 → MATCH
+      API mean=79.72  |  Membership mean=82.944
+
+───────────────────────────────────────────────────────────────────────────────────────────────
+  ACTIVITY (activity.csv vs dailyactivity.csv)  (merged: 272 rows)
+───────────────────────────────────────────────────────────────────────────────────────────────
+    activity_score: exact=271/272 (99.6%), meanDiff=0.0037, maxDiff=1.0, corr=0.999983 → IDENTICAL
+      API mean=80.93  |  Membership mean=80.926
+    steps: exact=271/272 (99.6%), meanDiff=0.3897, maxDiff=106.0, corr=0.999998 → IDENTICAL
+      API mean=5694.864  |  Membership mean=5694.474
+    active_calories: exact=271/272 (99.6%), meanDiff=0.0699, maxDiff=19.0, corr=0.999988 → IDENTICAL
+      API mean=473.151  |  Membership mean=473.081
+    total_calories: exact=271/272 (99.6%), meanDiff=0.1728, maxDiff=47.0, corr=0.999959 → IDENTICAL
+      API mean=3155.511  |  Membership mean=3155.338
+    average_met: exact=272/272 (100.0%), meanDiff=0.0, maxDiff=0.0, corr=1.0 → IDENTICAL
+      API mean=1.437  |  Membership mean=1.437
+    walking_distance: exact=271/272 (99.6%), meanDiff=0.9154, maxDiff=249.0, corr=0.999991 → IDENTICAL
+      API mean=6757.371  |  Membership mean=6756.456
+    high_activity_time: exact=272/272 (100.0%), meanDiff=0.0, maxDiff=0.0, corr=1.0 → IDENTICAL
+      API mean=53.824  |  Membership mean=53.824
+    medium_activity_time: exact=271/272 (99.6%), meanDiff=0.2206, maxDiff=60.0, corr=0.999998 → IDENTICAL
+      API mean=2920.147  |  Membership mean=2919.926
+    low_activity_time: exact=271/272 (99.6%), meanDiff=3.5294, maxDiff=960.0, corr=0.999928 → IDENTICAL
+      API mean=12161.471  |  Membership mean=12157.941
+    non_wear_time: exact=272/272 (100.0%), meanDiff=0.0, maxDiff=0.0, corr=1.0 → IDENTICAL
+      API mean=2514.265  |  Membership mean=2514.265
+    sedentary_time: exact=271/272 (99.6%), meanDiff=9.7059, maxDiff=2640.0, corr=0.99978 → IDENTICAL
+      API mean=41104.412  |  Membership mean=41094.706
+    resting_time: exact=271/272 (99.6%), meanDiff=30.6618, maxDiff=8340.0, corr=0.998113 → IDENTICAL
+      API mean=27645.882  |  Membership mean=27615.221
+    inactivity_alerts: exact=272/272 (100.0%), meanDiff=0.0, maxDiff=0.0, corr=1.0 → IDENTICAL
+      API mean=1.287  |  Membership mean=1.287
+
+───────────────────────────────────────────────────────────────────────────────────────────────
+  STRESS (stress.csv vs dailystress.csv)  (merged: 272 rows)
+───────────────────────────────────────────────────────────────────────────────────────────────
+    recovery_high: exact=271/272 (99.6%), meanDiff=3.3088, maxDiff=900.0, corr=0.999781 → IDENTICAL
+      API mean=3361.765  |  Membership mean=3358.456
+    stress_high: exact=272/272 (100.0%), meanDiff=0.0, maxDiff=0.0, corr=1.0 → IDENTICAL
+      API mean=2031.618  |  Membership mean=2031.618
+    day_summary: 270/270 match (100.0%) → IDENTICAL
+
+===============================================================================================
+CONCLUSION
+===============================================================================================
+
+  Compared 43 metrics across 6 file pairs on the overlapping period.
+  40/43 metrics are IDENTICAL (>95% exact match).
+
+  The API v2 CSVs and Membership export CSVs contain the same underlying data.
+  Differences (if any) are due to:
+    - Rounding (API may keep more/fewer decimals)
+    - Sleep session aggregation (sleep_metrics.csv may aggregate differently)
+    - Retroactive score recalculations by Oura

@@ -1,0 +1,262 @@
+====================================================================================================
+APPLE WATCH: XML Export vs JSON (apple_health_daily.csv)
+Generated: 2026-03-30 21:13
+====================================================================================================
+
+====================================================================================================
+COMPARISON SUMMARY
+====================================================================================================
+Metric                                       N  Exact%    ~5%%   MeanDiff    Diff%     Corr    Verdict
+----------------------------------------------------------------------------------------------------
+Steps (XML all vs JSON)                   1069    0.2%    1.6%    8731.55   126.5%   0.9602      CLOSE
+Steps (XML AW-only vs JSON)               1062    0.9%   12.7%    -894.23   -12.9%   0.9681      CLOSE
+HR Mean (XML all vs JSON)                 1066    0.1%   69.1%       3.56     4.1%   0.8765    DIFFERS
+HR Mean (XML AW-only vs JSON)             1061    0.5%   54.9%       4.74     5.4%   0.7919      CHECK
+HR Min (XML all vs JSON)                  1066   97.4%   98.9%      -0.00    -0.0%   0.9924  IDENTICAL
+HR Min (XML AW-only vs JSON)              1061   92.8%   97.2%       0.26     0.4%   0.9689      CLOSE
+HR Max (XML all vs JSON)                  1066   72.4%   79.3%      -3.84    -2.7%   0.8831    DIFFERS
+HR Max (XML AW-only vs JSON)              1061   44.8%   60.6%      -7.72    -5.5%   0.7983      CHECK
+HRV Mean (XML all vs JSON)                1060   85.9%   92.0%      -0.01    -0.0%   0.9804      CLOSE
+HRV Mean (XML AW-only vs JSON)            1060   85.9%   92.0%      -0.01    -0.0%   0.9804      CLOSE
+Resp Rate (XML all vs JSON)               1064   39.8%   98.3%      -0.02    -0.1%   0.9547      CLOSE
+Resp Rate (XML AW-only vs JSON)           1056   17.4%   98.2%       0.00     0.0%   0.9355    DIFFERS
+SpO2 (XML all vs JSON)                    1058   51.8%  100.0%       0.00     0.0%   0.9833      CLOSE
+SpO2 (XML AW-only vs JSON)                1058   51.7%  100.0%       0.00     0.0%   0.9833      CLOSE
+Active Cal (XML all vs JSON)              1068    0.4%    9.3%    1604.85    47.9%   0.9452    DIFFERS
+Active Cal (XML AW-only vs JSON)          1066    3.6%   83.7%     -98.74    -2.9%   0.9787      CLOSE
+Basal Cal (XML all vs JSON)               1074    0.1%   99.3%      75.95     0.7%   0.9740      CLOSE
+Basal Cal (XML AW-only vs JSON)           1067    0.1%   99.4%      68.55     0.6%   0.9075    DIFFERS
+Sleep Total (all)                         1071    5.5%    8.4%       4.16    65.8%   0.5580      CHECK
+Sleep Deep (all)                          1071    8.9%   12.4%       0.96    97.0%   0.3276      CHECK
+Sleep REM (all)                           1071   14.6%   16.2%       0.84    58.9%   0.6930      CHECK
+Sleep Core (all)                          1071    6.3%    9.9%       2.52    67.9%   0.6408      CHECK
+Sleep Awake (all)                         1071    7.8%   11.1%       0.77   131.8%   0.6590      CHECK
+Sleep Total (AW-only)                     1050   18.7%   33.7%      -0.38    -6.0%   0.6036      CHECK
+Sleep Deep (AW-only)                      1050   30.8%   34.5%      -0.13   -13.3%   0.1940      CHECK
+Sleep REM (AW-only)                       1050   52.9%   57.2%       0.01     0.5%   0.7857      CHECK
+Sleep Core (AW-only)                      1050   21.8%   36.3%      -0.10    -2.6%   0.7302      CHECK
+Sleep Awake (AW-only)                     1050   47.0%   57.2%      -0.15   -26.1%   0.5615      CHECK
+Sleep Total (Oura-only)                    951    7.6%   25.1%      -1.20   -18.8%   0.4085      CHECK
+Sleep Deep (Oura-only)                     951    9.7%   13.5%       0.22    21.6%   0.2587      CHECK
+Sleep REM (Oura-only)                      951   14.8%   21.2%      -0.49   -33.9%   0.3585      CHECK
+Sleep Core (Oura-only)                     951    8.2%   24.5%      -0.74   -19.9%   0.4460      CHECK
+Sleep Awake (Oura-only)                    951    6.3%    9.7%       0.45    73.7%   0.5741      CHECK
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+DETAILED RESULTS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+  Steps (XML all vs JSON):
+    N=1069, Exact=2 (0.2%), Within 5%=17 (1.6%)
+    MeanDiff=8731.552, MedianDiff=7852.84, MaxDiff=32268.75
+    Corr=0.960197, DiffPct=126.51%
+    XML mean=15633.6094  |  JSON mean=6902.0574
+
+  Steps (XML AW-only vs JSON):
+    N=1062, Exact=10 (0.9%), Within 5%=135 (12.7%)
+    MeanDiff=-894.2254, MedianDiff=-695.05, MaxDiff=8637.0
+    Corr=0.968128, DiffPct=-12.92%
+    XML mean=6026.6911  |  JSON mean=6920.9165
+
+  HR Mean (XML all vs JSON):
+    N=1066, Exact=1 (0.1%), Within 5%=737 (69.1%)
+    MeanDiff=3.5597, MedianDiff=3.1742, MaxDiff=19.8573
+    Corr=0.876473, DiffPct=4.06%
+    XML mean=91.18  |  JSON mean=87.6204
+
+  HR Mean (XML AW-only vs JSON):
+    N=1061, Exact=5 (0.5%), Within 5%=583 (54.9%)
+    MeanDiff=4.7417, MedianDiff=4.1214, MaxDiff=26.6809
+    Corr=0.79187, DiffPct=5.41%
+    XML mean=92.408  |  JSON mean=87.6663
+
+  HR Min (XML all vs JSON):
+    N=1066, Exact=1038 (97.4%), Within 5%=1054 (98.9%)
+    MeanDiff=-0.0038, MedianDiff=0.0, MaxDiff=21.0
+    Corr=0.992363, DiffPct=-0.01%
+    XML mean=66.4335  |  JSON mean=66.4372
+
+  HR Min (XML AW-only vs JSON):
+    N=1061, Exact=985 (92.8%), Within 5%=1031 (97.2%)
+    MeanDiff=0.2569, MedianDiff=0.0, MaxDiff=23.0
+    Corr=0.968922, DiffPct=0.39%
+    XML mean=66.682  |  JSON mean=66.4252
+
+  HR Max (XML all vs JSON):
+    N=1066, Exact=772 (72.4%), Within 5%=845 (79.3%)
+    MeanDiff=-3.8407, MedianDiff=0.0, MaxDiff=36.0
+    Corr=0.883075, DiffPct=-2.72%
+    XML mean=137.5026  |  JSON mean=141.3433
+
+  HR Max (XML AW-only vs JSON):
+    N=1061, Exact=475 (44.8%), Within 5%=643 (60.6%)
+    MeanDiff=-7.7199, MedianDiff=-2.0, MaxDiff=54.0
+    Corr=0.798293, DiffPct=-5.46%
+    XML mean=133.7051  |  JSON mean=141.4251
+
+  HRV Mean (XML all vs JSON):
+    N=1060, Exact=911 (85.9%), Within 5%=975 (92.0%)
+    MeanDiff=-0.0061, MedianDiff=-0.0003, MaxDiff=12.1624
+    Corr=0.980379, DiffPct=-0.02%
+    XML mean=24.9378  |  JSON mean=24.9439
+
+  HRV Mean (XML AW-only vs JSON):
+    N=1060, Exact=911 (85.9%), Within 5%=975 (92.0%)
+    MeanDiff=-0.0061, MedianDiff=-0.0003, MaxDiff=12.1624
+    Corr=0.980379, DiffPct=-0.02%
+    XML mean=24.9378  |  JSON mean=24.9439
+
+  Resp Rate (XML all vs JSON):
+    N=1064, Exact=423 (39.8%), Within 5%=1046 (98.3%)
+    MeanDiff=-0.0217, MedianDiff=-0.0006, MaxDiff=6.125
+    Corr=0.954676, DiffPct=-0.14%
+    XML mean=15.892  |  JSON mean=15.9137
+
+  Resp Rate (XML AW-only vs JSON):
+    N=1056, Exact=184 (17.4%), Within 5%=1037 (98.2%)
+    MeanDiff=0.0005, MedianDiff=0.0102, MaxDiff=8.5
+    Corr=0.935534, DiffPct=0.0%
+    XML mean=15.9229  |  JSON mean=15.9225
+
+  SpO2 (XML all vs JSON):
+    N=1058, Exact=548 (51.8%), Within 5%=1058 (100.0%)
+    MeanDiff=0.0012, MedianDiff=0.0, MaxDiff=1.75
+    Corr=0.983319, DiffPct=0.0%
+    XML mean=94.6212  |  JSON mean=94.62
+
+  SpO2 (XML AW-only vs JSON):
+    N=1058, Exact=547 (51.7%), Within 5%=1058 (100.0%)
+    MeanDiff=0.0014, MedianDiff=0.0, MaxDiff=1.75
+    Corr=0.983313, DiffPct=0.0%
+    XML mean=94.6213  |  JSON mean=94.62
+
+  Active Cal (XML all vs JSON):
+    N=1068, Exact=4 (0.4%), Within 5%=99 (9.3%)
+    MeanDiff=1604.8529, MedianDiff=1641.4257, MaxDiff=6879.1608
+    Corr=0.945172, DiffPct=47.93%
+    XML mean=4953.509  |  JSON mean=3348.6561
+
+  Active Cal (XML AW-only vs JSON):
+    N=1066, Exact=38 (3.6%), Within 5%=892 (83.7%)
+    MeanDiff=-98.7412, MedianDiff=-43.5192, MaxDiff=2591.1562
+    Corr=0.978657, DiffPct=-2.94%
+    XML mean=3256.1896  |  JSON mean=3354.9308
+
+  Basal Cal (XML all vs JSON):
+    N=1074, Exact=1 (0.1%), Within 5%=1067 (99.3%)
+    MeanDiff=75.9536, MedianDiff=62.5183, MaxDiff=2293.193
+    Corr=0.973982, DiffPct=0.7%
+    XML mean=10922.9699  |  JSON mean=10847.0163
+
+  Basal Cal (XML AW-only vs JSON):
+    N=1067, Exact=1 (0.1%), Within 5%=1061 (99.4%)
+    MeanDiff=68.546, MedianDiff=62.2221, MaxDiff=6784.4929
+    Corr=0.907518, DiffPct=0.63%
+    XML mean=10937.484  |  JSON mean=10868.938
+
+  Sleep Total (all):
+    N=1071, Exact=59 (5.5%), Within 5%=90 (8.4%)
+    MeanDiff=4.158, MedianDiff=4.75, MaxDiff=16.93
+    Corr=0.557996, DiffPct=65.85%
+    XML mean=10.4725  |  JSON mean=6.3145
+
+  Sleep Deep (all):
+    N=1071, Exact=95 (8.9%), Within 5%=133 (12.4%)
+    MeanDiff=0.9629, MedianDiff=1.0217, MaxDiff=3.8217
+    Corr=0.327604, DiffPct=97.0%
+    XML mean=1.9556  |  JSON mean=0.9927
+
+  Sleep REM (all):
+    N=1071, Exact=156 (14.6%), Within 5%=173 (16.2%)
+    MeanDiff=0.8437, MedianDiff=0.8967, MaxDiff=3.615
+    Corr=0.693025, DiffPct=58.9%
+    XML mean=2.2763  |  JSON mean=1.4326
+
+  Sleep Core (all):
+    N=1071, Exact=67 (6.3%), Within 5%=106 (9.9%)
+    MeanDiff=2.524, MedianDiff=2.8217, MaxDiff=11.43
+    Corr=0.640785, DiffPct=67.91%
+    XML mean=6.2405  |  JSON mean=3.7165
+
+  Sleep Awake (all):
+    N=1071, Exact=84 (7.8%), Within 5%=119 (11.1%)
+    MeanDiff=0.7731, MedianDiff=0.695, MaxDiff=8.0044
+    Corr=0.658984, DiffPct=131.82%
+    XML mean=1.3596  |  JSON mean=0.5865
+
+  Sleep Total (AW-only):
+    N=1050, Exact=196 (18.7%), Within 5%=354 (33.7%)
+    MeanDiff=-0.3797, MedianDiff=-0.005, MaxDiff=9.68
+    Corr=0.603622, DiffPct=-5.95%
+    XML mean=5.9981  |  JSON mean=6.3778
+
+  Sleep Deep (AW-only):
+    N=1050, Exact=323 (30.8%), Within 5%=362 (34.5%)
+    MeanDiff=-0.1331, MedianDiff=-0.0017, MaxDiff=2.5683
+    Corr=0.193991, DiffPct=-13.28%
+    XML mean=0.8689  |  JSON mean=1.0019
+
+  Sleep REM (AW-only):
+    N=1050, Exact=555 (52.9%), Within 5%=601 (57.2%)
+    MeanDiff=0.0068, MedianDiff=0.0, MaxDiff=2.22
+    Corr=0.785702, DiffPct=0.47%
+    XML mean=1.4605  |  JSON mean=1.4536
+
+  Sleep Core (AW-only):
+    N=1050, Exact=229 (21.8%), Within 5%=381 (36.3%)
+    MeanDiff=-0.0968, MedianDiff=0.0, MaxDiff=6.92
+    Corr=0.730224, DiffPct=-2.57%
+    XML mean=3.6688  |  JSON mean=3.7656
+
+  Sleep Awake (AW-only):
+    N=1050, Exact=493 (47.0%), Within 5%=601 (57.2%)
+    MeanDiff=-0.1531, MedianDiff=-0.0017, MaxDiff=7.0536
+    Corr=0.561537, DiffPct=-26.09%
+    XML mean=0.4337  |  JSON mean=0.5868
+
+  Sleep Total (Oura-only):
+    N=951, Exact=72 (7.6%), Within 5%=239 (25.1%)
+    MeanDiff=-1.1962, MedianDiff=-0.5233, MaxDiff=10.005
+    Corr=0.408463, DiffPct=-18.79%
+    XML mean=5.1714  |  JSON mean=6.3676
+
+  Sleep Deep (Oura-only):
+    N=951, Exact=92 (9.7%), Within 5%=128 (13.5%)
+    MeanDiff=0.2204, MedianDiff=0.2367, MaxDiff=2.33
+    Corr=0.258714, DiffPct=21.55%
+    XML mean=1.2431  |  JSON mean=1.0227
+
+  Sleep REM (Oura-only):
+    N=951, Exact=141 (14.8%), Within 5%=202 (21.2%)
+    MeanDiff=-0.4878, MedianDiff=-0.35, MaxDiff=2.84
+    Corr=0.358461, DiffPct=-33.9%
+    XML mean=0.9511  |  JSON mean=1.4389
+
+  Sleep Core (Oura-only):
+    N=951, Exact=78 (8.2%), Within 5%=233 (24.5%)
+    MeanDiff=-0.7398, MedianDiff=-0.3867, MaxDiff=7.32
+    Corr=0.445991, DiffPct=-19.9%
+    XML mean=2.9772  |  JSON mean=3.717
+
+  Sleep Awake (Oura-only):
+    N=951, Exact=60 (6.3%), Within 5%=92 (9.7%)
+    MeanDiff=0.4464, MedianDiff=0.4383, MaxDiff=5.7
+    Corr=0.574076, DiffPct=73.66%
+    XML mean=1.0524  |  JSON mean=0.606
+
+====================================================================================================
+CONCLUSIONS
+====================================================================================================
+
+  This comparison reveals the impact of source mixing and deduplication:
+
+  XML ALL SOURCES vs JSON:
+  - If they match closely → JSON doesn't deduplicate, just passes through
+  - If XML > JSON → XML double-counts, JSON deduplicates correctly
+
+  XML AW-ONLY vs JSON:
+  - If they match → JSON effectively uses only AW data for this metric
+  - If they differ → JSON includes non-AW sources (Oura, iPhone)
+
+  Key question: Does JSON (Health Auto Export) deduplicate correctly?
+  The steps comparison is the litmus test (known ~9,106 MAE from XML double-counting).

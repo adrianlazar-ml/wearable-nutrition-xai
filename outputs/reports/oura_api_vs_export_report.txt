@@ -1,0 +1,146 @@
+===============================================================================================
+OURA COMPARISON: API v2 (oura_combined.csv) vs Membership Export
+Generated: 2026-03-30 20:21
+===============================================================================================
+
+──────────────────────────────────────────────────────────────────────
+DATE COVERAGE
+──────────────────────────────────────────────────────────────────────
+  API (oura_combined.csv):    1009 days  (2023-06-09 → 2026-03-30)
+  Membership export:          1012 days (2023-06-09 → 2026-03-29)
+  Overlapping:                1008 days
+  Only in API:                1 days
+  Only in export:             4 days
+
+──────────────────────────────────────────────────────────────────────
+API COLUMNS → EXPORT SOURCE MAPPING
+──────────────────────────────────────────────────────────────────────
+  readiness_score           → dailyreadiness.score
+  sleep_score               → dailysleep.score
+  hrv_mean                  → sleepmodel.average_hrv
+  rhr_lowest                → sleepmodel.lowest_heart_rate
+  rhr_avg                   → sleepmodel.average_heart_rate
+  recovery_index            → dailyreadiness.contributors.recovery_index
+  hrv_balance               → dailyreadiness.contributors.hrv_balance
+  activity_score            → dailyactivity.score
+  steps_oura                → dailyactivity.steps
+  respiratory_rate          → sleepmodel.average_breath
+  temp_deviation            → dailyreadiness.temperature_deviation
+  oura_device               → (metadata, no export equivalent)
+  aw_device                 → (metadata, not from Oura)
+
+───────────────────────────────────────────────────────────────────────────────────────────────
+COMPARISON RESULTS
+───────────────────────────────────────────────────────────────────────────────────────────────
+Metric                         N   Exact%   Close%   MeanDiff    MaxDiff     Corr    Verdict
+-----------------------------------------------------------------------------------------------
+readiness_score              957   100.0%   100.0%      0.000      0.000   1.0000  IDENTICAL
+temp_deviation               955   100.0%   100.0%      0.000      0.000   1.0000  IDENTICAL
+recovery_index               957   100.0%   100.0%      0.000      0.000   1.0000  IDENTICAL
+hrv_balance                  933   100.0%   100.0%      0.000      0.000   1.0000  IDENTICAL
+sleep_score                  957   100.0%   100.0%      0.000      0.000   1.0000  IDENTICAL
+activity_score              1004    99.8%    99.8%     -0.009     10.000   0.9996  IDENTICAL
+steps_oura                  1008    99.8%    99.8%     -4.576   4719.000   0.9993  IDENTICAL
+hrv_mean                     610    96.9%    97.4%      0.052     14.000   0.9837  IDENTICAL
+rhr_lowest                   610    98.4%    98.4%     -0.134     19.000   0.9793  IDENTICAL
+rhr_avg                      610    21.8%    89.0%     -0.994     52.917   0.7671      CHECK
+respiratory_rate             610    95.9%    99.2%     -0.003      2.250   0.9707  IDENTICAL
+
+───────────────────────────────────────────────────────────────────────────────────────────────
+DETAILED PER METRIC
+───────────────────────────────────────────────────────────────────────────────────────────────
+
+  readiness_score:
+    N=957, Exact=957 (100.0%), Close=957 (100.0%)
+    MeanDiff=0.0, MaxDiff=0.0, Corr=1.0
+    API mean=69.97  |  Export mean=69.97
+
+  temp_deviation:
+    N=955, Exact=955 (100.0%), Close=955 (100.0%)
+    MeanDiff=0.0, MaxDiff=0.0, Corr=1.0
+    API mean=0.02  |  Export mean=0.02
+
+  recovery_index:
+    N=957, Exact=957 (100.0%), Close=957 (100.0%)
+    MeanDiff=0.0, MaxDiff=0.0, Corr=1.0
+    API mean=65.08  |  Export mean=65.08
+
+  hrv_balance:
+    N=933, Exact=933 (100.0%), Close=933 (100.0%)
+    MeanDiff=0.0, MaxDiff=0.0, Corr=1.0
+    API mean=77.93  |  Export mean=77.93
+
+  sleep_score:
+    N=957, Exact=957 (100.0%), Close=957 (100.0%)
+    MeanDiff=0.0, MaxDiff=0.0, Corr=1.0
+    API mean=71.25  |  Export mean=71.25
+
+  activity_score:
+    N=1004, Exact=1002 (99.8%), Close=1002 (99.8%)
+    MeanDiff=-0.009, MaxDiff=10.0, Corr=0.9996
+    API mean=77.37  |  Export mean=77.38
+
+  steps_oura:
+    N=1008, Exact=1006 (99.8%), Close=1006 (99.8%)
+    MeanDiff=-4.576, MaxDiff=4719.0, Corr=0.9993
+    API mean=6521.05  |  Export mean=6525.62
+
+  hrv_mean:
+    N=610, Exact=591 (96.9%), Close=594 (97.4%)
+    MeanDiff=0.052, MaxDiff=14.0, Corr=0.9837
+    API mean=17.34  |  Export mean=17.28
+
+  rhr_lowest:
+    N=610, Exact=600 (98.4%), Close=600 (98.4%)
+    MeanDiff=-0.134, MaxDiff=19.0, Corr=0.9793
+    API mean=75.04  |  Export mean=75.17
+
+  rhr_avg:
+    N=610, Exact=133 (21.8%), Close=543 (89.0%)
+    MeanDiff=-0.994, MaxDiff=52.917, Corr=0.7671
+    API mean=81.54  |  Export mean=82.53
+
+  respiratory_rate:
+    N=610, Exact=585 (95.9%), Close=605 (99.2%)
+    MeanDiff=-0.003, MaxDiff=2.25, Corr=0.9707
+    API mean=15.15  |  Export mean=15.15
+
+───────────────────────────────────────────────────────────────────────────────────────────────
+DATA AVAILABILITY: WHAT EXPORT HAS THAT API DOESN'T
+───────────────────────────────────────────────────────────────────────────────────────────────
+
+  API (oura_combined.csv) has 12 Oura metrics per day.
+  Membership export adds significantly more data:
+
+  FROM EXISTING SOURCES (more columns):
+    dailyreadiness:  temperature_trend_deviation, all contributor sub-scores
+    dailyactivity:   active_calories, total_calories, met, walking_distance,
+                     high/medium/low activity times, sedentary_time, non_wear_time
+    sleepmodel:      deep/rem/light sleep durations, efficiency, latency,
+                     awake_time, time_in_bed, restless_periods, bedtime_start/end
+
+  ENTIRELY NEW DATA (not in API pipeline):
+    dailystress:         daily stress summary, stress_high, recovery_high
+    daytimestress:       5-min interval stress/recovery (141K data points)
+    dailyresilience:     resilience level + contributors
+    dailycardiovascularage: vascular_age, pulse_wave_velocity
+    workout:             activity type, calories, distance, intensity
+    heartrate:           per-second HR with source (awake/sleep) — 1M+ points
+    temperature:         per-minute skin temperature — 1.4M+ points
+    meal/fooditem:       food diary (220 meals, no macros)
+    vo2max:              VO2max estimates (27 data points only)
+
+───────────────────────────────────────────────────────────────────────────────────────────────
+CONCLUSION
+───────────────────────────────────────────────────────────────────────────────────────────────
+
+  1. For the 12 metrics in oura_combined.csv, both sources should be identical
+     (same underlying Oura data, different export method).
+
+  2. Membership export is strictly superior:
+     - More days (extends beyond API collection period)
+     - More columns per daily file
+     - Additional data sources (stress, resilience, workout, granular HR/temp)
+
+  3. oura_combined.csv also contains aw_device column, indicating it was
+     already designed as a merged Oura + Apple Watch file.

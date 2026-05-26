@@ -1,0 +1,4 @@
+﻿readiness_score_lag1,sleep_score_lag1,hrv_mean_lag1,hrv_balance_lag1,recovery_index_lag1,rhr_lowest_lag1,rhr_avg_lag1,activity_score_lag1,steps_oura_lag1,respiratory_rate_lag1,temp_deviation_lag1,aw_hr_mean_lag1,aw_hrv_mean_lag1,aw_steps_lag1,aw_active_calories_lag1,aw_spo2_lag1,nutrition_label
+,,,,,,,93.0,5018.0,,,92.92,14.48,5250.0,933.6,95.14,1.0
+66.0,84.0,23.0,,9.0,70.0,79.84,94.0,7675.0,15.25,-0.32,87.48,26.22,6868.51,1047.6,94.92,1.0
+67.0,75.0,20.0,,60.0,74.0,81.8,93.0,5080.0,15.875,-0.07,86.34,17.32,4204.0,903.3,91.46,1.0

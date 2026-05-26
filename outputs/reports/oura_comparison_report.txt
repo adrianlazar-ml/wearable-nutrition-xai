@@ -1,0 +1,295 @@
+===============================================================================================
+OURA DATA COMPARISON: Historical CSV vs Membership Export
+Generated: 2026-03-30 20:03
+===============================================================================================
+
+──────────────────────────────────────────────────────────────────────
+DATE COVERAGE
+──────────────────────────────────────────────────────────────────────
+  Historical CSV days                 741
+  Historical range                    2023-06-09 → 2025-07-01
+  Export days (readiness)             957
+  Export days (activity)              1012
+  Export days (sleepmodel)            610
+  Overlapping days                    741
+  Only in historical                  0
+  Only in export                      271
+
+───────────────────────────────────────────────────────────────────────────────────────────────
+COMPARISON SUMMARY
+───────────────────────────────────────────────────────────────────────────────────────────────
+Metric                                  N  Exact%  Close%  MeanDiff   MaxDiff    Corr    Verdict
+-----------------------------------------------------------------------------------------------
+Readiness Score                       690  100.0%  100.0%      0.00      0.00  1.0000  IDENTICAL
+Temperature Deviation                 688  100.0%  100.0%      0.00      0.00  1.0000  IDENTICAL
+Temp Trend Deviation                  669  100.0%  100.0%      0.00      0.00  1.0000  IDENTICAL
+Sleep Score                           690  100.0%  100.0%      0.00      0.00  1.0000  IDENTICAL
+Activity Score                        737   99.9%   99.9%     -0.01     10.00  0.9995  IDENTICAL
+Steps                                 741   99.9%   99.9%     -6.37   4719.00  0.9992  IDENTICAL
+Active Calories                       741   99.9%   99.9%     -0.55    408.00  0.9985  IDENTICAL
+Total Calories                        741   99.9%   99.9%     -1.01    748.00  0.9969  IDENTICAL
+Average MET                           741   99.9%  100.0%      0.00      0.19  0.9991  IDENTICAL
+Walking Distance                      741   99.9%   99.9%     -7.76   5749.00  0.9987  IDENTICAL
+Medium Activity Time                  741   99.9%   99.9%     -3.89   2880.00  0.9988  IDENTICAL
+High Activity Time                    741  100.0%  100.0%      0.00      0.00  1.0000  IDENTICAL
+Low Activity Time                     741   99.9%   99.9%    -12.06   8940.00  0.9985  IDENTICAL
+Non-wear Time                         741  100.0%  100.0%      0.00      0.00  1.0000  IDENTICAL
+Total Sleep Duration                  467   98.5%   98.5%     94.75  12210.00  0.9802  IDENTICAL
+Deep Sleep Duration                   467   98.5%   98.5%     33.85   3810.00  0.9723  IDENTICAL
+REM Sleep Duration                    467   98.5%   98.5%     30.13   4410.00  0.9727  IDENTICAL
+Light Sleep Duration                  467   98.5%   98.5%     30.77   4950.00  0.9933  IDENTICAL
+Average HRV                           467   98.5%   98.5%      0.08     14.00  0.9845  IDENTICAL
+Avg Resting HR                        467    3.0%   90.6%     -0.31     17.75  0.9822      CLOSE
+Lowest Resting HR                     467   98.7%   98.7%     -0.09     16.00  0.9850  IDENTICAL
+Respiratory Rate                      467   98.5%   99.4%     -0.01      2.25  0.9846  IDENTICAL
+Sleep Efficiency                      467   98.5%   98.5%      0.14     44.00  0.9222  IDENTICAL
+Sleep Latency                         467   98.5%   98.5%     -1.48   1050.00  0.9913  IDENTICAL
+Awake Time                            467   98.5%   98.5%    -24.93  13050.00  0.9572  IDENTICAL
+Total Bedtime                         467   98.5%   98.5%     69.82  12543.00  0.9822  IDENTICAL
+Restless Periods                      467   98.5%   98.5%      0.96    125.00  0.9847  IDENTICAL
+
+───────────────────────────────────────────────────────────────────────────────────────────────
+DETAILED ANALYSIS PER METRIC
+───────────────────────────────────────────────────────────────────────────────────────────────
+
+  Readiness Score:
+    Overlapping days: 690
+    Exact matches (diff<0.01): 690 (100.0%)
+    Close matches (diff<1.0):  690 (100.0%)
+    Difference: mean=0.0, median=0.0, std=0.0, max=0.0
+    Correlation: 1.0
+    Historical mean: 69.57  |  Export mean: 69.57
+
+  Temperature Deviation:
+    Overlapping days: 688
+    Exact matches (diff<0.01): 688 (100.0%)
+    Close matches (diff<1.0):  688 (100.0%)
+    Difference: mean=0.0, median=0.0, std=0.0, max=0.0
+    Correlation: 1.0
+    Historical mean: 0.01  |  Export mean: 0.01
+
+  Temp Trend Deviation:
+    Overlapping days: 669
+    Exact matches (diff<0.01): 669 (100.0%)
+    Close matches (diff<1.0):  669 (100.0%)
+    Difference: mean=0.0, median=0.0, std=0.0, max=0.0
+    Correlation: 1.0
+    Historical mean: 0.09  |  Export mean: 0.09
+
+  Sleep Score:
+    Overlapping days: 690
+    Exact matches (diff<0.01): 690 (100.0%)
+    Close matches (diff<1.0):  690 (100.0%)
+    Difference: mean=0.0, median=0.0, std=0.0, max=0.0
+    Correlation: 1.0
+    Historical mean: 70.98  |  Export mean: 70.98
+
+  Activity Score:
+    Overlapping days: 737
+    Exact matches (diff<0.01): 736 (99.9%)
+    Close matches (diff<1.0):  736 (99.9%)
+    Difference: mean=-0.01, median=0.0, std=0.37, max=10.0
+    Correlation: 0.9995
+    Historical mean: 76.12  |  Export mean: 76.14
+
+  Steps:
+    Overlapping days: 741
+    Exact matches (diff<0.01): 740 (99.9%)
+    Close matches (diff<1.0):  740 (99.9%)
+    Difference: mean=-6.37, median=0.0, std=173.36, max=4719
+    Correlation: 0.9992
+    Historical mean: 6826.46  |  Export mean: 6832.83
+
+  Active Calories:
+    Overlapping days: 741
+    Exact matches (diff<0.01): 740 (99.9%)
+    Close matches (diff<1.0):  740 (99.9%)
+    Difference: mean=-0.55, median=0.0, std=14.99, max=408
+    Correlation: 0.9985
+    Historical mean: 427.22  |  Export mean: 427.77
+
+  Total Calories:
+    Overlapping days: 741
+    Exact matches (diff<0.01): 740 (99.9%)
+    Close matches (diff<1.0):  740 (99.9%)
+    Difference: mean=-1.01, median=0.0, std=27.48, max=748
+    Correlation: 0.9969
+    Historical mean: 3069.42  |  Export mean: 3070.43
+
+  Average MET:
+    Overlapping days: 741
+    Exact matches (diff<0.01): 740 (99.9%)
+    Close matches (diff<1.0):  741 (100.0%)
+    Difference: mean=0.0, median=0.0, std=0.01, max=0.19
+    Correlation: 0.9991
+    Historical mean: 1.41  |  Export mean: 1.41
+
+  Walking Distance:
+    Overlapping days: 741
+    Exact matches (diff<0.01): 740 (99.9%)
+    Close matches (diff<1.0):  740 (99.9%)
+    Difference: mean=-7.76, median=0.0, std=211.19, max=5749
+    Correlation: 0.9987
+    Historical mean: 6311.18  |  Export mean: 6318.94
+
+  Medium Activity Time:
+    Overlapping days: 741
+    Exact matches (diff<0.01): 740 (99.9%)
+    Close matches (diff<1.0):  740 (99.9%)
+    Difference: mean=-3.89, median=0.0, std=105.8, max=2880
+    Correlation: 0.9988
+    Historical mean: 2549.15  |  Export mean: 2553.04
+
+  High Activity Time:
+    Overlapping days: 741
+    Exact matches (diff<0.01): 741 (100.0%)
+    Close matches (diff<1.0):  741 (100.0%)
+    Difference: mean=0.0, median=0.0, std=0.0, max=0
+    Correlation: 1.0
+    Historical mean: 26.64  |  Export mean: 26.64
+
+  Low Activity Time:
+    Overlapping days: 741
+    Exact matches (diff<0.01): 740 (99.9%)
+    Close matches (diff<1.0):  740 (99.9%)
+    Difference: mean=-12.06, median=0.0, std=328.42, max=8940
+    Correlation: 0.9985
+    Historical mean: 11267.37  |  Export mean: 11279.43
+
+  Non-wear Time:
+    Overlapping days: 741
+    Exact matches (diff<0.01): 741 (100.0%)
+    Close matches (diff<1.0):  741 (100.0%)
+    Difference: mean=0.0, median=0.0, std=0.0, max=0
+    Correlation: 1.0
+    Historical mean: 5528.91  |  Export mean: 5528.91
+
+  Total Sleep Duration:
+    Overlapping days: 467
+    Exact matches (diff<0.01): 460 (98.5%)
+    Close matches (diff<1.0):  460 (98.5%)
+    Difference: mean=94.75, median=0.0, std=919.25, max=12210.0
+    Correlation: 0.9802
+    Historical mean: 21427.45  |  Export mean: 21332.7
+
+  Deep Sleep Duration:
+    Overlapping days: 467
+    Exact matches (diff<0.01): 460 (98.5%)
+    Close matches (diff<1.0):  460 (98.5%)
+    Difference: mean=33.85, median=0.0, std=293.03, max=3810.0
+    Correlation: 0.9723
+    Historical mean: 5255.46  |  Export mean: 5221.61
+
+  REM Sleep Duration:
+    Overlapping days: 467
+    Exact matches (diff<0.01): 460 (98.5%)
+    Close matches (diff<1.0):  460 (98.5%)
+    Difference: mean=30.13, median=0.0, std=317.01, max=4410.0
+    Correlation: 0.9727
+    Historical mean: 3895.37  |  Export mean: 3865.25
+
+  Light Sleep Duration:
+    Overlapping days: 467
+    Exact matches (diff<0.01): 460 (98.5%)
+    Close matches (diff<1.0):  460 (98.5%)
+    Difference: mean=30.77, median=0.0, std=392.19, max=4950.0
+    Correlation: 0.9933
+    Historical mean: 12276.62  |  Export mean: 12245.85
+
+  Average HRV:
+    Overlapping days: 467
+    Exact matches (diff<0.01): 460 (98.5%)
+    Close matches (diff<1.0):  460 (98.5%)
+    Difference: mean=0.08, median=0.0, std=0.89, max=14.0
+    Correlation: 0.9845
+    Historical mean: 17.63  |  Export mean: 17.55
+
+  Avg Resting HR:
+    Overlapping days: 467
+    Exact matches (diff<0.01): 14 (3.0%)
+    Close matches (diff<1.0):  423 (90.6%)
+    Difference: mean=-0.31, median=-0.06, std=1.34, max=17.75
+    Correlation: 0.9822
+    Historical mean: 82.09  |  Export mean: 82.4
+
+  Lowest Resting HR:
+    Overlapping days: 467
+    Exact matches (diff<0.01): 461 (98.7%)
+    Close matches (diff<1.0):  461 (98.7%)
+    Difference: mean=-0.09, median=0.0, std=1.13, max=16.0
+    Correlation: 0.985
+    Historical mean: 74.93  |  Export mean: 75.02
+
+  Respiratory Rate:
+    Overlapping days: 467
+    Exact matches (diff<0.01): 460 (98.5%)
+    Close matches (diff<1.0):  464 (99.4%)
+    Difference: mean=-0.01, median=0.0, std=0.13, max=2.25
+    Correlation: 0.9846
+    Historical mean: 15.17  |  Export mean: 15.18
+
+  Sleep Efficiency:
+    Overlapping days: 467
+    Exact matches (diff<0.01): 460 (98.5%)
+    Close matches (diff<1.0):  460 (98.5%)
+    Difference: mean=0.14, median=0.0, std=2.12, max=44.0
+    Correlation: 0.9222
+    Historical mean: 86.05  |  Export mean: 85.91
+
+  Sleep Latency:
+    Overlapping days: 467
+    Exact matches (diff<0.01): 460 (98.5%)
+    Close matches (diff<1.0):  460 (98.5%)
+    Difference: mean=-1.48, median=0.0, std=76.52, max=1050.0
+    Correlation: 0.9913
+    Historical mean: 759.38  |  Export mean: 760.86
+
+  Awake Time:
+    Overlapping days: 467
+    Exact matches (diff<0.01): 460 (98.5%)
+    Close matches (diff<1.0):  460 (98.5%)
+    Difference: mean=-24.93, median=0.0, std=607.38, max=13050.0
+    Correlation: 0.9572
+    Historical mean: 3603.37  |  Export mean: 3628.3
+
+  Total Bedtime:
+    Overlapping days: 467
+    Exact matches (diff<0.01): 460 (98.5%)
+    Close matches (diff<1.0):  460 (98.5%)
+    Difference: mean=69.82, median=0.0, std=1103.66, max=12543.0
+    Correlation: 0.9822
+    Historical mean: 25030.82  |  Export mean: 24961.0
+
+  Restless Periods:
+    Overlapping days: 467
+    Exact matches (diff<0.01): 460 (98.5%)
+    Close matches (diff<1.0):  460 (98.5%)
+    Difference: mean=0.96, median=0.0, std=9.34, max=125.0
+    Correlation: 0.9847
+    Historical mean: 176.08  |  Export mean: 175.12
+
+───────────────────────────────────────────────────────────────────────────────────────────────
+ADDITIONAL NOTES
+───────────────────────────────────────────────────────────────────────────────────────────────
+  Sleepmodel type distribution: {'long_sleep': np.int64(965), 'sleep': np.int64(299), 'late_nap': np.int64(71), 'rest': np.int64(4)}
+  Sleepmodel period distribution: {0: np.int64(808), 1: np.int64(381), 2: np.int64(116), 3: np.int64(25), 4: np.int64(9)}
+  SpO2 data: 1045 days with data, mean=96.6%
+  Daily stress summary distribution: {'normal': np.int64(784), 'stressful': np.int64(13), 'restored': np.int64(6)}
+  Stress data covers 912 days
+
+===============================================================================================
+INTERPRETATION GUIDE
+===============================================================================================
+
+  IDENTICAL = >95% exact matches (diff < 0.01)
+  MATCH     = >80% exact OR correlation > 0.99
+  CLOSE     = Correlation > 0.95, minor differences
+  DIFFERS   = Correlation 0.80-0.95, systematic differences
+  CHECK     = Correlation < 0.80, investigate further
+
+  Common reasons for differences:
+  - Historical CSV may aggregate sleep differently (main sleep only vs all periods)
+  - Rounding differences (historical may round to integer, export keeps decimals)
+  - Time zone handling (timestamp vs day assignment)
+  - None/null handling (historical uses string "None", export uses NaN)
+  - Score recalculations (Oura may retroactively update scores)

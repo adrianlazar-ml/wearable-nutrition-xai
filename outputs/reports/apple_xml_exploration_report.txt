@@ -1,0 +1,193 @@
+===============================================================================================
+APPLE HEALTH XML EXPORT - EXPLORATION REPORT
+Generated: 2026-03-30 21:08
+===============================================================================================
+
+───────────────────────────────────────────────────────────────────────────────────────────────
+SUMMARY TABLE
+───────────────────────────────────────────────────────────────────────────────────────────────
+File                            Rows   SizeKB   Days  Sources    AW%                 DateRange
+-----------------------------------------------------------------------------------------------
+heart_rate                 1,019,878   88,492   1072        2  38.7%   2023-04-18 → 2026-03-25
+active_calories              707,442   66,096   1074        4  63.2%   2023-04-11 → 2026-03-25
+steps                        346,994   26,469   1075        4  23.2%   2023-04-11 → 2026-03-25
+basal_calories               232,227   22,970   1080        2 100.0%   2023-04-11 → 2026-03-25
+sleep                        109,818   11,559   1078        3  32.0%   2023-04-11 → 2026-03-25
+respiratory_rate              47,738    4,927   1071        2  98.1%   2023-04-18 → 2026-03-25
+spo2                          15,365    1,304   1066        2 100.0%   2023-04-18 → 2026-03-25
+hrv                            6,235      547   1067        1 100.0%   2023-04-18 → 2026-03-25
+weight                            62        5     22        2   0.0%   2023-04-11 → 2026-03-07
+
+───────────────────────────────────────────────────────────────────────────────────────────────
+SOURCE CONTAMINATION ASSESSMENT
+───────────────────────────────────────────────────────────────────────────────────────────────
+
+  ACTIVE_CALORIES — CONTAMINATED
+    Apple Watch - Adrian                 447,385 records (63.2%)  [2023-04-18 → 2026-03-25]
+    Oura                                 260,000 records (36.8%)  [2023-06-09 → 2026-03-25]
+    Zepp Life                                 50 records (0.0%)  [2024-08-29 → 2024-09-01]
+    iPhone - Adrian                            7 records (0.0%)  [2023-04-11 → 2023-04-18]
+    Value comparison by source:
+      iPhone - Adrian                     mean=0.40, std=0.41, n=7
+      Apple Watch - Adrian                mean=1.87, std=5.47, n=447,385
+      Oura                                mean=1.69, std=2.06, n=260,000
+      Zepp Life                           mean=5.90, std=7.22, n=50
+
+  BASAL_CALORIES — CLEAN (AW only)
+    Apple Watch - Adrian                 232,127 records (100.0%)  [2023-04-18 → 2026-03-25]
+    iPhone - Adrian                          100 records (0.0%)  [2023-04-11 → 2023-04-18]
+    Value comparison by source:
+      iPhone - Adrian                     mean=145.73, std=149.17, n=100
+      Apple Watch - Adrian                mean=12.09, std=16.13, n=232,127
+
+  HEART_RATE — CONTAMINATED
+    Oura                                 624,918 records (61.3%)  [2023-06-09 → 2026-03-25]
+    Apple Watch - Adrian                 394,960 records (38.7%)  [2023-04-18 → 2026-03-25]
+    Value comparison by source:
+      Apple Watch - Adrian                mean=93.94, std=16.74, n=394,960
+      Oura                                mean=90.33, std=11.55, n=624,918
+
+  HRV — CLEAN (AW only)
+    Apple Watch - Adrian                   6,235 records (100.0%)  [2023-04-18 → 2026-03-25]
+
+  RESPIRATORY_RATE — QUASI-CLEAN
+    Apple Watch - Adrian                  46,809 records (98.1%)  [2023-04-18 → 2026-03-25]
+    Oura                                     929 records (1.9%)  [2023-06-10 → 2026-03-25]
+    Value comparison by source:
+      Apple Watch - Adrian                mean=15.93, std=2.84, n=46,809
+      Oura                                mean=15.06, std=0.76, n=929
+
+  SLEEP — CONTAMINATED
+    Oura                                  73,161 records (66.6%)  [2023-06-09 → 2026-03-25]
+    Apple Watch - Adrian                  35,160 records (32.0%)  [2023-04-19 → 2026-03-25]
+    iPhone - Adrian                        1,497 records (1.4%)  [2023-04-11 → 2024-12-01]
+
+  SPO2 — CLEAN (AW only)
+    Apple Watch - Adrian                  15,359 records (100.0%)  [2023-04-18 → 2026-03-25]
+    Oxigen în sânge                            6 records (0.0%)  [2023-04-18 → 2023-12-13]
+    Value comparison by source:
+      Apple Watch - Adrian                mean=0.95, std=0.03, n=15,359
+      Oxigen în sânge                     mean=0.96, std=0.02, n=6
+
+  STEPS — CONTAMINATED
+    Oura                                 246,825 records (71.1%)  [2023-07-19 → 2026-03-25]
+    Apple Watch - Adrian                  80,650 records (23.2%)  [2023-04-18 → 2026-03-25]
+    iPhone - Adrian                       19,468 records (5.6%)  [2023-04-11 → 2026-03-25]
+    Zepp Life                                 51 records (0.0%)  [2024-08-29 → 2024-09-01]
+    Value comparison by source:
+      iPhone - Adrian                     mean=214.23, std=248.24, n=19,468
+      Apple Watch - Adrian                mean=80.10, std=136.54, n=80,650
+      Oura                                mean=25.32, std=26.84, n=246,825
+      Zepp Life                           mean=151.82, std=170.13, n=51
+
+  WEIGHT — NO AW DATA
+    Zepp Life                                 60 records (96.8%)  [2024-08-29 → 2026-03-07]
+    Sănătate                                   2 records (3.2%)  [2023-04-11 → 2023-04-22]
+    Value comparison by source:
+      Sănătate                            mean=107.50, std=3.54, n=2
+      Zepp Life                           mean=114.00, std=2.03, n=60
+
+───────────────────────────────────────────────────────────────────────────────────────────────
+DETAILED STATISTICS PER FILE
+───────────────────────────────────────────────────────────────────────────────────────────────
+
+  ACTIVE_CALORIES
+    Rows: 707,442  |  Size: 66,096 KB
+    Unit: kcal
+    Date: 2023-04-11 → 2026-03-25 (1074 days)
+    Records/day: min=2, max=2090, mean=658.7, median=581
+    Values: min=0.007, max=233.082, mean=1.80, std=4.53, median=0.577
+    AW-only values: mean=1.87, std=5.47, n=447,385
+
+  BASAL_CALORIES
+    Rows: 232,227  |  Size: 22,970 KB
+    Unit: kcal
+    Date: 2023-04-11 → 2026-03-25 (1080 days)
+    Records/day: min=6, max=1769, mean=215.0, median=183
+    Values: min=0.096, max=1347.07, mean=12.14, std=16.65, median=1.272
+    AW-only values: mean=12.09, std=16.13, n=232,127
+
+  HEART_RATE
+    Rows: 1,019,878  |  Size: 88,492 KB
+    Unit: count/min
+    Date: 2023-04-18 → 2026-03-25 (1072 days)
+    Records/day: min=92, max=2237, mean=951.4, median=959
+    Values: min=41.0, max=178.0, mean=91.73, std=13.91, median=89.0
+    AW-only values: mean=93.94, std=16.74, n=394,960
+
+  HRV
+    Rows: 6,235  |  Size: 547 KB
+    Unit: ms
+    Date: 2023-04-18 → 2026-03-25 (1067 days)
+    Records/day: min=1, max=7, mean=5.8, median=6
+    Values: min=4.0447, max=128.359, mean=24.96, std=12.84, median=22.0197
+    AW-only values: mean=24.96, std=12.84, n=6,235
+
+  RESPIRATORY_RATE
+    Rows: 47,738  |  Size: 4,927 KB
+    Unit: count/min
+    Date: 2023-04-18 → 2026-03-25 (1071 days)
+    Records/day: min=1, max=102, mean=44.6, median=44
+    Values: min=7.5, max=31.5, mean=15.91, std=2.82, median=15.5
+    AW-only values: mean=15.93, std=2.84, n=46,809
+
+  SLEEP
+    Rows: 109,818  |  Size: 11,559 KB
+    Unit: None
+    Date: 2023-04-11 → 2026-03-25 (1078 days)
+    Records/day: min=1, max=304, mean=101.9, median=101
+    Categories:
+      HKCategoryValueSleepAnalysisAsleepCore: 40,459
+      HKCategoryValueSleepAnalysisAwake: 34,169
+      HKCategoryValueSleepAnalysisAsleepREM: 16,268
+      HKCategoryValueSleepAnalysisAsleepDeep: 8,862
+      HKCategoryValueSleepAnalysisInBed: 6,838
+      HKCategoryValueSleepAnalysisAsleepUnspecified: 3,222
+
+  SPO2
+    Rows: 15,365  |  Size: 1,304 KB
+    Unit: %
+    Date: 2023-04-18 → 2026-03-25 (1066 days)
+    Records/day: min=1, max=34, mean=14.4, median=14
+    Values: min=0.7, max=1.0, mean=0.95, std=0.03, median=0.95
+    AW-only values: mean=0.95, std=0.03, n=15,359
+
+  STEPS
+    Rows: 346,994  |  Size: 26,469 KB
+    Unit: count
+    Date: 2023-04-11 → 2026-03-25 (1075 days)
+    Records/day: min=2, max=1513, mean=322.8, median=280
+    Values: min=0.0, max=1209.0, mean=48.67, std=102.29, median=25.0
+    AW-only values: mean=80.10, std=136.54, n=80,650
+
+  WEIGHT
+    Rows: 62  |  Size: 5 KB
+    Unit: kg
+    Date: 2023-04-11 → 2026-03-07 (22 days)
+    Records/day: min=1, max=8, mean=2.8, median=2
+    Values: min=105.0, max=117.5, mean=113.79, std=2.35, median=114.3
+
+===============================================================================================
+KEY FINDINGS & RECOMMENDATIONS
+===============================================================================================
+
+  XML EXPORT ISSUES:
+  1. Multiple sources (Oura, iPhone, Apple Watch, Zepp Life) mixed in same files
+  2. No deduplication — same measurement may appear from multiple sources
+  3. Steps, HR, active_calories heavily contaminated (30-70% non-AW data)
+  4. Sleep data: 67% Oura, 32% Apple Watch, 1% iPhone
+
+  CLEAN XML FILES (usable as-is):
+  - hrv.csv: 100% Apple Watch
+  - spo2.csv: ~100% Apple Watch
+  - basal_calories.csv: ~100% Apple Watch
+
+  COMPARISON WITH JSON:
+  - JSON Health Auto Export performs its own deduplication (source fields show merged sources)
+  - JSON correctly deduplicates steps (finding: XML MAE ~9,106 steps/day vs JSON)
+  - JSON sleep still mixes sources but doesn't double-count
+
+  RECOMMENDATION:
+  JSON (via parse_health_auto_export.py → apple_health_daily.csv) remains the
+  better source for pipeline. XML is useful only as validation reference and
+  for metrics JSON doesn't cover.

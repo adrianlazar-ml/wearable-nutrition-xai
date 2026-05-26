@@ -1,0 +1,92 @@
+{
+  "tag": "20260331",
+  "frozen_at_utc": "2026-04-19T12:26:59.968593Z",
+  "cutoff_date": "2026-03-31",
+  "last_day_in_dataset": "2026-03-30",
+  "train_internal_end": "2025-09-18",
+  "test_internal_range": [
+    "2025-09-19",
+    "2026-03-30"
+  ],
+  "n_total_days": 958,
+  "n_train": 766,
+  "n_test_internal": 192,
+  "class_distribution_full": {
+    "0": 202,
+    "1": 710,
+    "2": 46
+  },
+  "class_distribution_train_pre_smote": {
+    "0": 158,
+    "1": 570,
+    "2": 38
+  },
+  "class_distribution_train_post_smote": {
+    "0": 570,
+    "1": 570,
+    "2": 570
+  },
+  "class_distribution_test_internal": {
+    "0": 44,
+    "1": 140,
+    "2": 8
+  },
+  "features": [
+    "readiness_score_lag1",
+    "sleep_score_lag1",
+    "hrv_mean_lag1",
+    "hrv_balance_lag1",
+    "recovery_index_lag1",
+    "rhr_lowest_lag1",
+    "rhr_avg_lag1",
+    "activity_score_lag1",
+    "steps_oura_lag1",
+    "respiratory_rate_lag1",
+    "temp_deviation_lag1",
+    "aw_hr_mean_lag1",
+    "aw_hrv_mean_lag1",
+    "aw_steps_lag1",
+    "aw_active_calories_lag1",
+    "aw_spo2_lag1",
+    "aw_sleep_deep_hours_lag1",
+    "aw_sleep_rem_hours_lag1",
+    "aw_resp_rate_lag1"
+  ],
+  "label_scheme": "T3: Rest if readiness<60 OR sleep<60; Active if readiness>=85 AND sleep>=75; Normal otherwise",
+  "class_mapping": {
+    "0": "Rest",
+    "1": "Normal",
+    "2": "Active"
+  },
+  "model_config": {
+    "algorithm": "RandomForestClassifier",
+    "n_estimators": 100,
+    "max_depth": 10,
+    "min_samples_leaf": 5,
+    "random_state": 42
+  },
+  "preprocessing": {
+    "imputer": "SimpleImputer(strategy='median')",
+    "smote": "SMOTE(random_state=42, k_neighbors=3)",
+    "applied_on": "train only, after imputation"
+  },
+  "reference_metrics_internal_test": {
+    "accuracy": 0.640625,
+    "f1_macro": 0.5063238989824085,
+    "mcc": 0.14155971852108248
+  },
+  "dataset_hash_sha256_16": "63bc3a2915bae864",
+  "environment": {
+    "python": "3.11.9",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "sklearn": "1.8.0",
+    "imblearn": "0.14.1",
+    "numpy": "2.4.3",
+    "pandas": "2.3.3"
+  },
+  "artifacts": {
+    "model": "models\\rf_frozen_20260331.joblib",
+    "imputer": "models\\imputer_frozen_20260331.joblib",
+    "meta": "models/frozen_meta_20260331.json"
+  }
+}

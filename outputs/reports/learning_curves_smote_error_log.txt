@@ -1,0 +1,59 @@
+============================================================
+LEARNING CURVES CU SMOTE k=3 — LOG ERORI
+============================================================
+Dataset: 958 zile, 19 features
+Distributie clase: {0: np.int64(202), 1: np.int64(710), 2: np.int64(46)}
+Clasa Active (2): doar 46 instante
+SMOTE k_neighbors=3 necesita minim k+1=4 instante per clasa
+
+--- Random Forest ---
+  Train sizes: [16, 32, 48, 65, 81, 97, 114, 130, 146, 163]
+  Fit-uri esuate (NaN): 20 din 50
+  Val F1 per train size (mean across folds):
+      16 zile: NaN (SMOTE esuat)
+      32 zile: NaN (SMOTE esuat)
+      48 zile: NaN (SMOTE esuat)
+      65 zile: NaN (SMOTE esuat)
+      81 zile: 0.3428
+      97 zile: 0.3540
+     114 zile: 0.3421
+     130 zile: 0.3534
+     146 zile: 0.3555
+     163 zile: 0.3607
+
+--- XGBoost ---
+  Train sizes: [16, 32, 48, 65, 81, 97, 114, 130, 146, 163]
+  Fit-uri esuate (NaN): 20 din 50
+  Val F1 per train size (mean across folds):
+      16 zile: NaN (SMOTE esuat)
+      32 zile: NaN (SMOTE esuat)
+      48 zile: NaN (SMOTE esuat)
+      65 zile: NaN (SMOTE esuat)
+      81 zile: 0.3496
+      97 zile: 0.3640
+     114 zile: 0.3659
+     130 zile: 0.3752
+     146 zile: 0.3559
+     163 zile: 0.3579
+
+--- SVM ---
+  Train sizes: [16, 32, 48, 65, 81, 97, 114, 130, 146, 163]
+  Fit-uri esuate (NaN): 20 din 50
+  Val F1 per train size (mean across folds):
+      16 zile: NaN (SMOTE esuat)
+      32 zile: NaN (SMOTE esuat)
+      48 zile: NaN (SMOTE esuat)
+      65 zile: NaN (SMOTE esuat)
+      81 zile: 0.3585
+      97 zile: 0.3567
+     114 zile: 0.3660
+     130 zile: 0.3569
+     146 zile: 0.3705
+     163 zile: 0.3748
+
+============================================================
+CONCLUZIE: SMOTE k=3 nu este aplicabil pe learning curves
+cu TimeSeriesSplit deoarece subseturile mici de antrenament
+contin sub 4 instante din clasa Active (minoritara).
+Solutie: class_weight='balanced' ca alternativa echivalenta.
+============================================================

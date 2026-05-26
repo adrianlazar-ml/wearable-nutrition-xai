@@ -1,0 +1,590 @@
+==========================================================================================
+OURA CSV EXPORT - EXPLORATORY REPORT v2
+Generated: 2026-03-30 19:53
+==========================================================================================
+
+==========================================================================================
+SUMMARY TABLE
+==========================================================================================
+File                                 Rows  Cols   Size(KB)     Date Min     Date Max   Days  Rel
+------------------------------------------------------------------------------------------
+dailyactivity                       1,012    26      7,801   2023-06-09   2026-03-29   1012  ***
+dailycardiovascularage                684     4         47   2024-03-26   2026-03-29    684  ***
+dailyreadiness                        957     7        304   2023-06-10   2026-03-29    957  ***
+dailyresilience                       681     4         88   2023-12-01   2026-03-29    681  ***
+dailysleep                            957     5        205   2023-06-10   2026-03-29    957  ***
+dailyspo2                           1,091     4         79   2023-06-10   2026-03-29    963  ***
+dailystress                           912     5         57   2023-09-15   2026-03-29    912  ***
+daytimestress                     141,365     3      4,116   2023-09-15   2026-03-29    837  ***
+heartrate                       1,027,892     3     36,534   2023-06-09   2026-03-29   1010  ***
+sleepmodel                          1,339    30      3,733   2023-06-10   2026-03-29    970  ***
+sleeptime                             594     5         50   2023-06-09   2026-03-27    594  ***
+temperature                     1,410,406     2     43,939   2023-06-09   2026-03-29   1010  ***
+vo2max                                 27     4          2   2026-01-21   2026-03-27     27  ***
+workout                               675    10         98   2023-06-14   2026-03-27    346  ***
+applicationdebugstate                   1     2          0                                      
+bloodglucose                            0     2          0                                       (EMPTY)
+dailycyclephases                        0     4          0                                       (EMPTY)
+enhancedtag                            20     8          2   2023-09-20   2025-11-25     16     
+fooditem                              686     2         35                                      
+hormonalcontraceptionusage              0     8          0                                       (EMPTY)
+meal                                  220     7         55   2025-05-29   2026-03-27    153     
+nonhormonalcontraceptionusage           0     7          0                                       (EMPTY)
+otherreproductivehormone                0     5          0                                       (EMPTY)
+rawlocation                        10,211    10        672   2024-05-21   2026-03-29    343     
+restmodeperiod                          1     6          0   2025-01-01   2025-01-01      1     
+ringbatterylevel                   46,570     4      1,840   2023-06-08   2026-03-29   1008     
+ringconfiguration                       2     7          0                                      
+session                                 1     9          2   2023-06-22   2023-06-22      1     
+
+Total files: 28
+Empty/unparseable: 5 → bloodglucose, dailycyclephases, hormonalcontraceptionusage, nonhormonalcontraceptionusage, otherreproductivehormone
+Relevant for pipeline: 14
+Other (non-empty): 9
+
+==========================================================================================
+DETAILED ANALYSIS - RELEVANT FILES
+==========================================================================================
+
+──────────────────────────────────────────────────────────────────────
+  DAILYACTIVITY
+──────────────────────────────────────────────────────────────────────
+  Rows: 1,012  |  Columns: 26  |  Sep: ';'
+  Size: 7,801 KB
+  Date range: 2023-06-09 → 2026-03-29  (1012 unique days)
+
+  Columns (26):
+    - id                                       [object]
+    - active_calories                          [int64]
+    - average_met_minutes                      [float64]
+    - class_5_min                              [object]
+    - contributors                             [object]
+    - day                                      [object]
+    - equivalent_walking_distance              [int64]
+    - high_activity_met_minutes                [int64]
+    - high_activity_time                       [int64]
+    - inactivity_alerts                        [int64]
+    - low_activity_met_minutes                 [int64]
+    - low_activity_time                        [int64]
+    - medium_activity_met_minutes              [int64]
+    - medium_activity_time                     [int64]
+    - met                                      [object]
+    - meters_to_target                         [int64]
+    - non_wear_time                            [int64]
+    - resting_time                             [int64]
+    - score                                    [float64]
+    - sedentary_met_minutes                    [int64]
+    - sedentary_time                           [int64]
+    - steps                                    [int64]
+    - target_calories                          [int64]
+    - target_meters                            [int64]
+    - timestamp                                [object]
+    - total_calories                           [int64]
+
+  Missing values (total 0.0% of all cells):
+    score                                      4 (  0.4%) 
+
+  Numeric stats:
+    Column                                Min        Max       Mean     Median        Std    Count
+    ----------------------------------------------------------------------------------------
+    active_calories                       0.0     1638.0      439.6      456.5      263.4    1,012
+    average_met_minutes                   1.0        2.0        1.4        1.4        0.2    1,012
+    equivalent_walking_distance           0.0    21467.0     6431.8     6634.0     3969.2    1,012
+    high_activity_met_minutes             0.0      809.0        4.2        0.0       34.6    1,012
+    high_activity_time                    0.0     5880.0       33.9        0.0      263.2    1,012
+    inactivity_alerts                     0.0        7.0        1.6        1.0        1.4    1,012
+    low_activity_met_minutes              0.0      596.0      123.0      122.0       68.1    1,012
+    low_activity_time                     0.0    42420.0    11510.1    11460.0     5677.8    1,012
+    medium_activity_met_minutes           0.0      752.0      149.5      137.5      121.5    1,012
+    medium_activity_time                  0.0    13080.0     2649.6     2460.0     2077.2    1,012
+    meters_to_target                 -17200.0    10200.0      712.2      800.0     4509.6    1,012
+    non_wear_time                         0.0    81780.0     4724.1        0.0    10965.1    1,012
+    resting_time                       1500.0    76680.0    26433.7    25380.0     8478.6    1,012
+    score                                35.0       98.0       77.4       80.0       11.6    1,008
+    sedentary_met_minutes                 0.0       26.0        8.8        8.0        4.1    1,012
+
+  Sample (first 3 rows):
+                                         id  active_calories  average_met_minutes                                        class_5_min                                       contributors         day  equivalent_walking_distance  high_activity_met_minutes  high_activity_time  inactivity_alerts  low_activity_met_minutes  low_activity_time  medium_activity_met_minutes  medium_activity_time                                                met  meters_to_target  non_wear_time  resting_time  score  sedentary_met_minutes  sedentary_time  steps  target_calories  target_meters                      timestamp  total_calories
+    0  158a2f4b-2c13-47bc-8b87-9fb84e0bef6f              559              1.37500  0000000000000000000000000000000000000000000000...  {"meet_daily_targets": 78, "move_every_hour": ...  2023-06-09                         8190                          0                   0                  0                       116              11580                          244                  3960  {"interval": 60.0, "items": [0.1, 0.1, 0.1, 0....               700          27240         18840   93.0                      5           24780   5018              600           9000  2023-06-09T04:00:00.000+03:00            3167
+    1  62fa75f1-8f91-4cc7-9dd1-dc17554bfc9f              810              1.53125  3322221111111111111111111111111111111111111111...  {"meet_daily_targets": 95, "move_every_hour": ...  2023-06-10                        11605                        224                2040                  1                        95               8760                          206                  3540  {"interval": 60.0, "items": [0.9, 0.9, 1.2, 1....             -7000           2700         36060   94.0                      4           33300   7675              350           6000  2023-06-10T04:00:00.000+03:00            3344
+    2  92a8eb72-53b7-4267-9be1-585d226c8cfc              606              1.43750  1111221222222212322222222221121111111111111111...  {"meet_daily_targets": 95, "move_every_hour": ...  2023-06-11                         8871                          0                   0                  1                       116              10680                          274                  4140  {"interval": 60.0, "items": [0.9, 0.9, 0.9, 0....             -3100            660         33540   93.0                      5           37380   5080              400           6000  2023-06-11T04:00:00.000+03:00            3177
+
+──────────────────────────────────────────────────────────────────────
+  DAILYCARDIOVASCULARAGE
+──────────────────────────────────────────────────────────────────────
+  Rows: 684  |  Columns: 4  |  Sep: ';'
+  Size: 47 KB
+  Date range: 2024-03-26 → 2026-03-29  (684 unique days)
+
+  Columns (4):
+    - id                                       [object]
+    - day                                      [object]
+    - pulse_wave_velocity                      [float64]
+    - vascular_age                             [float64]
+
+  Missing values (total 0.3% of all cells):
+    pulse_wave_velocity                        4 (  0.6%) 
+    vascular_age                               4 (  0.6%) 
+
+  Numeric stats:
+    Column                                Min        Max       Mean     Median        Std    Count
+    ----------------------------------------------------------------------------------------
+    pulse_wave_velocity                   6.9        8.2        7.5        7.4        0.1      680
+    vascular_age                         36.0       55.0       44.3       44.0        2.2      680
+
+  Sample (first 3 rows):
+                                         id         day  pulse_wave_velocity  vascular_age
+    0  8ef87ba7-9bcd-4319-9608-56cf2890e4f2  2024-03-26             7.431092          44.0
+    1  50ba3dc1-103a-4b24-a701-b728268d582a  2024-03-27             7.310924          42.0
+    2  b3529dee-6278-42e6-9ced-8b92f3ac15c1  2024-03-28             7.477467          45.0
+
+──────────────────────────────────────────────────────────────────────
+  DAILYREADINESS
+──────────────────────────────────────────────────────────────────────
+  Rows: 957  |  Columns: 7  |  Sep: ';'
+  Size: 304 KB
+  Date range: 2023-06-10 → 2026-03-29  (957 unique days)
+
+  Columns (7):
+    - id                                       [object]
+    - contributors                             [object]
+    - day                                      [object]
+    - score                                    [int64]
+    - temperature_deviation                    [float64]
+    - temperature_trend_deviation              [float64]
+    - timestamp                                [object]
+
+  Missing values (total 0.3% of all cells):
+    temperature_trend_deviation               21 (  2.2%) 
+    temperature_deviation                      2 (  0.2%) 
+
+  Numeric stats:
+    Column                                Min        Max       Mean     Median        Std    Count
+    ----------------------------------------------------------------------------------------
+    score                                28.0       92.0       70.0       71.0       10.0      957
+    temperature_deviation                -1.3        1.0        0.0        0.0        0.3      955
+    temperature_trend_deviation          -0.7       14.4        0.1        0.1        0.5      936
+
+  Sample (first 3 rows):
+                                         id                                       contributors         day  score  temperature_deviation  temperature_trend_deviation                      timestamp
+    0  513263fb-b104-4e36-ba20-09d88f4b3fed  {"activity_balance": null, "body_temperature":...  2023-06-10     66                  -0.32                          NaN  2023-06-10T00:00:00.000+00:00
+    1  a45f11ac-58bf-4a6b-812d-8cd2796c4035  {"activity_balance": null, "body_temperature":...  2023-06-11     67                  -0.07                         0.11  2023-06-11T00:00:00.000+00:00
+    2  66b6841c-1bb6-4809-b9ae-b9769dda4f7c  {"activity_balance": 86, "body_temperature": 1...  2023-06-12     78                  -0.07                         0.13  2023-06-12T00:00:00.000+00:00
+
+──────────────────────────────────────────────────────────────────────
+  DAILYRESILIENCE
+──────────────────────────────────────────────────────────────────────
+  Rows: 681  |  Columns: 4  |  Sep: ';'
+  Size: 88 KB
+  Date range: 2023-12-01 → 2026-03-29  (681 unique days)
+
+  Columns (4):
+    - id                                       [object]
+    - contributors                             [object]
+    - day                                      [object]
+    - level                                    [object]
+
+  Sample (first 3 rows):
+                                         id                                       contributors         day     level
+    0  7afe0c38-c3bf-46d4-a7ce-65084eb90b79  {"daytime_recovery": 74.0, "sleep_recovery": 5...  2023-12-01     solid
+    1  fc3024f2-2e72-44ae-930f-7c2e05c916c0  {"daytime_recovery": 69.9, "sleep_recovery": 5...  2023-12-02  adequate
+    2  1f87c131-9f07-4109-82bf-18a555162138  {"daytime_recovery": 63.0, "sleep_recovery": 5...  2023-12-03     solid
+
+──────────────────────────────────────────────────────────────────────
+  DAILYSLEEP
+──────────────────────────────────────────────────────────────────────
+  Rows: 957  |  Columns: 5  |  Sep: ';'
+  Size: 205 KB
+  Date range: 2023-06-10 → 2026-03-29  (957 unique days)
+
+  Columns (5):
+    - id                                       [object]
+    - contributors                             [object]
+    - day                                      [object]
+    - score                                    [int64]
+    - timestamp                                [object]
+
+  Numeric stats:
+    Column                                Min        Max       Mean     Median        Std    Count
+    ----------------------------------------------------------------------------------------
+    score                                31.0       93.0       71.2       71.0        8.8      957
+
+  Sample (first 3 rows):
+                                         id                                       contributors         day  score                      timestamp
+    0  3c4cdeb8-43a3-4d8f-8ca2-abdef76915e1  {"deep_sleep": 97, "efficiency": 93, "latency"...  2023-06-10     84  2023-06-10T00:00:00.000+00:00
+    1  1a5a991c-5aeb-41c6-9dd7-aa122a2227d1  {"deep_sleep": 96, "efficiency": 55, "latency"...  2023-06-11     75  2023-06-11T00:00:00.000+00:00
+    2  e70ed182-ddee-41b9-be80-928ea668edab  {"deep_sleep": 97, "efficiency": 86, "latency"...  2023-06-12     76  2023-06-12T00:00:00.000+00:00
+
+──────────────────────────────────────────────────────────────────────
+  DAILYSPO2
+──────────────────────────────────────────────────────────────────────
+  Rows: 1,091  |  Columns: 4  |  Sep: ';'
+  Size: 79 KB
+  Date range: 2023-06-10 → 2026-03-29  (963 unique days)
+
+  Columns (4):
+    - id                                       [object]
+    - breathing_disturbance_index              [float64]
+    - day                                      [object]
+    - spo2_percentage                          [object]
+
+  Missing values (total 2.0% of all cells):
+    spo2_percentage                           46 (  4.2%) 
+    breathing_disturbance_index               42 (  3.8%) 
+
+  Numeric stats:
+    Column                                Min        Max       Mean     Median        Std    Count
+    ----------------------------------------------------------------------------------------
+    breathing_disturbance_index           1.0       47.0       12.2       12.0        5.7    1,049
+
+  Sample (first 3 rows):
+                                         id  breathing_disturbance_index         day      spo2_percentage
+    0  a34d09f2-7991-44eb-83c8-6d0a528b20d6                          9.0  2023-06-10  {"average": 97.915}
+    1  fde16187-7c9c-412e-ada1-081582e2409d                          8.0  2023-06-11  {"average": 97.499}
+    2  a543f34a-080e-45d1-b0e7-710c8fb355f3                         11.0  2023-06-12  {"average": 97.326}
+
+──────────────────────────────────────────────────────────────────────
+  DAILYSTRESS
+──────────────────────────────────────────────────────────────────────
+  Rows: 912  |  Columns: 5  |  Sep: ';'
+  Size: 57 KB
+  Date range: 2023-09-15 → 2026-03-29  (912 unique days)
+
+  Columns (5):
+    - id                                       [object]
+    - day                                      [object]
+    - day_summary                              [object]
+    - recovery_high                            [int64]
+    - stress_high                              [int64]
+
+  Missing values (total 2.4% of all cells):
+    day_summary                              109 ( 12.0%) ██
+
+  Numeric stats:
+    Column                                Min        Max       Mean     Median        Std    Count
+    ----------------------------------------------------------------------------------------
+    recovery_high                         0.0    18900.0     3387.8     2700.0     3193.0      912
+    stress_high                           0.0    23400.0     2400.0     1800.0     3078.2      912
+
+  Sample (first 3 rows):
+                                         id         day day_summary  recovery_high  stress_high
+    0  a78f7096-043a-4adc-9af6-aa59eb6581cf  2023-09-15      normal              0            0
+    1  24844dfd-c4e0-42af-ba13-ed20c3081d82  2023-09-16      normal            900            0
+    2  f1989ef9-3cfc-4b3c-ac15-40e1fcbb18ff  2023-09-17      normal              0            0
+
+──────────────────────────────────────────────────────────────────────
+  DAYTIMESTRESS
+──────────────────────────────────────────────────────────────────────
+  Rows: 141,365  |  Columns: 3  |  Sep: ';'
+  Size: 4,116 KB
+  Date range: 2023-09-15 → 2026-03-29  (837 unique days)
+
+  Columns (3):
+    - timestamp                                [object]
+    - recovery_value                           [float64]
+    - stress_value                             [float64]
+
+  Missing values (total 33.3% of all cells):
+    recovery_value                         75085 ( 53.1%) ██████████
+    stress_value                           66286 ( 46.9%) █████████
+
+  Numeric stats:
+    Column                                Min        Max       Mean     Median        Std    Count
+    ----------------------------------------------------------------------------------------
+    recovery_value                        0.0      100.0       30.8       28.0       21.2   66,280
+    stress_value                          0.0      100.0       31.3       25.0       25.1   75,079
+
+  Sample (first 3 rows):
+                      timestamp  recovery_value  stress_value
+    0  2023-09-15T05:13:24.000Z             NaN          29.0
+    1  2023-09-15T05:18:53.000Z             NaN          29.0
+    2  2023-09-15T05:24:01.000Z             NaN          45.0
+
+──────────────────────────────────────────────────────────────────────
+  HEARTRATE
+──────────────────────────────────────────────────────────────────────
+  Rows: 1,027,892  |  Columns: 3  |  Sep: ';'
+  Size: 36,534 KB
+  Date range: 2023-06-09 → 2026-03-29  (1010 unique days)
+
+  Columns (3):
+    - timestamp                                [object]
+    - bpm                                      [int64]
+    - source                                   [object]
+
+  Numeric stats:
+    Column                                Min        Max       Mean     Median        Std    Count
+    ----------------------------------------------------------------------------------------
+    bpm                                  47.0      208.0       98.9       97.0       14.8 1,027,892
+
+  Sample (first 3 rows):
+                      timestamp  bpm source
+    0  2023-06-09T08:31:25.000Z   90  awake
+    1  2023-06-09T08:31:27.000Z   89  awake
+    2  2023-06-09T08:31:29.000Z   88  awake
+
+──────────────────────────────────────────────────────────────────────
+  SLEEPMODEL
+──────────────────────────────────────────────────────────────────────
+  Rows: 1,339  |  Columns: 30  |  Sep: ';'
+  Size: 3,733 KB
+  Date range: 2023-06-10 → 2026-03-29  (970 unique days)
+
+  Columns (30):
+    - id                                       [object]
+    - average_breath                           [float64]
+    - average_heart_rate                       [float64]
+    - average_hrv                              [float64]
+    - awake_time                               [int64]
+    - bedtime_end                              [object]
+    - bedtime_start                            [object]
+    - day                                      [object]
+    - deep_sleep_duration                      [int64]
+    - efficiency                               [int64]
+    - heart_rate                               [object]
+    - hrv                                      [object]
+    - latency                                  [int64]
+    - light_sleep_duration                     [int64]
+    - low_battery_alert                        [bool]
+    - lowest_heart_rate                        [float64]
+    - movement_30_sec                          [object]
+    - period                                   [int64]
+    - readiness                                [object]
+    - readiness_score_delta                    [float64]
+    - rem_sleep_duration                       [int64]
+    - restless_periods                         [int64]
+    - sleep_algorithm_version                  [object]
+    - sleep_analysis_reason                    [object]
+    - sleep_phase_30_sec                       [object]
+    - sleep_phase_5_min                        [object]
+    - sleep_score_delta                        [float64]
+    - time_in_bed                              [int64]
+    - total_sleep_duration                     [int64]
+    - type                                     [object]
+
+  Missing values (total 4.0% of all cells):
+    sleep_analysis_reason                    663 ( 49.5%) █████████
+    readiness_score_delta                    281 ( 21.0%) ████
+    sleep_score_delta                        281 ( 21.0%) ████
+    average_hrv                              189 ( 14.1%) ██
+    lowest_heart_rate                        179 ( 13.4%) ██
+    average_breath                            22 (  1.6%) 
+    readiness                                 10 (  0.7%) 
+
+  Numeric stats:
+    Column                                Min        Max       Mean     Median        Std    Count
+    ----------------------------------------------------------------------------------------
+    average_breath                       12.1       20.1       15.3       15.1        1.0    1,317
+    average_heart_rate                    0.0      105.4       78.2       81.6       21.1    1,339
+    average_hrv                           5.0       49.0       17.0       16.0        5.4    1,150
+    awake_time                          420.0    25620.0     3383.2     2761.0     2727.7    1,339
+    deep_sleep_duration                   0.0    12990.0     3858.9     4470.0     2320.3    1,339
+    efficiency                            1.0       95.0       74.9       84.0       21.2    1,339
+    latency                               0.0     7650.0      820.5      720.0      821.0    1,339
+    light_sleep_duration                  0.0    27390.0     9244.3    10170.0     5561.8    1,339
+    lowest_heart_rate                    62.0      109.0       76.8       75.0        7.7    1,160
+    period                                0.0        4.0        0.5        0.0        0.8    1,339
+    readiness_score_delta                -4.0       45.0        0.8        0.0        3.6    1,058
+    rem_sleep_duration                    0.0    10320.0     2872.4     3120.0     2082.6    1,339
+    restless_periods                      0.0      362.0      133.6      147.0       85.0    1,339
+    sleep_score_delta                    -4.0       47.0        1.0        0.0        4.5    1,058
+    time_in_bed                         631.0    54000.0    19358.7    21420.0    10998.8    1,339
+
+  Sample (first 3 rows):
+                                         id  average_breath  average_heart_rate  average_hrv  awake_time                    bedtime_end                  bedtime_start         day  deep_sleep_duration  efficiency                                         heart_rate                                                hrv  latency  light_sleep_duration  low_battery_alert  lowest_heart_rate                                    movement_30_sec  period                                          readiness  readiness_score_delta  rem_sleep_duration  restless_periods sleep_algorithm_version sleep_analysis_reason                                 sleep_phase_30_sec                                  sleep_phase_5_min  sleep_score_delta  time_in_bed  total_sleep_duration        type
+    0  374db621-cd44-416c-8bc6-52a5853df06f           15.25              79.875         23.0        3360  2023-06-10T08:08:02.000+03:00  2023-06-09T23:46:02.000+03:00  2023-06-10                 6210          89  {"interval": 300.0, "items": [null, 88.0, 88.0...  {"interval": 300.0, "items": [null, 28.0, 29.0...      750                 14760              False               70.0  4321113111122233321211112111111211111111111122...       1  {"contributors": {"activity_balance": null, "b...                    0.0                5790               301                      v1                   NaN  4444444442441144444444444422222222211111111111...  4441111111142333333333311111111121113332222222...                0.0        30120                 26760  long_sleep
+    1  eeb1d3eb-7a2d-4511-930f-4fa519d28863           15.25              79.875         28.0        3960  2023-06-10T13:00:30.000+03:00  2023-06-10T11:30:30.000+03:00  2023-06-10                  900          27  {"interval": 300.0, "items": [null, null, null...  {"interval": 300.0, "items": [null, null, null...     1290                   540              False               71.0  3222221222221222233222222222222222232111121111...       2                                                NaN                    NaN                   0                37                      v1                   NaN  4444444444444444444444444444444444444444414422...                                 444421444111444444                NaN         5400                  1440        rest
+    2  77683c21-afbb-4612-b48d-5f430180831d           15.25              79.875          NaN        1710  2023-06-10T18:08:17.000+03:00  2023-06-10T17:36:17.000+03:00  2023-06-11                   30          11  {"interval": 300.0, "items": [null, 95.0, 95.0...  {"interval": 300.0, "items": [null, 15.0, 9.0,...        0                   180              False               93.0  2222222221221111112222222211233322232223322222...       0                                                NaN                    NaN                   0                 6                      v1                   NaN  4444444444444244222221444444444444444444444444...                                             444444                NaN         1920                   210       sleep
+
+──────────────────────────────────────────────────────────────────────
+  SLEEPTIME
+──────────────────────────────────────────────────────────────────────
+  Rows: 594  |  Columns: 5  |  Sep: ';'
+  Size: 50 KB
+  Date range: 2023-06-09 → 2026-03-27  (594 unique days)
+
+  Columns (5):
+    - id                                       [object]
+    - day                                      [object]
+    - optimal_bedtime                          [float64]
+    - recommendation                           [object]
+    - status                                   [object]
+
+  Missing values (total 23.3% of all cells):
+    optimal_bedtime                          594 (100.0%) ████████████████████
+    recommendation                            97 ( 16.3%) ███
+
+  Sample (first 3 rows):
+                                         id         day  optimal_bedtime recommendation             status
+    0  f87437df-aace-4567-8506-8a1d9487c5a2  2023-06-09              NaN            NaN  not_enough_nights
+    1  f7c6fcc4-19e5-4f01-8e4c-8ed76bae17a3  2023-06-10              NaN            NaN  not_enough_nights
+    2  5728ac7d-1e20-4f93-85ae-c876054a49c5  2023-06-11              NaN            NaN  not_enough_nights
+
+──────────────────────────────────────────────────────────────────────
+  TEMPERATURE
+──────────────────────────────────────────────────────────────────────
+  Rows: 1,410,406  |  Columns: 2  |  Sep: ';'
+  Size: 43,939 KB
+  Date range: 2023-06-09 → 2026-03-29  (1010 unique days)
+
+  Columns (2):
+    - timestamp                                [object]
+    - skin_temp                                [float64]
+
+  Numeric stats:
+    Column                                Min        Max       Mean     Median        Std    Count
+    ----------------------------------------------------------------------------------------
+    skin_temp                            13.2       45.8       34.2       34.9        2.1 1,410,406
+
+  Sample (first 3 rows):
+                      timestamp  skin_temp
+    0  2023-06-09T07:45:02.000Z      29.19
+    1  2023-06-09T07:46:02.000Z      29.62
+    2  2023-06-09T07:47:02.000Z      30.20
+
+──────────────────────────────────────────────────────────────────────
+  VO2MAX
+──────────────────────────────────────────────────────────────────────
+  Rows: 27  |  Columns: 4  |  Sep: ';'
+  Size: 2 KB
+  Date range: 2026-01-21 → 2026-03-27  (27 unique days)
+
+  Columns (4):
+    - id                                       [object]
+    - day                                      [object]
+    - timestamp                                [object]
+    - vo2_max                                  [int64]
+
+  Numeric stats:
+    Column                                Min        Max       Mean     Median        Std    Count
+    ----------------------------------------------------------------------------------------
+    vo2_max                              26.0       28.0       27.7       28.0        0.6       27
+
+  Sample (first 3 rows):
+                                         id         day                      timestamp  vo2_max
+    0  fabb800a-7737-4f80-af7e-73a7c790f476  2026-01-21  2026-01-21T17:52:20.738+02:00       26
+    1  cf9de517-2350-4c23-b516-666d5391678e  2026-01-29  2026-01-29T16:45:39.824+02:00       27
+    2  9f2ea6ff-3986-4142-b34c-24549447fca3  2026-02-06  2026-02-06T16:35:58.718+02:00       28
+
+──────────────────────────────────────────────────────────────────────
+  WORKOUT
+──────────────────────────────────────────────────────────────────────
+  Rows: 675  |  Columns: 10  |  Sep: ';'
+  Size: 98 KB
+  Date range: 2023-06-14 → 2026-03-27  (346 unique days)
+
+  Columns (10):
+    - id                                       [object]
+    - activity                                 [object]
+    - calories                                 [float64]
+    - day                                      [object]
+    - distance                                 [float64]
+    - end_datetime                             [object]
+    - intensity                                [object]
+    - label                                    [float64]
+    - source                                   [object]
+    - start_datetime                           [object]
+
+  Missing values (total 23.6% of all cells):
+    label                                    675 (100.0%) ████████████████████
+    distance                                 664 ( 98.4%) ███████████████████
+    calories                                 256 ( 37.9%) ███████
+
+  Numeric stats:
+    Column                                Min        Max       Mean     Median        Std    Count
+    ----------------------------------------------------------------------------------------
+    calories                             29.1      606.7       76.4       56.0       61.3      419
+    distance                              4.2      389.0       49.4       11.2      113.7       11
+
+  Sample (first 3 rows):
+                                         id activity  calories         day  distance                   end_datetime intensity  label     source                 start_datetime
+    0  30ce2094-ed4a-4355-ac7e-21cd8b7102c5  walking    64.635  2023-06-14       NaN  2023-06-14T13:48:00.000+03:00  moderate    NaN  confirmed  2023-06-14T13:33:00.000+03:00
+    1  a6acbd00-92fc-4c4f-9419-40394a16eb85  walking   124.961  2023-06-17       NaN  2023-06-17T12:01:00.000+03:00  moderate    NaN  confirmed  2023-06-17T11:32:00.000+03:00
+    2  4ce9c12f-5b7d-417e-99fb-ed095d3a9c85  walking    94.798  2023-06-20       NaN  2023-06-20T13:54:00.000+03:00  moderate    NaN  confirmed  2023-06-20T13:32:00.000+03:00
+
+==========================================================================================
+OTHER NON-EMPTY FILES
+==========================================================================================
+
+──────────────────────────────────────────────────
+  applicationdebugstate: 1 rows, 2 cols
+  Columns: id, ring_debug_information
+
+──────────────────────────────────────────────────
+  enhancedtag: 20 rows, 8 cols
+  Columns: id, comment, custom_tag_name, end_day, end_time, start_day, start_time, tag_type_code
+  Date range: 2023-09-20 → 2025-11-25 (16 days)
+
+──────────────────────────────────────────────────
+  fooditem: 686 rows, 2 cols
+  Columns: id, name
+
+──────────────────────────────────────────────────
+  meal: 220 rows, 7 cols
+  Columns: id, day, favorite, food_item_ids, name, start_time, type
+  Date range: 2025-05-29 → 2026-03-27 (153 days)
+
+──────────────────────────────────────────────────
+  rawlocation: 10,211 rows, 10 cols
+  Columns: timestamp, altitude, course, course_accuracy, horizontal_accuracy, latitude, longitude, speed, speed_accuracy, vertical_accuracy
+  Date range: 2024-05-21 → 2026-03-29 (343 days)
+    altitude: min=7.1, max=1267.9, mean=444.1
+    course: min=0.0, max=359.6, mean=173.6
+    course_accuracy: min=0.4, max=180.0, mean=97.1
+    horizontal_accuracy: min=2.2, max=13562.4, mean=37.3
+    latitude: min=44.69, max=47.92, mean=45.8
+
+──────────────────────────────────────────────────
+  restmodeperiod: 1 rows, 6 cols
+  Columns: id, end_day, end_time, episodes, start_day, start_time
+  Date range: 2025-01-01 → 2025-01-01 (1 days)
+
+──────────────────────────────────────────────────
+  ringbatterylevel: 46,570 rows, 4 cols
+  Columns: timestamp, charging, in_charger, level
+  Date range: 2023-06-08 → 2026-03-29 (1008 days)
+    level: min=0.0, max=100.0, mean=61.9
+
+──────────────────────────────────────────────────
+  ringconfiguration: 2 rows, 7 cols
+  Columns: id, color, design, firmware_version, hardware_type, set_up_at, size
+    size: min=11.0, max=14.0, mean=12.5
+
+──────────────────────────────────────────────────
+  session: 1 rows, 9 cols
+  Columns: id, day, end_datetime, heart_rate, heart_rate_variability, mood, motion_count, start_datetime, type
+  Date range: 2023-06-22 → 2023-06-22 (1 days)
+
+==========================================================================================
+PIPELINE RELEVANCE ASSESSMENT
+==========================================================================================
+
+FILES ALREADY USED IN PIPELINE (via API / oura_combined.csv):
+  - dailyreadiness → readiness_score, temperature_deviation
+  - dailysleep → sleep_score (+ contributors for sleep staging)
+  - dailyactivity → steps, active_calories, met (activity metrics)
+  - dailyspo2 → spo2_percentage
+
+NEW DATA AVAILABLE FROM CSV EXPORT (not in current pipeline):
+  - dailystress → day_summary, stress_high, recovery_high
+    → Potential new features for stress-aware classification
+  - daytimestress → granular stress/recovery (5-min intervals)
+    → Could compute daily stress variability, peak stress, etc.
+  - dailyresilience → resilience level + contributors
+    → sleep_recovery and stress contributors
+  - dailycardiovascularage → vascular_age, pulse_wave_velocity
+    → Long-term cardiovascular health indicator
+  - workout → activity type, calories, distance, intensity
+    → Direct signal for Active classification
+  - vo2max → fitness level over time (only 27 data points)
+  - sleeptime → optimal bedtime recommendation
+  - heartrate → per-second HR data
+    → Could compute resting HR, HR variability beyond Oura's built-in
+  - temperature → per-minute skin temperature
+    → Already captured in readiness as temperature_deviation
+
+RECOMMENDATION:
+  Priority 1 (quick wins): dailystress, workout — daily-level, direct signal
+  Priority 2 (moderate effort): daytimestress aggregated, dailyresilience
+  Priority 3 (high effort, diminishing returns): heartrate aggregation,
+    dailycardiovascularage (limited coverage)
