@@ -260,8 +260,8 @@ def compare_algorithms(X, y, FEATURES, dates):
                 )),
             ])
 
-        cv_acc = cross_val_score(cv_pipe, X, y, cv=tscv, scoring="accuracy")
-        cv_f1 = cross_val_score(cv_pipe, X, y, cv=tscv, scoring="f1_macro")
+        cv_acc = cross_val_score(cv_pipe, X_train, y_train, cv=tscv, scoring="accuracy")
+        cv_f1 = cross_val_score(cv_pipe, X_train, y_train, cv=tscv, scoring="f1_macro")
 
         results[name] = {
             "accuracy": acc,
