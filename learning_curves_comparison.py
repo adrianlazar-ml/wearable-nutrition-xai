@@ -94,6 +94,10 @@ def run_learning_curves_smote(X, y, FEATURES):
     tscv = TimeSeriesSplit(n_splits=5)
     train_sizes_frac = np.linspace(0.1, 1.0, 10)
 
+    # Split temporal 80/20: learning curve doar pe train, fara leakage din test
+    split_idx = int(len(X) * 0.8)
+    X_train, y_train = X.iloc[:split_idx], y.iloc[:split_idx]
+
     models = {
         "Random Forest": ImbPipeline([
             ("imputer", SimpleImputer(strategy="median")),
@@ -113,8 +117,8 @@ def run_learning_curves_smote(X, y, FEATURES):
         ]),
         "SVM": ImbPipeline([
             ("imputer", SimpleImputer(strategy="median")),
-            ("smote", SMOTE(random_state=42, k_neighbors=3)),
             ("scaler", StandardScaler()),
+            ("smote", SMOTE(random_state=42, k_neighbors=3)),
             ("model", SVC(kernel="rbf", C=1.0, gamma="scale",
                          random_state=42)),
         ]),
@@ -142,7 +146,7 @@ def run_learning_curves_smote(X, y, FEATURES):
             warnings.simplefilter("always")
 
             train_sizes_abs, train_scores, val_scores = learning_curve(
-                pipe, X, y,
+                pipe, X_train, y_train,
                 train_sizes=train_sizes_frac,
                 cv=tscv,
                 scoring="f1_macro",
@@ -230,6 +234,10 @@ def run_learning_curves_balanced(X, y, FEATURES):
     tscv = TimeSeriesSplit(n_splits=5)
     train_sizes_frac = np.linspace(0.2, 1.0, 9)
 
+    # Split temporal 80/20: learning curve doar pe train, fara leakage din test
+    split_idx = int(len(X) * 0.8)
+    X_train, y_train = X.iloc[:split_idx], y.iloc[:split_idx]
+
     models = {
         "Random Forest": SkPipeline([
             ("imputer", SimpleImputer(strategy="median")),
@@ -260,7 +268,7 @@ def run_learning_curves_balanced(X, y, FEATURES):
         print(f"\n--- {name} ---")
 
         train_sizes_abs, train_scores, val_scores = learning_curve(
-            pipe, X, y,
+            pipe, X_train, y_train,
             train_sizes=train_sizes_frac,
             cv=tscv,
             scoring="f1_macro",
