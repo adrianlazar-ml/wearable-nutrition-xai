@@ -73,7 +73,22 @@
   "reference_metrics_internal_test": {
     "accuracy": 0.640625,
     "f1_macro": 0.5063238989824085,
-    "mcc": 0.14155971852108248
+    "mcc": 0.14155971852108248,
+    "f1_per_class": {
+      "Rest": 0.3218390804597701,
+      "Normal": 0.7526881720430108,
+      "Active": 0.4444444444444444
+    },
+    "precision_per_class": {
+      "Rest": 0.32558139534883723,
+      "Normal": 0.7553956834532374,
+      "Active": 0.4
+    },
+    "recall_per_class": {
+      "Rest": 0.3181818181818182,
+      "Normal": 0.75,
+      "Active": 0.5
+    }
   },
   "dataset_hash_sha256_16": "63bc3a2915bae864",
   "environment": {
@@ -88,5 +103,29 @@
     "model": "models\\rf_frozen_20260331.joblib",
     "imputer": "models\\imputer_frozen_20260331.joblib",
     "meta": "models/frozen_meta_20260331.json"
+  },
+  "confusion_matrix_internal_test": {
+    "labels": [
+      "Rest",
+      "Normal",
+      "Active"
+    ],
+    "rows_true_cols_pred": [
+      [
+        14,
+        30,
+        0
+      ],
+      [
+        29,
+        105,
+        6
+      ],
+      [
+        0,
+        4,
+        4
+      ]
+    ]
   }
 }
