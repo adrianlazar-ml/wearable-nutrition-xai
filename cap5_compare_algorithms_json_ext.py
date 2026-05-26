@@ -60,6 +60,7 @@ from imblearn.over_sampling import SMOTE
 from imblearn.pipeline import Pipeline as ImbPipeline
 from xgboost import XGBClassifier
 import shap
+from PIL import Image
 
 warnings.filterwarnings("ignore", category=FutureWarning)
 warnings.filterwarnings("ignore", category=UserWarning)
@@ -578,52 +579,30 @@ def run_shap_waterfall(trained_models, X_test_imp, y_test, FEATURES):
             plt.close()
             print(f"  -> {fname}")
 
-        # Si un combined plot cu toate 3 (layout VERTICAL pentru lizibilitate)
-        n_plots = len(example_indices)
-        fig = plt.figure(figsize=(10, 7 * n_plots))
-
-        for i, (cls_id, test_idx) in enumerate(example_indices.items()):
-            cls_name = class_names[cls_id]
-            single_instance = X_test_imp.iloc[[test_idx]]
-            sv = explainer.shap_values(single_instance)
-            sv_array = np.array(sv)
-
-            if sv_array.ndim == 3:
-                if sv_array.shape[0] == 1:
-                    sv_for_class = sv_array[0, :, cls_id]
-                    base_val = explainer.expected_value[cls_id]
-                else:
-                    sv_for_class = sv_array[cls_id, 0, :]
-                    base_val = explainer.expected_value[cls_id]
-            elif isinstance(sv, list):
-                sv_for_class = sv[cls_id][0]
-                base_val = explainer.expected_value[cls_id]
-            else:
-                sv_for_class = sv[0]
-                base_val = (explainer.expected_value
-                           if np.isscalar(explainer.expected_value)
-                           else explainer.expected_value[0])
-
-            explanation = shap.Explanation(
-                values=sv_for_class,
-                base_values=base_val,
-                data=single_instance.values[0],
-                feature_names=short_names
-            )
-
-            ax = fig.add_subplot(n_plots, 1, i + 1)
-            plt.sca(ax)
-            shap.plots.waterfall(explanation, max_display=10, show=False)
-            ax.set_title(f"Zi {cls_name}", fontsize=14, fontweight="bold", pad=15)
-
-        plt.suptitle(
-            f"SHAP Waterfall - De ce modelul clasifica fiecare zi ({model_name})",
-            fontsize=16, y=1.01
-        )
-        plt.tight_layout(h_pad=4.0)
-        fname_all = f"outputs/figures/json_extended_pipeline/ext_shap_waterfall_all_{model_name.lower().replace(' ', '_')}.png"
-        plt.savefig(fname_all, dpi=150, bbox_inches="tight")
-        plt.close()
+        # Combined: compunem cele 3 waterfall-uri per-clasa (deja generate curat
+        # individual mai sus, fiecare in figura proprie 10x7) intr-o singura
+        # imagine stivuita vertical, folosind PIL.
+        # NOTA: shap.plots.waterfall apeleaza intern plt.gcf().set_size_inches(),
+        # deci suprascrie figsize si nu poate fi plasat corect in subplot-uri
+        # (rezulta overlap sever intre etichete). Compunerea PNG-urilor
+        # individuale e robusta si garanteaza lizibilitatea.
+        model_slug = model_name.lower().replace(' ', '_')
+        per_class_paths = [
+            f"outputs/figures/json_extended_pipeline/ext_shap_waterfall_{class_names[cls_id].lower()}_{model_slug}.png"
+            for cls_id in example_indices
+        ]
+        wf_imgs = [Image.open(p).convert("RGB") for p in per_class_paths]
+        comb_w = max(im.width for im in wf_imgs)
+        comb_h = sum(im.height for im in wf_imgs)
+        combined = Image.new("RGB", (comb_w, comb_h), "white")
+        y_off = 0
+        for im in wf_imgs:
+            combined.paste(im, ((comb_w - im.width) // 2, y_off))
+            y_off += im.height
+        fname_all = f"outputs/figures/json_extended_pipeline/ext_shap_waterfall_all_{model_slug}.png"
+        combined.save(fname_all, dpi=(150, 150))
+        for im in wf_imgs:
+            im.close()
         print(f"  -> {fname_all}")
 
         print(f"\n  INTERPRETARE waterfall (pentru Cap.5):")
