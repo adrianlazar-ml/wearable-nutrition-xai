@@ -34,6 +34,8 @@ import numpy as np
 import os
 from datetime import datetime
 
+from nutrition_recommender import get_nutrition_recommendation
+
 # ============================================================
 # CONFIG & PAGE SETUP
 # ============================================================
@@ -108,128 +110,9 @@ def calculate_tdee(bmr, activity_level):
     return round(bmr * multipliers.get(activity_level, 1.2))
 
 
-def get_nutrition_recommendation_local(label, profile):
-    """
-    Generează recomandare nutrițională.
-
-    Referințe:
-    - AI4Food (Lacruz-Pleguezuelos et al., 2025): 25 kcal/kg/zi
-    - Helms et al. (2014): 1.6-2.2 g/kg lean mass proteine
-    - Burke et al. (2011): periodizare carbohidrați
-    - Campos-Nonato et al. (2017): high-protein la obezitate
-    """
-    base_cal = round(25 * profile["weight_kg"])
-    lean = profile["lean_mass_kg"]
-
-    def _validate_macros(calories, protein_g, fat_g):
-        """Asigură carbs >= 100g și total macro ≤ target caloric."""
-        min_carbs_g = 100
-        min_carbs_kcal = min_carbs_g * 4
-        remaining = calories - protein_g * 4 - fat_g * 9
-        if remaining >= min_carbs_kcal:
-            return protein_g, fat_g, round(remaining / 4)
-        budget = calories - min_carbs_kcal
-        if protein_g * 4 <= budget:
-            fat_g = round((budget - protein_g * 4) / 9)
-        else:
-            total = protein_g * 4 + fat_g * 9
-            scale = budget / total
-            protein_g = round(protein_g * scale)
-            fat_g = round(fat_g * scale)
-        return protein_g, fat_g, min_carbs_g
-
-    configs = {
-        0: {
-            "day_type": "Rest Day",
-            "cal_adj": -200,
-            "protein_mult": 2.0,
-            "fat_pct": 0.30,
-            "rationale": (
-                "Readiness scăzut sau somn insuficient. "
-                "Prioritate: recuperare și reducere inflamație. "
-                "Proteine 2g/kg lean mass (Helms et al., 2014). Deficit ~700 kcal."
-            ),
-            "foods": [
-                "Pui/curcan la grătar – proteină slabă",
-                "Somon/sardine – omega-3 antiinflamator",
-                "Legume verzi (broccoli, spanac) – minerale",
-                "Fructe de pădure – antioxidanți",
-            ],
-            "avoid": [
-                "Alimente procesate și zahăr adăugat",
-                "Alcool – inhibă recuperarea",
-            ],
-            "hydration_ml": 3000,
-            "timing": "3 mese principale + 1-2 gustări proteice",
-        },
-        1: {
-            "day_type": "Normal Day",
-            "cal_adj": 0,
-            "protein_mult": 1.8,
-            "fat_pct": 0.28,
-            "rationale": (
-                "Stare fiziologică normală. Alimentație echilibrată "
-                "cu deficit ~500 kcal. Protocol AI4Food: 25 kcal/kg/zi "
-                "(Lacruz-Pleguezuelos et al., 2025)."
-            ),
-            "foods": [
-                "Carne slabă (pui, vită, pește alb)",
-                "Orez brun / cartofi dulci / quinoa",
-                "Avocado / nuci / semințe",
-                "Leguminoase (linte, năut) – fibre + proteine",
-            ],
-            "avoid": [
-                "Fast food și alimente ultra-procesate",
-                "Băuturi cu zahăr adăugat",
-            ],
-            "hydration_ml": 3500,
-            "timing": "3 mese principale echilibrate",
-        },
-        2: {
-            "day_type": "Active Day",
-            "cal_adj": 200,
-            "protein_mult": 1.8,
-            "fat_pct": 0.25,
-            "rationale": (
-                "Readiness ridicat + somn bun. Capacitate maximă. "
-                "Carbohidrați crescuți pentru performanță "
-                "(Burke et al., 2011). Deficit redus ~300 kcal."
-            ),
-            "foods": [
-                "Pre-workout: banană + fulgi ovăz",
-                "Post-workout: shake proteic + orez",
-                "Carne slabă sau pește",
-                "Cartofi / paste / orez – reumplere glicogen",
-            ],
-            "avoid": [
-                "Grăsimi în exces pre-workout",
-                "Fibre excesive pre-workout",
-            ],
-            "hydration_ml": 4000,
-            "timing": "Pre-workout 2-3h înainte, post-workout 30-60min",
-        },
-    }
-
-    cfg = configs[label]
-    calories = base_cal + cfg["cal_adj"]
-    protein_g = round(lean * cfg["protein_mult"])
-    fat_g = round(calories * cfg["fat_pct"] / 9)
-    carb_g = round((calories - protein_g * 4 - fat_g * 9) / 4)
-    protein_g, fat_g, carb_g = _validate_macros(calories, protein_g, fat_g)
-
-    return {
-        "day_type": cfg["day_type"],
-        "calories_target": calories,
-        "protein_g": protein_g,
-        "carbs_g": carb_g,
-        "fat_g": fat_g,
-        "hydration_ml": cfg["hydration_ml"],
-        "timing": cfg["timing"],
-        "rationale": cfg["rationale"],
-        "foods": cfg["foods"],
-        "avoid": cfg["avoid"],
-        "base_calories": base_cal,
-    }
+# get_nutrition_recommendation_local ELIMINAT (FND-203): logica de recomandare e
+# consolidata in nutrition_recommender.get_nutrition_recommendation (import sus).
+# UI consuma cheia 'key_foods' din modul (vezi rec["key_foods"]).
 
 
 def try_load_dataset():
@@ -284,7 +167,7 @@ if "profile" not in st.session_state:
         "height_cm": 187.0,
         "age": 41,
         "gender": "male",
-        "body_fat_pct": 36.2,
+        "body_fat_pct": 36.3,
         "goal": "fat_loss",
         "activity_level": "Ușor activ (1-2 antrenamente/săpt)",
     }
@@ -369,7 +252,8 @@ if page == "📊 Profil Utilizator":
         st.markdown("**Formula AI4Food** (Lacruz-Pleguezuelos et al., 2025)")
         st.markdown(
             f"25 kcal/kg × {p['weight_kg']} kg = **{base_cal} kcal/zi**  \n"
-            f"Deficit standard: ~500 kcal față de TDEE ({tdee} kcal)"
+            f"Comparat cu TDEE ({tdee} kcal): formula AI4Food are limitare pe "
+            f"obezitate (poate fi întreținere/surplus, nu deficit) — vezi Cap.7."
         )
 
         st.markdown("---")
@@ -379,7 +263,7 @@ if page == "📊 Profil Utilizator":
 
         comp_data = []
         for label_id, label_name in [(0, "Rest"), (1, "Normal"), (2, "Active")]:
-            rec = get_nutrition_recommendation_local(label_id, full_profile)
+            rec = get_nutrition_recommendation(label_id, full_profile)
             comp_data.append({
                 "Tip Zi": label_name,
                 "Calorii": rec["calories_target"],
@@ -441,7 +325,7 @@ elif page == "🎯 Dashboard Zilnic":
             )
 
         with col_m2:
-            rec = get_nutrition_recommendation_local(auto_label, full_profile)
+            rec = get_nutrition_recommendation(auto_label, full_profile)
 
             st.subheader(f"Recomandare: {rec['day_type']}")
 
@@ -480,7 +364,7 @@ elif page == "🎯 Dashboard Zilnic":
             st.markdown(f"**Raționale:** {rec['rationale']}")
 
             with st.expander("Alimente recomandate"):
-                for food in rec["foods"]:
+                for food in rec["key_foods"]:
                     st.markdown(f"- {food}")
 
             with st.expander("De evitat"):
@@ -495,7 +379,7 @@ elif page == "🎯 Dashboard Zilnic":
         if rf is None:
             st.warning(
                 "Modelul ML nu a fost găsit. "
-                "Rulează `python demo_end_to_end.py` pentru a genera "
+                "Rulează `python demo_end_to_end_v2.py` pentru a genera "
                 "`models/rf_model.joblib` și `models/imputer.joblib`."
             )
             st.info(
@@ -508,8 +392,7 @@ elif page == "🎯 Dashboard Zilnic":
                 st.warning(
                     "Dataset-ul nu a fost găsit. Rulează unul din pipeline-uri:\n"
                     "- `python cap5_pipeline_json_extended.py` (recomandat, 19 features)\n"
-                    "- `python cap5_pipeline_json.py` (JSON 16 features)\n"
-                    "- `python cap5_pipeline.py` (XML legacy)"
+                    "- `python cap5_pipeline_json.py` (JSON 16 features)"
                 )
             else:
                 st.success(
@@ -598,7 +481,7 @@ elif page == "🎯 Dashboard Zilnic":
                     pc2.metric("P(Normal)", f"{proba[1]:.1%}")
                     pc3.metric("P(Active)", f"{proba[2]:.1%}")
 
-                    rec = get_nutrition_recommendation_local(label, full_profile)
+                    rec = get_nutrition_recommendation(label, full_profile)
 
                     c1, c2, c3 = st.columns(3)
                     c1.metric("Calorii (kcal)", f"{rec['calories_target']}")
@@ -637,34 +520,23 @@ elif page == "🔍 Explicabilitate":
         )
 
         st.markdown("---")
-        st.markdown("**SHAP Feature Importance — XGBoost (TreeExplainer)**")
+        st.markdown("**SHAP Feature Importance — Random Forest (TreeExplainer)**")
         found = show_image_if_exists(
-            f"{FIG_EXT}/ext_shap_bar_xgboost.png",
-            "Mean |SHAP value| per feature — XGBoost, 19 features. "
+            f"{FIG_EXT}/ext_shap_bar_random_forest.png",
+            "Mean |SHAP value| per feature — Random Forest (modelul principal), 19 features. "
             "aw_hr_mean rămâne #1, confirmând complementaritatea Oura + Apple Watch."
         )
 
         st.markdown("---")
-        st.markdown("**SHAP Waterfall — XGBoost (per clasă)**")
+        st.markdown("**SHAP Waterfall — Random Forest (per clasă)**")
         found_wf = show_image_if_exists(
-            f"{FIG_EXT}/ext_shap_waterfall_combined_clean.png",
+            f"{FIG_EXT}/ext_shap_waterfall_all_random_forest.png",
             "Contribuția fiecărui feature la decizia de clasificare "
             "pentru o zi reprezentativă din fiecare clasă (Rest/Normal/Active)."
         )
 
-        # SVM SHAP complementar
-        with st.expander("SVM SHAP — 19 features (complementar, KernelExplainer)"):
-            show_image_if_exists(
-                f"{FIG_EXT}/ext_shap_bar_svm.png",
-                "SHAP Feature Importance — SVM (RBF), 19 features."
-            )
-            show_image_if_exists(
-                f"{FIG_EXT}/ext_shap_waterfall_svm_clean.png",
-                "SHAP Waterfall — SVM, 19 features."
-            )
-
-        # XGBoost extended detalii
-        with st.expander("XGBoost — detalii SHAP (summary, dependence)"):
+        # XGBoost — comparativ (figuri regenerate Sprint 2)
+        with st.expander("XGBoost — detalii SHAP (summary, dependence) [comparativ]"):
             show_image_if_exists(
                 f"{FIG_EXT}/ext_shap_summary_xgboost.png",
                 "SHAP Summary (beeswarm) — XGBoost, 19 features."
@@ -678,34 +550,59 @@ elif page == "🔍 Explicabilitate":
         st.markdown("---")
         st.subheader("Metrici Comparative")
 
-        metrics_data = {
-            "Algoritm": [
-                "Random Forest — 19 feat",
-                "SVM (RBF) — 19 feat",
-                "XGBoost — 19 feat",
-                "LightGBM — 19 feat",
-                "Logistic Regression — 19 feat",
-                "Baseline (majority)",
-            ],
-            "CV F1 Macro": [
-                "41.7%", "40.3%", "36.1%",
-                "36.3%", "37.4%",
-                "~28%",
-            ],
-            "F1 Active": [
-                "0.44", "0.38", "0.33",
-                "0.31", "0.08",
-                "0.00",
-            ],
-            "Observații": [
-                "Best overall (F1 Macro test: 50.6%), near-optimal din default",
-                "Best calibrat (Brier 0.156), KernelExplainer SHAP",
-                "Beneficiază cel mai mult de tuning (+8.2pp)",
-                "Similar XGBoost, gradient boosting alternativ",
-                "Slab — confirmă non-liniaritatea problemei",
-                "Prezice mereu clasa dominantă (Normal)",
-            ],
-        }
+        # D14a: cifre dinamice din CSV (post-Sprint 2), nu hardcodate
+        _TBL = "outputs/tables"
+        try:
+            _vdf = pd.read_csv(f"{_TBL}/valori_disertatie.csv").set_index("Model")
+            _ndf = pd.read_csv(f"{_TBL}/new_models_comparison.csv").set_index("Model")
+
+            def _cvf1(df, m):
+                return f"{df.loc[m, 'cv_f1_mean'] * 100:.1f}%"
+
+            def _f1a(df, m):
+                return f"{df.loc[m, 'f1_active']:.2f}"
+
+            metrics_data = {
+                "Algoritm": [
+                    "Random Forest — 19 feat",
+                    "SVM (RBF) — 19 feat",
+                    "XGBoost — 19 feat",
+                    "LightGBM — 19 feat",
+                    "Logistic Regression — 19 feat",
+                    "Baseline (majority)",
+                ],
+                "CV F1 Macro": [
+                    _cvf1(_vdf, "Random Forest"),
+                    _cvf1(_vdf, "SVM (RBF)"),
+                    _cvf1(_vdf, "XGBoost"),
+                    _cvf1(_ndf, "LightGBM"),
+                    _cvf1(_ndf, "Logistic Regression"),
+                    "~28%",
+                ],
+                "F1 Active": [
+                    _f1a(_vdf, "Random Forest"),
+                    _f1a(_vdf, "SVM (RBF)"),
+                    _f1a(_vdf, "XGBoost"),
+                    _f1a(_ndf, "LightGBM"),
+                    _f1a(_ndf, "Logistic Regression"),
+                    "0.00",
+                ],
+                "Observații": [
+                    "Best pe test F1 Macro (50,6%) + QWK; nuanțat pe CV",
+                    "Best calibrat (Brier 0,156)",
+                    "Beneficiază cel mai mult de tuning (+6,87pp)",
+                    "Similar XGBoost, gradient boosting alternativ",
+                    "Slab — confirmă non-liniaritatea problemei",
+                    "Prezice mereu clasa dominantă (Normal)",
+                ],
+            }
+        except (FileNotFoundError, KeyError) as _e:
+            metrics_data = {
+                "Algoritm": ["(CSV-uri pipeline lipsă)"],
+                "CV F1 Macro": [f"rulează pipeline-ul ({type(_e).__name__})"],
+                "F1 Active": ["—"],
+                "Observații": ["generează outputs/tables/valori_disertatie.csv + new_models_comparison.csv"],
+            }
         st.dataframe(
             pd.DataFrame(metrics_data).set_index("Algoritm"),
             width="stretch",
@@ -722,81 +619,40 @@ elif page == "🔍 Explicabilitate":
     with tab2:
         st.subheader("Comparație: RF vs XGBoost vs SVM")
         st.markdown(
-            "Evaluare pe split temporal 80/20 cu TimeSeriesSplit CV (5-fold). "
-            "Trei variante de pipeline testate: XML 16 feat, JSON 16 feat, JSON 19 feat."
+            "Evaluare pe split temporal 80/20 cu TimeSeriesSplit CV (5-fold), "
+            "pipeline canonic Extended (19 features, JSON + sleep stages). "
+            "Sub-taburile pre-canonice JSON 16 / XML 16 au fost eliminate (D13): "
+            "erau dinainte de fix-ul rhr_avg + CV leakage, deci necomparabile apple-to-apple."
         )
 
-        # Subtaburi pentru cele 3 variante de pipeline
-        sub1, sub2, sub3 = st.tabs([
-            "Extended (19 feat)", "JSON (16 feat)", "XML (16 feat)"
-        ])
-
-        with sub1:
-            st.markdown("**19 features — JSON + sleep stages**")
-            show_image_if_exists(
-                f"{FIG_EXT}/ext_confusion_matrices.png",
-                "Matrici de confuzie — RF / XGBoost / SVM pe 19 features."
-            )
-            show_image_if_exists(
-                f"{FIG_EXT}/ext_feature_importance_comparison.png",
-                "Feature importance: RF vs XGBoost (19 features)."
-            )
-            show_image_if_exists(
-                f"{FIG_EXT}/ext_pdp_top3_xgboost.png",
-                "PDP — Top 3 features, XGBoost (19 features)."
-            )
-            show_image_if_exists(
-                f"{FIG_EXT}/ext_pdp_multiclass_xgboost.png",
-                "PDP Multi-class — feature dominant (19 features)."
-            )
-
-        with sub2:
-            st.markdown("**16 features — JSON (Health Auto Export)**")
-            show_image_if_exists(
-                f"{FIG_JSON}/json_confusion_matrices.png",
-                "Matrici de confuzie — RF / XGBoost / SVM pe JSON 16 features."
-            )
-            show_image_if_exists(
-                f"{FIG_JSON}/json_feature_importance_comparison.png",
-                "Feature importance: RF vs XGBoost (JSON 16 features)."
-            )
-            show_image_if_exists(
-                f"{FIG_JSON}/json_shap_bar_xgboost.png",
-                "SHAP Feature Importance — XGBoost (JSON 16 features)."
-            )
-            show_image_if_exists(
-                f"{FIG_JSON}/json_shap_waterfall_combined_clean.png",
-                "SHAP Waterfall — XGBoost (JSON source, matplotlib pur)."
-            )
-
-        with sub3:
-            st.markdown("**16 features — XML (export.xml, legacy)**")
-            show_image_if_exists(
-                f"{FIG_XML}/confusion_matrices.png",
-                "Matrici de confuzie — RF / XGBoost / SVM pe XML 16 features."
-            )
-            show_image_if_exists(
-                f"{FIG_XML}/feature_importance_comparison.png",
-                "Feature importance: RF vs XGBoost (XML 16 features)."
-            )
-            show_image_if_exists(
-                f"{FIG_XML}/shap_bar_xgboost.png",
-                "SHAP Feature Importance — XGBoost (XML 16 features)."
-            )
-            show_image_if_exists(
-                f"{FIG_XML}/shap_waterfall_all_xgboost.png",
-                "SHAP Waterfall — XGBoost (XML source, matplotlib pur)."
-            )
-            show_image_if_exists(
-                f"{FIG_XML}/pdp_top3_xgboost.png",
-                "PDP — Top 3 features, XGBoost (XML)."
-            )
+        st.markdown("**19 features — JSON + sleep stages (post-fix Sprint 1-2)**")
+        show_image_if_exists(
+            f"{FIG_EXT}/ext_confusion_matrices.png",
+            "Matrici de confuzie — RF / XGBoost / SVM pe 19 features."
+        )
+        show_image_if_exists(
+            f"{FIG_EXT}/ext_feature_importance_comparison.png",
+            "Feature importance: RF vs XGBoost (19 features)."
+        )
+        show_image_if_exists(
+            f"{FIG_EXT}/ext_pdp_top3_xgboost.png",
+            "PDP — Top 3 features, XGBoost (19 features)."
+        )
+        show_image_if_exists(
+            f"{FIG_EXT}/ext_pdp_multiclass_xgboost.png",
+            "PDP Multi-class — feature dominant (19 features)."
+        )
 
     # ==========================================================
     # TAB 3: CALITATE DATE — XML vs JSON
     # ==========================================================
     with tab3:
         st.subheader("Calitate Date: XML vs JSON (Health Auto Export)")
+        st.warning(
+            "Snapshot martie 2026, scripturi arhivate orfane, reproducibilitate "
+            "compromisă; comparație data-quality, nu evaluare model canonic "
+            "(vezi Cap.7 limitare D14 (c))."
+        )
         st.markdown(
             "Analiza comparativă demonstrează că sursa XML (export.xml) "
             "**dublu-contorizează pașii** (MAE = 9,106 pași, r = 0.98), "
