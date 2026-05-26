@@ -36,16 +36,28 @@ Daca se schimba = regression, rollback immediate.
 Verificare via: python sanity_check_frozen.py
 Trebuie sa returneze PASS pe toate liniile dupa fiecare sprint.
 
-## Cifre EXPECTED sa se schimbe post-fix (NU sunt regression)
-| Metric | Pre-fix | Post-fix expected | Toleranta |
-|---|---|---|---|
-| CV F1 Macro RF (TSCV 5-fold) | 0.417 | ~0.378 | +/- 0.5pp |
-| CV F1 Macro SVM | similar drop | ~0.39-0.40 | +/- 0.5pp |
-| CV F1 Macro XGB tuned | +8.2pp gain | +3-5pp gain | informativ |
-| SVM F1 Macro test (post SMOTE/scaler fix) | 0.482 | 0.49-0.50 estimat | mic crestere expected |
+## Cifre post-fix REALE (FIXED canonic post-Sprint 2, commit b15862a)
+Valorile REALE post-fix (CV de-leaked pe X_train 766), NU estimari. Referinta de
+Ground Truth pentru Sprint 3-5. Consistente in cele 5 scripturi care le calculeaza
+(cap5_pipeline, cap5_compare, experiments_new, circularity, extract_all_results).
 
-Daca CV F1 Macro NU scade dupa fix CV leakage = bug-ul nu a fost
-aplicat corect. Daca scade > 5pp = ceva e in plus stricat.
+| Metric | Pre-fix | Post-fix REAL | Nota |
+|---|---|---|---|
+| CV F1 Macro RF (TSCV 5-fold) | 0.417 | 0.337 | drop 8pp (estimarea fusese 0.378) |
+| CV F1 Macro SVM | similar drop | 0.356 | |
+| CV F1 Macro XGB tuned | +8.2pp gain | +6.87pp | actual |
+| Tuning gain RF | ~+0.3pp estimat | +2.49pp | actual |
+| SVM F1 Macro test (post SMOTE/scaler fix) | 0.482 | 0.4347 | a SCAZUT 4.7pp, NU a crescut |
+| Learning curves saturare | ~160 zile | "inca cresc la 131 zile" | "160" era artefact al range-ului TSCV pe 958 |
+
+RF F1 Macro test ramane 0.506324 (bit-perfect, vezi tabelul Ground Truth de mai sus).
+Pragul vechi ">5pp scadere = stricat" a fost depasit legitim de RF (8pp): test bit-perfect
++ sanity PASS dupa fiecare script dovedesc ca e efectul real al eliminarii leakage-ului,
+nu regression. Ratificat de Adrian in Sprint 2.
+
+NOTA RULARE (Windows): scripturile pipeline cer `PYTHONUTF8=1 python <script>.py`, altfel
+UnicodeEncodeError pe stdout cp1252 (caractere ca →). sanity_check_frozen.py si
+patch_frozen_meta.py nu au nevoie (doar ASCII).
 
 ## Disciplina stricta
 Executia se face PE SPRINT-URI ATOMICE. Niciun sprint nu incepe
