@@ -190,6 +190,10 @@ def experiment_1_tuning(X, y, FEATURES):
 
     tscv = TimeSeriesSplit(n_splits=5)
 
+    # Split temporal 80/20: tuning + CV doar pe train, fara leakage din test intern
+    split_idx = int(len(X) * 0.8)
+    X_train, y_train = X.iloc[:split_idx], y.iloc[:split_idx]
+
     # --- Random Forest ---
     print("\n--- Random Forest tuning ---")
     rf_params = {
@@ -211,7 +215,7 @@ def experiment_1_tuning(X, y, FEATURES):
         scoring="f1_macro", random_state=42, n_jobs=-1, verbose=0
     )
     t0 = time.time()
-    rf_search.fit(X, y)
+    rf_search.fit(X_train, y_train)
     rf_time = time.time() - t0
 
     print(f"  Best F1 Macro (CV): {rf_search.best_score_:.4f}")
@@ -238,7 +242,7 @@ def experiment_1_tuning(X, y, FEATURES):
         scoring="f1_macro", random_state=42, n_jobs=-1, verbose=0
     )
     t0 = time.time()
-    svm_search.fit(X, y)
+    svm_search.fit(X_train, y_train)
     svm_time = time.time() - t0
 
     print(f"  Best F1 Macro (CV): {svm_search.best_score_:.4f}")
@@ -269,7 +273,7 @@ def experiment_1_tuning(X, y, FEATURES):
         scoring="f1_macro", random_state=42, n_jobs=-1, verbose=0
     )
     t0 = time.time()
-    xgb_search.fit(X, y)
+    xgb_search.fit(X_train, y_train)
     xgb_time = time.time() - t0
 
     print(f"  Best F1 Macro (CV): {xgb_search.best_score_:.4f}")
@@ -309,7 +313,7 @@ def experiment_1_tuning(X, y, FEATURES):
     from sklearn.model_selection import cross_val_score
     default_scores = {}
     for name, pipe in default_models.items():
-        cv_f1 = cross_val_score(pipe, X, y, cv=tscv, scoring="f1_macro")
+        cv_f1 = cross_val_score(pipe, X_train, y_train, cv=tscv, scoring="f1_macro")
         default_scores[name] = cv_f1.mean()
 
     tuned_scores = {
@@ -385,6 +389,7 @@ def experiment_2_new_models(X, y, FEATURES, dates):
 
     d = prepare_train_test(X, y, dates)
     tscv = TimeSeriesSplit(n_splits=5)
+    X_train, y_train = X.iloc[:d["split_idx"]], y.iloc[:d["split_idx"]]
 
     all_models = {
         "Logistic Regression": LogisticRegression(
@@ -445,7 +450,7 @@ def experiment_2_new_models(X, y, FEATURES, dates):
             ])
 
         from sklearn.model_selection import cross_val_score
-        cv_f1 = cross_val_score(cv_pipe, X, y, cv=tscv, scoring="f1_macro")
+        cv_f1 = cross_val_score(cv_pipe, X_train, y_train, cv=tscv, scoring="f1_macro")
 
         results[name] = {
             "accuracy": acc,
@@ -512,6 +517,10 @@ def experiment_3_learning_curves(X, y):
 
     tscv = TimeSeriesSplit(n_splits=5)
 
+    # Split temporal 80/20: learning curve doar pe train, fara leakage din test
+    split_idx = int(len(X) * 0.8)
+    X_train, y_train = X.iloc[:split_idx], y.iloc[:split_idx]
+
     # NOTA: Folosim class_weight="balanced" in loc de SMOTE pentru
     # learning curves, deoarece SMOTE esueaza pe train sizes mici
     # (clasa Active are doar 46 instante, iar cu k_neighbors=3
@@ -559,7 +568,7 @@ def experiment_3_learning_curves(X, y):
         t0 = time.time()
 
         train_sizes_abs, train_scores, val_scores = learning_curve(
-            pipe, X, y,
+            pipe, X_train, y_train,
             train_sizes=train_sizes_frac,
             cv=tscv,
             scoring="f1_macro",
@@ -769,12 +778,14 @@ def experiment_5_rolling_features(dates_orig):
             )),
         ])
 
-        cv_f1 = cross_val_score(rf_pipe, X_c, y_c, cv=tscv, scoring="f1_macro")
-
-        # Test set evaluation
+        # Split temporal 80/20: CV doar pe train, fara leakage din test
         split_idx = int(len(X_c) * 0.8)
         X_train, X_test = X_c.iloc[:split_idx], X_c.iloc[split_idx:]
         y_train, y_test = y_c.iloc[:split_idx], y_c.iloc[split_idx:]
+
+        cv_f1 = cross_val_score(rf_pipe, X_train, y_train, cv=tscv, scoring="f1_macro")
+
+        # Test set evaluation
 
         imputer = SimpleImputer(strategy="median")
         X_train_imp = pd.DataFrame(imputer.fit_transform(X_train), columns=feats)
