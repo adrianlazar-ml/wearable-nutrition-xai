@@ -171,7 +171,7 @@ def train_variant(df, feature_set, variant_name):
         ))
     ])
     tscv = TimeSeriesSplit(n_splits=5)
-    cv_f1 = cross_val_score(cv_pipeline, X, y, cv=tscv,
+    cv_f1 = cross_val_score(cv_pipeline, X_train, y_train, cv=tscv,
                             scoring="f1_macro", n_jobs=-1)
 
     # Feature importance top 5
