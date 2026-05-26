@@ -1,4 +1,4 @@
 Model,max_depth,max_features,min_samples_leaf,min_samples_split,n_estimators,C,gamma,kernel,colsample_bytree,learning_rate,min_child_weight,subsample
-RF,20.0,sqrt,7.0,19.0,181.0,,,,,,,
+RF,20.0,log2,7.0,15.0,152.0,,,,,,,
 SVM,,,,,,6.1111501174320875,0.01,rbf,,,,
 XGBoost,6.0,,,,210.0,,,,0.6905983100791752,0.20355183712283495,9.0,0.759028808435009
