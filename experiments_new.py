@@ -232,8 +232,8 @@ def experiment_1_tuning(X, y, FEATURES):
 
     svm_pipe = ImbPipeline([
         ("imputer", SimpleImputer(strategy="median")),
-        ("smote", SMOTE(random_state=42, k_neighbors=3)),
         ("scaler", StandardScaler()),
+        ("smote", SMOTE(random_state=42, k_neighbors=3)),
         ("model", SVC(random_state=42, probability=True)),
     ])
 
@@ -295,8 +295,8 @@ def experiment_1_tuning(X, y, FEATURES):
         ]),
         "SVM": ImbPipeline([
             ("imputer", SimpleImputer(strategy="median")),
-            ("smote", SMOTE(random_state=42, k_neighbors=3)),
             ("scaler", StandardScaler()),
+            ("smote", SMOTE(random_state=42, k_neighbors=3)),
             ("model", SVC(kernel="rbf", C=1.0, gamma="scale",
                          random_state=42, probability=True)),
         ]),
@@ -438,8 +438,8 @@ def experiment_2_new_models(X, y, FEATURES, dates):
         if needs_scaling:
             cv_pipe = ImbPipeline([
                 ("imputer", SimpleImputer(strategy="median")),
-                ("smote", SMOTE(random_state=42, k_neighbors=3)),
                 ("scaler", StandardScaler()),
+                ("smote", SMOTE(random_state=42, k_neighbors=3)),
                 ("model", model.__class__(**model.get_params())),
             ])
         else:

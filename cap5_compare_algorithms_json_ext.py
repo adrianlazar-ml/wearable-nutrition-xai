@@ -160,14 +160,17 @@ def compare_algorithms(X, y, FEATURES, dates):
     X_train_imp = pd.DataFrame(imputer.fit_transform(X_train), columns=FEATURES)
     X_test_imp = pd.DataFrame(imputer.transform(X_test), columns=FEATURES)
 
-    # SMOTE pe train
+    # SMOTE pe train (tree-based RF/XGB), date imputate nescalate. NEATINS.
     smote = SMOTE(random_state=42, k_neighbors=3)
     X_train_sm, y_train_sm = smote.fit_resample(X_train_imp, y_train)
 
-    # Scaler (necesar pentru SVM)
+    # SVM: imputer -> scaler -> SMOTE (FND-105). Scaler fit pe date imputate
+    # pre-SMOTE (766 reale), apoi SMOTE genereaza in spatiu izotrop (std=1).
     scaler = StandardScaler()
-    X_train_scaled = pd.DataFrame(scaler.fit_transform(X_train_sm), columns=FEATURES)
+    X_train_imp_scaled = pd.DataFrame(scaler.fit_transform(X_train_imp), columns=FEATURES)
     X_test_scaled = pd.DataFrame(scaler.transform(X_test_imp), columns=FEATURES)
+    smote_svm = SMOTE(random_state=42, k_neighbors=3)
+    X_train_scaled, y_train_scaled_sm = smote_svm.fit_resample(X_train_imp_scaled, y_train)
 
     # BASELINE: Majority class classifier (prezice mereu clasa dominanta)
     # Antrenat pe y_train INAINTE de SMOTE (distributia reala)
@@ -212,7 +215,7 @@ def compare_algorithms(X, y, FEATURES, dates):
 
         # SVM foloseste date scalate, restul date brute
         if "SVM" in name:
-            model.fit(X_train_scaled, y_train_sm)
+            model.fit(X_train_scaled, y_train_scaled_sm)
             y_pred = model.predict(X_test_scaled)
         else:
             model.fit(X_train_sm, y_train_sm)
@@ -237,8 +240,8 @@ def compare_algorithms(X, y, FEATURES, dates):
         if "SVM" in name:
             cv_pipe = ImbPipeline([
                 ("imputer", SimpleImputer(strategy="median")),
-                ("smote", SMOTE(random_state=42, k_neighbors=3)),
                 ("scaler", StandardScaler()),
+                ("smote", SMOTE(random_state=42, k_neighbors=3)),
                 ("model", SVC(kernel="rbf", C=1.0, gamma="scale", random_state=42)),
             ])
         elif "XGBoost" in name:
