@@ -107,12 +107,17 @@ def run_core_pipeline(X, y, FEATURES, dates):
     X_train_imp = pd.DataFrame(imputer.fit_transform(X_train), columns=FEATURES)
     X_test_imp = pd.DataFrame(imputer.transform(X_test), columns=FEATURES)
 
+    # SMOTE pe train (tree-based RF/XGB), date imputate nescalate. NEATINS.
     smote = SMOTE(random_state=42, k_neighbors=3)
     X_train_sm, y_train_sm = smote.fit_resample(X_train_imp, y_train)
 
+    # SVM: imputer -> scaler -> SMOTE (FND-147 / FND-105). Scaler fit pe date
+    # imputate pre-SMOTE, apoi SMOTE genereaza in spatiu izotrop (std=1).
     scaler = StandardScaler()
-    X_train_scaled = pd.DataFrame(scaler.fit_transform(X_train_sm), columns=FEATURES)
+    X_train_imp_scaled = pd.DataFrame(scaler.fit_transform(X_train_imp), columns=FEATURES)
     X_test_scaled = pd.DataFrame(scaler.transform(X_test_imp), columns=FEATURES)
+    smote_svm = SMOTE(random_state=42, k_neighbors=3)
+    X_train_scaled, y_train_scaled_sm = smote_svm.fit_resample(X_train_imp_scaled, y_train)
 
     tscv = TimeSeriesSplit(n_splits=5)
 
@@ -147,7 +152,8 @@ def run_core_pipeline(X, y, FEATURES, dates):
     }
 
     for name, (model, X_tr, X_te) in models.items():
-        model.fit(X_tr, y_train_sm)
+        y_tr = y_train_scaled_sm if "SVM" in name else y_train_sm
+        model.fit(X_tr, y_tr)
         y_pred = model.predict(X_te)
 
         report = classification_report(
@@ -160,8 +166,8 @@ def run_core_pipeline(X, y, FEATURES, dates):
         if "SVM" in name:
             cv_pipe = ImbPipeline([
                 ("imputer", SimpleImputer(strategy="median")),
-                ("smote", SMOTE(random_state=42, k_neighbors=3)),
                 ("scaler", StandardScaler()),
+                ("smote", SMOTE(random_state=42, k_neighbors=3)),
                 ("model", SVC(kernel="rbf", C=1.0, gamma="scale", random_state=42)),
             ])
         elif "XGBoost" in name:
@@ -180,8 +186,8 @@ def run_core_pipeline(X, y, FEATURES, dates):
                     min_samples_leaf=5, random_state=42)),
             ])
 
-        cv_acc = cross_val_score(cv_pipe, X, y, cv=tscv, scoring="accuracy")
-        cv_f1 = cross_val_score(cv_pipe, X, y, cv=tscv, scoring="f1_macro")
+        cv_acc = cross_val_score(cv_pipe, X_train, y_train, cv=tscv, scoring="accuracy")
+        cv_f1 = cross_val_score(cv_pipe, X_train, y_train, cv=tscv, scoring="f1_macro")
 
         cm = confusion_matrix(y_test, y_pred)
 
