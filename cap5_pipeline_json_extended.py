@@ -243,8 +243,8 @@ def train_and_evaluate(df_model):
         ))
     ])
     tscv = TimeSeriesSplit(n_splits=5)
-    cv_scores_t = cross_val_score(cv_pipeline, X, y, cv=tscv, scoring="accuracy")
-    f1_cv_t = cross_val_score(cv_pipeline, X, y, cv=tscv, scoring="f1_macro")
+    cv_scores_t = cross_val_score(cv_pipeline, X_train_t, y_train_t, cv=tscv, scoring="accuracy")
+    f1_cv_t = cross_val_score(cv_pipeline, X_train_t, y_train_t, cv=tscv, scoring="f1_macro")
     print(f"  TimeSeriesSplit CV (5-fold): acc={cv_scores_t.mean():.2%} (+/- {cv_scores_t.std():.2%})")
     print(f"  TimeSeriesSplit CV (5-fold): f1_macro={f1_cv_t.mean():.2%} (+/- {f1_cv_t.std():.2%})")
 
@@ -259,8 +259,8 @@ def train_and_evaluate(df_model):
         X_train_r, X_test_r, y_train_r, y_test_r, "random"
     )
 
-    cv_scores_r = cross_val_score(cv_pipeline, X, y, cv=5, scoring="accuracy")
-    f1_cv_r = cross_val_score(cv_pipeline, X, y, cv=5, scoring="f1_macro")
+    cv_scores_r = cross_val_score(cv_pipeline, X_train_r, y_train_r, cv=5, scoring="accuracy")
+    f1_cv_r = cross_val_score(cv_pipeline, X_train_r, y_train_r, cv=5, scoring="f1_macro")
     print(f"  StratifiedKFold CV (5-fold): acc={cv_scores_r.mean():.2%} (+/- {cv_scores_r.std():.2%})")
     print(f"  StratifiedKFold CV (5-fold): f1_macro={f1_cv_r.mean():.2%} (+/- {f1_cv_r.std():.2%})")
 
