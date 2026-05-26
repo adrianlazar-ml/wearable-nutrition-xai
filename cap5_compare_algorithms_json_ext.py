@@ -386,8 +386,8 @@ def run_shap(trained_models, X_train_imp, X_test_imp, FEATURES):
     print("  SHAP - EXPLICABILITATE")
     print("=" * 60)
 
-    # Folosim cel mai bun model tree-based pentru SHAP
-    for model_name in ["XGBoost", "Random Forest"]:
+    # Generam SHAP pentru ambele modele tree-based (RF principal + XGB comparativ)
+    for model_name in ["Random Forest", "XGBoost"]:
         if model_name in trained_models:
             print(f"\n--- SHAP pe {model_name} ---")
             model = trained_models[model_name]
@@ -485,8 +485,6 @@ def run_shap(trained_models, X_train_imp, X_test_imp, FEATURES):
             for _, row in shap_df.sort_values("mean_abs_shap", ascending=False).head(10).iterrows():
                 print(f"    {row['feature']:<25} {row['mean_abs_shap']:.4f}")
 
-            break  # Doar pe primul model disponibil
-
 
 # ============================================================
 # 3b. SHAP WATERFALL - Explicabilitate per instanta  [NOU v4]
@@ -506,7 +504,7 @@ def run_shap_waterfall(trained_models, X_test_imp, y_test, FEATURES):
     print("  SHAP WATERFALL - Explicabilitate per instanta  [NOU v4]")
     print("=" * 60)
 
-    for model_name in ["XGBoost", "Random Forest"]:
+    for model_name in ["Random Forest", "XGBoost"]:
         if model_name not in trained_models:
             continue
 
@@ -634,8 +632,6 @@ def run_shap_waterfall(trained_models, X_test_imp, y_test, FEATURES):
         print(f"  impingerea predictia spre clasa respectiva, barele albastre")
         print(f"  (negative) impotriva. Base value = predictia medie a modelului.")
         print(f"  Acest tip de explicabilitate este esential pentru RQ3 (UI).")
-
-        break  # Doar pe primul model disponibil
 
 
 # ============================================================
