@@ -21,8 +21,7 @@ USER_PROFILE = {
     "age": 41,
     "gender": "male",
     "bmr_kcal": 2162,
-    "body_fat_pct": 36.2,
-    "lean_mass_kg": 72.49,
+    "body_fat_pct": 36.3,
     "visceral_fat": 16,
     "protein_pct": 14.9,
     "goal": "fat_loss"
@@ -32,6 +31,11 @@ USER_PROFILE = {
 # of body weight, equivalent to a daily reduction of 500 kcal"
 # Sursa: Lacruz-Pleguezuelos et al. (2025), Clinical Nutrition
 BASE_CALORIES = round(25 * USER_PROFILE["weight_kg"])  # ~2998 kcal
+
+
+def get_lean_mass(profile):
+    """Lean Body Mass = weight * (1 - body_fat%/100). LBM (nu SMM Xiaomi); vezi Cap.7."""
+    return round(profile["weight_kg"] * (1 - profile["body_fat_pct"] / 100), 2)
 
 # Simboluri text-safe (functioneaza pe orice terminal)
 SYMBOLS = {"Rest": "[REST]", "Normal": "[NORM]", "Active": "[ACTV]"}
@@ -81,11 +85,11 @@ def get_nutrition_recommendation(label, profile):
     Label: 0=Rest, 1=Normal, 2=Active
 
     Strategie calorica (AI4Food + Burke et al.):
-    - Rest Day:   base - 200 kcal  (deficit crescut)
-    - Normal Day: base             (deficit standard ~500 kcal)
-    - Active Day: base + 200 kcal  (deficit redus)
+    - Rest Day:   base - 200 kcal
+    - Normal Day: base             (AI4Food 25 kcal/kg; vezi Cap.7 limitare obezitate)
+    - Active Day: base + 200 kcal
     """
-    lean_mass = profile["lean_mass_kg"]
+    lean_mass = get_lean_mass(profile)
     base_cal = round(25 * profile["weight_kg"])  # AI4Food: 25 kcal/kg
 
     if label == 0:  # REST DAY
@@ -118,7 +122,8 @@ def get_nutrition_recommendation(label, profile):
             "rationale": (
                 "Readiness scazut sau somn insuficient. "
                 "Prioritate: recuperare si reducere inflamatie. "
-                "Proteine 2g/kg lean mass. Deficit ~700 kcal."
+                "Proteine 2g/kg lean mass. Aport redus (base - 200 kcal); "
+                "vezi Cap.7 limitare formula AI4Food pe obezitate."
             )
         }
 
@@ -150,7 +155,8 @@ def get_nutrition_recommendation(label, profile):
             "timing": "3 mese principale echilibrate",
             "rationale": (
                 "Stare fiziologica normala. Alimentatie echilibrata "
-                "cu deficit ~500 kcal. Protocol AI4Food: 25 kcal/kg/zi."
+                "la base caloric (AI4Food 25 kcal/kg/zi); vezi Cap.7 limitare "
+                "formula pe obezitate (poate fi intretinere, nu deficit)."
             )
         }
 
@@ -185,7 +191,7 @@ def get_nutrition_recommendation(label, profile):
             "rationale": (
                 "Readiness ridicat + somn bun. Capacitate maxima. "
                 "Carbs crescuti pentru performanta (Burke et al., 2011). "
-                "Deficit redus ~300 kcal."
+                "Aport crescut (base + 200 kcal); vezi Cap.7 limitare AI4Food pe obezitate."
             )
         }
 
@@ -256,7 +262,7 @@ if __name__ == "__main__":
     print("  (Evidence-based, calibrat pe literatura proiectului)")
     print("=" * 55)
     print(f"\n  Profil: {p['name']}")
-    print(f"  Greutate: {p['weight_kg']} kg | Lean mass: {p['lean_mass_kg']} kg")
+    print(f"  Greutate: {p['weight_kg']} kg | Lean mass: {get_lean_mass(p)} kg")
     print(f"  BMR: {p['bmr_kcal']} kcal | Body fat: {p['body_fat_pct']}%")
     print(f"  Obiectiv: {p['goal']}")
     print(f"\n  Formula calorica: 25 kcal/kg = {BASE_CALORIES} kcal/zi")
