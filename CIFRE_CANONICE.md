@@ -34,7 +34,7 @@ Generat automat din `outputs/tables/` si `models/frozen_meta_20260331.json`.
 |---|---|
 | Oura Ring (combinat) | **1.009** |
 | Apple Watch JSON (Health Auto Export) | **1.083** |
-| Dataset combinat (inner join pe date) | **1.009** |
+| Dataset combinat (left join pe date) | **1.009** |
 
 **Perioada acoperita:** 2023-06-09 -> 2026-03-30 (pipeline rulat 19.04.2026, cutoff 2026-03-31).
 
@@ -90,9 +90,9 @@ Rezultate pe 19 features lag-1, sursa JSON, test temporal 20%.
 
 | Model | F1 Macro | Accuracy | F1 Rest | F1 Normal | F1 Active | CV F1 (+/-) |
 |---|---|---|---|---|---|---|
-| Random Forest | **0,5063** | 64,1% | 0,32 | 0,75 | 0,44 | 0,4174 (+/- 0,0808) |
-| XGBoost | **0,4760** | 68,8% | 0,29 | 0,80 | 0,33 | 0,3606 (+/- 0,0373) |
-| SVM (RBF) | **0,4817** | 64,6% | 0,31 | 0,76 | 0,38 | 0,4032 (+/- 0,0505) |
+| Random Forest | **0,5063** | 64,1% | 0,32 | 0,75 | 0,44 | 0,3369 (+/- 0,0377) |
+| XGBoost | **0,4760** | 68,8% | 0,29 | 0,80 | 0,33 | 0,3343 (+/- 0,0261) |
+| SVM (RBF) | **0,4347** | 63,0% | 0,30 | 0,75 | 0,25 | 0,3560 (+/- 0,0348) |
 
 **Baseline DummyClassifier (most_frequent):** F1 Macro = 0,281, Accuracy = 72,9%
 
@@ -161,9 +161,9 @@ Safety layer: daca max(predict_proba) < threshold, fallback la Normal.
 |---|---|---|---|---|---|---|
 | 0.0 [baseline] | 0,520 | 62,0% | 100,0% | 0 | 76,0 | 200 |
 | 0.45 | 0,511 | 62,0% | 93,8% | 12 | 76,0 | 200 |
-| 0.5 | 0,522 | 65,6% | 80,2% | 38 | 68,8 | 200 |
+| 0.5 [RECOMANDAT] | 0,522 | 65,6% | 80,2% | 38 | 68,8 | 200 |
 | 0.55 | 0,400 | 67,7% | 56,2% | 84 | 64,6 | 200 |
-| 0.6 [RECOMANDAT] | 0,376 | 71,4% | 29,2% | 136 | 57,3 | 200 |
+| 0.6 | 0,376 | 71,4% | 29,2% | 136 | 57,3 | 200 |
 | 0.65 | 0,351 | 71,4% | 17,2% | 159 | 57,3 | 200 |
 | 0.7 | 0,278 | 71,4% | 8,9% | 175 | 57,3 | 200 |
 
@@ -179,15 +179,15 @@ RandomizedSearchCV, 50 iteratii, 5-fold TimeSeriesSplit CV, metrica = F1 Macro.
 
 | Model | Default F1 CV | Tuned F1 CV | Delta (pp) |
 |---|---|---|---|
-| RF | 0,4174 | 0,4204 | **+0.30** |
-| SVM | 0,4032 | 0,4209 | **+1.77** |
-| XGBoost | 0,3606 | 0,4427 | **+8.21** |
+| RF | 0,3369 | 0,3618 | **+2.49** |
+| SVM | 0,3560 | 0,4008 | **+4.47** |
+| XGBoost | 0,3343 | 0,4030 | **+6.87** |
 
-**Interpretare:** RF near-optimal din default (+0,30pp). XGB beneficiaza masiv (+8,21pp) dar ramane sub RF default la test.
+**Interpretare:** Tuning post-fix CV leakage: RF +2,49pp, SVM +4,47pp, XGB +6,87pp. Dupa tuning, pe CV F1 Macro XGB (0,403) si SVM (0,401) depasesc RF (0,362), dar RF ramane best pe test F1 Macro (0,506) + QWK. Concluzia 'RF best overall' e nuantata: best pe metrica primara (test F1 Macro), competitiv pe CV.
 
 ### Best params gasiti
 
-- **RF:** max_depth=20.0, max_features=sqrt, min_samples_leaf=7.0, min_samples_split=19.0, n_estimators=181.0
+- **RF:** max_depth=20.0, max_features=log2, min_samples_leaf=7.0, min_samples_split=15.0, n_estimators=152.0
 - **SVM:** C=6.111150117432088, gamma=0.01, kernel=rbf
 - **XGBoost:** max_depth=6.0, n_estimators=210.0, colsample_bytree=0.6905983100791752, learning_rate=0.2035518371228349, min_child_weight=9.0, subsample=0.759028808435009
 
@@ -198,10 +198,10 @@ Extensie: LR liniar si LightGBM comparati cu RF/XGB.
 
 | Model | F1 Macro | Accuracy | CV F1 mean | CV F1 std | Train time (s) |
 |---|---|---|---|---|---|
-| Logistic Regression | **0,342** | 44,3% | 0,3739 | 0,0575 | 0,022 |
-| Random Forest (ref) | **0,506** | 64,1% | 0,4174 | 0,0808 | 0,269 |
-| XGBoost (ref) | **0,476** | 68,8% | 0,3606 | 0,0373 | 0,201 |
-| LightGBM | **0,471** | 70,3% | 0,3634 | 0,0355 | 0,075 |
+| Logistic Regression | **0,342** | 44,3% | 0,3658 | 0,0517 | 0,024 |
+| Random Forest (ref) | **0,506** | 64,1% | 0,3369 | 0,0377 | 0,270 |
+| XGBoost (ref) | **0,476** | 68,8% | 0,3343 | 0,0261 | 0,191 |
+| LightGBM | **0,471** | 70,3% | 0,3478 | 0,0157 | 0,109 |
 
 **LR F1=0,342** confirma non-liniaritatea problemei. **LightGBM F1=0,471** similar cu XGBoost, RF ramane best.
 
@@ -214,7 +214,7 @@ Metrici robuste la dezechilibru si ordinalitate.
 |---|---|---|---|---|
 | Random Forest | **0,5063** | **0,1416** | **0,2551** | 0,6406 |
 | XGBoost | **0,4760** | **0,1503** | **0,1805** | 0,6875 |
-| SVM (RBF) | **0,4817** | **0,1228** | **0,2273** | 0,6458 |
+| SVM (RBF) | **0,4347** | **0,0956** | **0,1709** | 0,6302 |
 
 **MCC** (Matthews Correlation Coefficient): robust la dezechilibru. **QWK** (Quadratic Weighted Kappa): captureaza ordinalitatea Rest<Normal<Active.
 
@@ -238,11 +238,11 @@ Baseline lag-1 vs extensie cu rolling means (3, 7, 14 zile).
 
 | Config | N features | F1 Macro | CV F1 mean |
 |---|---|---|---|
-| Baseline (19 feat) | 19 | **0,506** | 0,4174 |
-| Extended (36 feat) | 36 | **0,330** | 0,3677 |
+| Baseline (19 feat) | 19 | **0,506** | 0,3369 |
+| Extended (36 feat) | 36 | **0,330** | 0,3397 |
 
 **Rolling features DAUNEAZA:** -17,6 pp pe test,
-Justificare: dataset-ul nu e suficient de mare pentru extragerea semnalului din 36 features (N=958, saturare la ~160 zile).
+Justificare: pe N=958 (766 train) cele 36 features produc overfitting. Learning curves nu satureaza - inca cresc la ~131 zile (endpoint-ul range-ului TimeSeriesSplit pe train), deci semnalul e limitat de volumul de date, nu de numarul de features.
 
 
 ## 13. Circularity sanity check
@@ -251,9 +251,9 @@ Sanity check: cat contribuie features 'potential circulare' (derivate din Oura s
 
 | Variant | N features | F1 Macro | CV F1 mean |
 |---|---|---|---|
-| A (BASELINE: toate 19 features) | 19 | **0,5063** | 0,4174 |
-| B (SEMI: fara readiness+sleep_score) | 17 | **0,5148** | 0,3942 |
-| C (STRICT: doar fiziologice brute) | 14 | **0,4697** | 0,3989 |
+| A (BASELINE: toate 19 features) | 19 | **0,5063** | 0,3369 |
+| B (SEMI: fara readiness+sleep_score) | 17 | **0,5148** | 0,3409 |
+| C (STRICT: doar fiziologice brute) | 14 | **0,4697** | 0,3570 |
 
 **Drop baseline -> strict (doar fiziologice brute):** -3,7 pp,
 **Semi-strict (fara readiness+sleep) creste marginal:** +0,9 pp,

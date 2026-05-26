@@ -65,7 +65,7 @@ def build_dataset_section(meta):
     lines.append("|---|---|")
     lines.append("| Oura Ring (combinat) | **1.009** |")
     lines.append("| Apple Watch JSON (Health Auto Export) | **1.083** |")
-    lines.append("| Dataset combinat (inner join pe date) | **1.009** |")
+    lines.append("| Dataset combinat (left join pe date) | **1.009** |")
     lines.append("")
     lines.append("**Perioada acoperita:** 2023-06-09 -> 2026-03-30 (pipeline rulat 19.04.2026, cutoff 2026-03-31).")
     lines.append("")
@@ -240,7 +240,7 @@ def build_tuning_section():
             f"{fmt_f(r['Tuned_F1_Macro'], 4)} | **+{r['Delta_pp']:.2f}** |"
         )
     lines.append("")
-    lines.append("**Interpretare:** RF near-optimal din default (+0,30pp). XGB beneficiaza masiv (+8,21pp) dar ramane sub RF default la test.")
+    lines.append("**Interpretare:** Tuning post-fix CV leakage: RF +2,49pp, SVM +4,47pp, XGB +6,87pp. Dupa tuning, pe CV F1 Macro XGB (0,403) si SVM (0,401) depasesc RF (0,362), dar RF ramane best pe test F1 Macro (0,506) + QWK. Concluzia 'RF best overall' e nuantata: best pe metrica primara (test F1 Macro), competitiv pe CV.")
     lines.append("")
     lines.append("### Best params gasiti\n")
     for _, r in df_bp.iterrows():
@@ -310,7 +310,7 @@ def build_rolling_section():
     delta = (df.iloc[0]["f1_macro_test"] - df.iloc[1]["f1_macro_test"]) * 100
     lines.append("")
     lines.append(f"**Rolling features DAUNEAZA:** -{delta:.1f} pp pe test.".replace(".", ","))
-    lines.append("Justificare: dataset-ul nu e suficient de mare pentru extragerea semnalului din 36 features (N=958, saturare la ~160 zile).")
+    lines.append("Justificare: pe N=958 (766 train) cele 36 features produc overfitting. Learning curves nu satureaza - inca cresc la ~131 zile (endpoint-ul range-ului TimeSeriesSplit pe train), deci semnalul e limitat de volumul de date, nu de numarul de features.")
     return "\n".join(lines)
 
 
