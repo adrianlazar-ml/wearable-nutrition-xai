@@ -35,6 +35,7 @@ import os
 from datetime import datetime
 
 from nutrition_recommender import get_nutrition_recommendation
+from t3_labels import classify_day, LABEL_NAMES, LABEL_COLORS
 
 # ============================================================
 # CONFIG & PAGE SETUP
@@ -307,17 +308,10 @@ elif page == "🎯 Dashboard Zilnic":
             readiness = st.slider("Readiness Score (Oura)", 0, 100, 72)
             sleep = st.slider("Sleep Score (Oura)", 0, 100, 78)
 
-            if readiness < 60 or sleep < 60:
-                auto_label = 0
-            elif readiness >= 85 and sleep >= 75:
-                auto_label = 2
-            else:
-                auto_label = 1
+            auto_label = classify_day(readiness, sleep)
 
-            label_names = {0: "Rest", 1: "Normal", 2: "Active"}
-            label_colors = {0: "🔴", 1: "🟡", 2: "🟢"}
             st.markdown(
-                f"### Clasificare: {label_colors[auto_label]} {label_names[auto_label]} Day"
+                f"### Clasificare: {LABEL_COLORS[auto_label]} {LABEL_NAMES[auto_label]} Day"
             )
             st.caption(
                 "Praguri: Rest (<60 readiness sau <60 sleep) | "
@@ -433,9 +427,6 @@ elif page == "🎯 Dashboard Zilnic":
                     if max_conf < CONFIDENCE_THRESHOLD:
                         label = 1  # Fallback Normal
 
-                    label_names = {0: "Rest", 1: "Normal", 2: "Active"}
-                    label_colors = {0: "🔴", 1: "🟡", 2: "🟢"}
-
                     # Detectăm data predicției din oura_combined.csv
                     pred_date_str = "N/A"
                     oura_path = os.path.join(DATA_DIR, "oura_combined.csv")
@@ -460,14 +451,14 @@ elif page == "🎯 Dashboard Zilnic":
                         )
 
                     st.markdown(
-                        f"### Predicție ML: {label_colors[label]} "
-                        f"{label_names[label]} Day"
+                        f"### Predicție ML: {LABEL_COLORS[label]} "
+                        f"{LABEL_NAMES[label]} Day"
                     )
 
                     if label != original_label:
                         st.warning(
                             f"Confidence scăzută ({max_conf:.1%} < {CONFIDENCE_THRESHOLD:.0%}). "
-                            f"Predicția originală ({label_names[original_label]}) a fost "
+                            f"Predicția originală ({LABEL_NAMES[original_label]}) a fost "
                             f"suprascrisă cu **Normal** (fallback conservator, ±200 kcal max)."
                         )
                     else:

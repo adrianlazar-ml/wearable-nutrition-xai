@@ -53,6 +53,9 @@ except ImportError:
 
 from scipy.stats import randint, uniform
 
+# Logica canonica de etichetare T3 (sursa unica, FND-210)
+from t3_labels import assign_nutrition_label
+
 warnings.filterwarnings("ignore", category=FutureWarning)
 warnings.filterwarnings("ignore", category=UserWarning)
 
@@ -125,17 +128,8 @@ def load_and_prepare(add_rolling=False):
     for feat in ALL_FEATURES:
         df[f"{feat}_lag1"] = df[feat].shift(1)
 
-    # Labels
-    def assign_label(row):
-        if pd.isna(row["readiness_score"]) or pd.isna(row["sleep_score"]):
-            return np.nan
-        if row["readiness_score"] < 60 or row["sleep_score"] < 60:
-            return 0
-        elif row["readiness_score"] >= 85 and row["sleep_score"] >= 75:
-            return 2
-        return 1
-
-    df["label"] = df.apply(assign_label, axis=1)
+    # Labels (logica canonica T3 din t3_labels, FND-210)
+    df["label"] = df.apply(assign_nutrition_label, axis=1)
 
     df_model = df[["date"] + FEATURES + ["label"]].dropna(subset=["label"])
     df_model = df_model.sort_values("date").reset_index(drop=True)

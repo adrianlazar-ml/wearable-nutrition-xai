@@ -24,6 +24,11 @@ from sklearn.impute import SimpleImputer
 from imblearn.over_sampling import SMOTE
 from imblearn.pipeline import Pipeline as ImbPipeline
 
+# Logica canonica de etichetare T3 (sursa unica, FND-210).
+# Re-export: freeze_production_model + prospective_validation importa
+# assign_nutrition_label din acest modul.
+from t3_labels import assign_nutrition_label
+
 
 # ============================================================
 # 1. LOAD DATE OURA COMBINED
@@ -135,17 +140,6 @@ LAG_FEATURES = [
 ]
 
 FEATURES = [f"{feat}_lag1" for feat in LAG_FEATURES]
-
-
-def assign_nutrition_label(row):
-    if pd.isna(row["readiness_score"]) or pd.isna(row["sleep_score"]):
-        return np.nan
-    if row["readiness_score"] < 60 or row["sleep_score"] < 60:
-        return 0
-    elif row["readiness_score"] >= 85 and row["sleep_score"] >= 75:
-        return 2
-    else:
-        return 1
 
 
 def engineer_features(df):
