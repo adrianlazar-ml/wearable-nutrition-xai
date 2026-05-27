@@ -7,6 +7,8 @@ Coordonator: Prof. dr. ing. Catalin Buiu
 
 ## Scripturi active (radacina)
 
+34 scripturi Python in radacina (excluzand `scripts_archive/`), grupate functional:
+
 ### Colectare date
 | Script | Descriere |
 |--------|-----------|
@@ -24,6 +26,7 @@ Coordonator: Prof. dr. ing. Catalin Buiu
 | `cap5_compare_algorithms.py` | Compara RF/SVM/XGB pe XML |
 | `cap5_compare_algorithms_json.py` | Compara RF/SVM/XGB pe JSON |
 | `cap5_compare_algorithms_json_ext.py` | **Comparatie finala** — RF/SVM/XGB pe 19 features JSON |
+| `t3_labels.py` | Modul canonic etichetare T3 (praguri + LABEL_NAMES/COLORS), importat de pipeline si UI |
 
 ### Experimente de validare
 | Script | Descriere |
@@ -32,6 +35,10 @@ Coordonator: Prof. dr. ing. Catalin Buiu
 | `ablation_study.py` | Oura-only vs AW-only vs Combined |
 | `confidence_threshold.py` | Safety layer: fallback Normal sub 50% confidence |
 | `smote_comparison.py` | 5 strategii imbalance: baseline, class_weight, RUS, SMOTE, ADASYN |
+| `experiments_new.py` | 5 studii suplimentare: tuning, LR/LightGBM, learning curves, calibration, rolling features |
+| `learning_curves_comparison.py` | Learning curves SMOTE vs class_weight (justifica class_weight) |
+| `circularity_sanity_check.py` | Cat contribuie features derivate din scoruri Oura (variante A/B/C) |
+| `circularity_plot.py` | Vizualizare rezultate circularity sanity check |
 
 ### Vizualizare SHAP
 | Script | Descriere |
@@ -41,6 +48,21 @@ Coordonator: Prof. dr. ing. Catalin Buiu
 | `generate_waterfall_combined_json.py` | SHAP waterfall plots (JSON) |
 | `generate_waterfall_svm.py` | SHAP KernelExplainer pentru SVM |
 | `fix_svm_barplot.py` | Fix vizualizare SHAP bar plot SVM |
+
+### Model inghetat si validare prospectiva
+| Script | Descriere |
+|--------|-----------|
+| `freeze_production_model.py` | Ingheata modelul RF de productie (model + imputer + meta hash) |
+| `prospective_validation.py` | Aplica modelul inghetat pe date noi (validare prospectiva) |
+| `sanity_check_frozen.py` | Verifica reproducibilitatea bit-perfect a modelului inghetat |
+| `patch_frozen_meta.py` | Injecteaza f1_per_class + confusion matrix in frozen_meta JSON |
+
+### Rapoarte si utilitare
+| Script | Descriere |
+|--------|-----------|
+| `generate_canonical_numbers.py` | Genereaza CIFRE_CANONICE.md din outputs/tables + frozen_meta |
+| `extract_all_results.py` | Agregare valori numerice din outputs/tables → referinta pentru lucrare |
+| `audit_csv.py` | Audit rapid CSV-uri sursa (shape/coloane/hash): oura, AW, snapshot |
 
 ### Aplicatie / Demo
 | Script | Descriere |
@@ -53,7 +75,7 @@ Coordonator: Prof. dr. ing. Catalin Buiu
 
 ```
 data/
-├── oura_combined.csv          # Date Oura procesate (1007 zile)
+├── oura_combined.csv          # Date Oura procesate (1.009 zile)
 ├── oura_historical.csv        # Export manual Oura (pre-API)
 ├── dataset_combinat*.csv      # Seturi integrate Oura + AW (per pipeline)
 ├── apple_health/              # CSV-uri din Apple Health export XML
@@ -83,7 +105,7 @@ outputs/
 
 - **Best model:** Random Forest, F1 Macro = 0.506
 - **Best threshold:** T3 (Rest: readiness<60 OR sleep<60; Active: readiness>=85 AND sleep>=75)
-- **Best imbalance strategy:** SMOTE k=3 (F1 Macro = 0.482)
+- **Best imbalance strategy:** SMOTE k=3 (F1 Macro = 0.506)
 - **Feature #1 cross-model:** aw_hr_mean
-- **Ablation:** Combined +10.2pp F1 vs Oura-only
-- **Dataset:** 1007 zile, 19 features, 3 clase (Rest/Normal/Active)
+- **Ablation:** Combined +7.8pp F1 vs Oura-only (+18.2pp vs Apple Watch-only)
+- **Dataset:** 958 zile, 19 features, 3 clase (Rest/Normal/Active)
