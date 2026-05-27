@@ -1,0 +1,27 @@
+# Secrets - CRITIC, dupa incidentul token Oura (mai 2026)
+.env
+.env.*
+!.env.example
+
+# Python bytecode / cache
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Medii virtuale
+.venv/
+venv/
+env/
+
+# Backup-uri locale (zip-uri mari, hash baselines, emergency rollback)
+backups/
+
+# Logs
+*.log
+logs/
+
+# OS / editor
+.DS_Store
+Thumbs.db
