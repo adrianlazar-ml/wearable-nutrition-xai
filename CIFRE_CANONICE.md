@@ -1,4 +1,4 @@
-# Cifre canonice — Disertație Adrian Lazar 2026
+# Cifre canonice: Disertație Adrian Lazar 2026
 
 Generat automat din `outputs/tables/` si `models/frozen_meta_20260331.json`.
 

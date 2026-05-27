@@ -5,7 +5,7 @@ Disertație: AI pentru nutriție personalizată folosind date din wearables
 Autor: Adrian Lazar | Coordonator: Prof. Cătălin Buiu, UPB
 Apărare: Iunie-Iulie 2026
 
-V2 — Schimbări față de V1:
+V2 (schimbări față de V1):
   - Sursă date primară: JSON Extended (19 features din Health Auto Export)
   - Explicabilitate: 3 taburi (Best Model / Comparație Algoritmi / Calitate Date)
   - Metrici actualizate post-fix rhr_avg (30.03.2026): RF best F1 Macro 0.506
@@ -13,9 +13,9 @@ V2 — Schimbări față de V1:
   - Grafice SHAP: organizate in outputs/figures/ (post-reorganizare 31.03.2026)
 
 Pagini:
-  1. Profil Utilizator — date biometrice, calcul BMR/TDEE
-  2. Dashboard Zilnic — clasificare ML + recomandare nutrițională
-  3. Explicabilitate — SHAP organized pe 3 taburi tematice
+  1. Profil Utilizator: date biometrice, calcul BMR/TDEE
+  2. Dashboard Zilnic: clasificare ML + recomandare nutrițională
+  3. Explicabilitate: SHAP organized pe 3 taburi tematice
 
 Rulare:
   pip install streamlit plotly --break-system-packages
@@ -118,9 +118,9 @@ def calculate_tdee(bmr, activity_level):
 def try_load_dataset():
     """
     Încearcă să încarce dataset-ul, cu prioritate:
-    1. JSON Extended (19 features) — cel mai bun
-    2. JSON 16 features — fallback
-    3. XML 16 features — legacy
+    1. JSON Extended (19 features), cel mai bun
+    2. JSON 16 features, fallback
+    3. XML 16 features, legacy
     Returnează (df, source_name, features_list) sau (None, None, None).
     """
     candidates = [
@@ -253,7 +253,7 @@ if page == "📊 Profil Utilizator":
         st.markdown(
             f"25 kcal/kg × {p['weight_kg']} kg = **{base_cal} kcal/zi**  \n"
             f"Comparat cu TDEE ({tdee} kcal): formula AI4Food are limitare pe "
-            f"obezitate (poate fi întreținere/surplus, nu deficit) — vezi Cap.7."
+            f"obezitate (poate fi întreținere/surplus, nu deficit), vezi Cap.7."
         )
 
         st.markdown("---")
@@ -397,7 +397,7 @@ elif page == "🎯 Dashboard Zilnic":
             else:
                 st.success(
                     f"Model încărcat. Dataset: **{len(dataset)} zile** "
-                    f"— sursă: {source_name}"
+                    f"(sursă: {source_name})"
                 )
 
                 # Detectăm features din dataset
@@ -509,10 +509,10 @@ elif page == "🔍 Explicabilitate":
     ])
 
     # ==========================================================
-    # TAB 1: BEST MODEL — RF Extended (19 features)
+    # TAB 1: BEST MODEL, RF Extended (19 features)
     # ==========================================================
     with tab1:
-        st.subheader("Random Forest — 19 features — F1 Macro: 50.6%")
+        st.subheader("Random Forest, 19 features, F1 Macro: 50.6%")
         st.markdown(
             "Cel mai performant model (post-fix rhr_avg, 30.03.2026), antrenat pe "
             "19 features (16 originale + sleep deep, sleep REM, respiratory rate "
@@ -520,33 +520,33 @@ elif page == "🔍 Explicabilitate":
         )
 
         st.markdown("---")
-        st.markdown("**SHAP Feature Importance — Random Forest (TreeExplainer)**")
+        st.markdown("**SHAP Feature Importance, Random Forest (TreeExplainer)**")
         found = show_image_if_exists(
             f"{FIG_EXT}/ext_shap_bar_random_forest.png",
-            "Mean |SHAP value| per feature — Random Forest (modelul principal), 19 features. "
+            "Mean |SHAP value| per feature: Random Forest (modelul principal), 19 features. "
             "aw_hr_mean rămâne #1, confirmând complementaritatea Oura + Apple Watch."
         )
 
         st.markdown("---")
-        st.markdown("**SHAP Waterfall — Random Forest (per clasă)**")
+        st.markdown("**SHAP Waterfall, Random Forest (per clasă)**")
         found_wf = show_image_if_exists(
             f"{FIG_EXT}/ext_shap_waterfall_all_random_forest.png",
             "Contribuția fiecărui feature la decizia de clasificare "
             "pentru o zi reprezentativă din fiecare clasă (Rest/Normal/Active)."
         )
 
-        # XGBoost — comparativ (figuri regenerate Sprint 2)
-        with st.expander("XGBoost — detalii SHAP (summary, dependence) [comparativ]"):
+        # XGBoost, comparativ (figuri regenerate Sprint 2)
+        with st.expander("XGBoost: detalii SHAP (summary, dependence) [comparativ]"):
             show_image_if_exists(
                 f"{FIG_EXT}/ext_shap_summary_xgboost.png",
-                "SHAP Summary (beeswarm) — XGBoost, 19 features."
+                "SHAP Summary (beeswarm): XGBoost, 19 features."
             )
             show_image_if_exists(
                 f"{FIG_EXT}/ext_shap_dependence_xgboost.png",
-                "SHAP Dependence plots — top 5 features."
+                "SHAP Dependence plots, top 5 features."
             )
 
-        # Metrici model — tabel actualizat cu rezultate reale
+        # Metrici model, tabel actualizat cu rezultate reale
         st.markdown("---")
         st.subheader("Metrici Comparative")
 
@@ -564,11 +564,11 @@ elif page == "🔍 Explicabilitate":
 
             metrics_data = {
                 "Algoritm": [
-                    "Random Forest — 19 feat",
-                    "SVM (RBF) — 19 feat",
-                    "XGBoost — 19 feat",
-                    "LightGBM — 19 feat",
-                    "Logistic Regression — 19 feat",
+                    "Random Forest, 19 feat",
+                    "SVM (RBF), 19 feat",
+                    "XGBoost, 19 feat",
+                    "LightGBM, 19 feat",
+                    "Logistic Regression, 19 feat",
                     "Baseline (majority)",
                 ],
                 "CV F1 Macro": [
@@ -592,7 +592,7 @@ elif page == "🔍 Explicabilitate":
                     "Best calibrat (Brier 0,156)",
                     "Beneficiază cel mai mult de tuning (+6,87pp)",
                     "Similar XGBoost, gradient boosting alternativ",
-                    "Slab — confirmă non-liniaritatea problemei",
+                    "Slab: confirmă non-liniaritatea problemei",
                     "Prezice mereu clasa dominantă (Normal)",
                 ],
             }
@@ -600,7 +600,7 @@ elif page == "🔍 Explicabilitate":
             metrics_data = {
                 "Algoritm": ["(CSV-uri pipeline lipsă)"],
                 "CV F1 Macro": [f"rulează pipeline-ul ({type(_e).__name__})"],
-                "F1 Active": ["—"],
+                "F1 Active": ["N/A"],
                 "Observații": ["generează outputs/tables/valori_disertatie.csv + new_models_comparison.csv"],
             }
         st.dataframe(
@@ -608,7 +608,7 @@ elif page == "🔍 Explicabilitate":
             width="stretch",
         )
         st.caption(
-            "F1 Macro e metrica principală — corectă pentru class imbalance sever "
+            "F1 Macro e metrica principală, corectă pentru class imbalance sever "
             "(Rest: ~202, Normal: ~710, Active: ~46). "
             "F1 Active arată capacitatea modelului de a detecta clasa minoritară."
         )
@@ -625,10 +625,10 @@ elif page == "🔍 Explicabilitate":
             "erau dinainte de fix-ul rhr_avg + CV leakage, deci necomparabile apple-to-apple."
         )
 
-        st.markdown("**19 features — JSON + sleep stages (post-fix Sprint 1-2)**")
+        st.markdown("**19 features, JSON + sleep stages (post-fix Sprint 1-2)**")
         show_image_if_exists(
             f"{FIG_EXT}/ext_confusion_matrices.png",
-            "Matrici de confuzie — RF / XGBoost / SVM pe 19 features."
+            "Matrici de confuzie, RF / XGBoost / SVM pe 19 features."
         )
         show_image_if_exists(
             f"{FIG_EXT}/ext_feature_importance_comparison.png",
@@ -636,15 +636,15 @@ elif page == "🔍 Explicabilitate":
         )
         show_image_if_exists(
             f"{FIG_EXT}/ext_pdp_top3_xgboost.png",
-            "PDP — Top 3 features, XGBoost (19 features)."
+            "PDP: Top 3 features, XGBoost (19 features)."
         )
         show_image_if_exists(
             f"{FIG_EXT}/ext_pdp_multiclass_xgboost.png",
-            "PDP Multi-class — feature dominant (19 features)."
+            "PDP Multi-class, feature dominant (19 features)."
         )
 
     # ==========================================================
-    # TAB 3: CALITATE DATE — XML vs JSON
+    # TAB 3: CALITATE DATE, XML vs JSON
     # ==========================================================
     with tab3:
         st.subheader("Calitate Date: XML vs JSON (Health Auto Export)")
@@ -658,7 +658,7 @@ elif page == "🔍 Explicabilitate":
             "**dublu-contorizează pașii** (MAE = 9,106 pași, r = 0.98), "
             "în timp ce JSON-ul din Health Auto Export oferă date deduplicate. "
             "Finding-ul SHAP cheie (**aw_hr_mean ca feature #1**) rămâne "
-            "stabil în ambele surse — demonstrând robustețea modelului."
+            "stabil în ambele surse, demonstrând robustețea modelului."
         )
 
         st.markdown("---")
@@ -685,9 +685,9 @@ elif page == "🔍 Explicabilitate":
             ],
             "Interpretare": [
                 "Accuracy mai mică = date corecte (nu e rău)",
-                "Comparabil — modelul nu se bazează pe pași",
-                "Practic identic — robustețe confirmat",
-                "IDENTIC — finding cheie stabil",
+                "Comparabil: modelul nu se bazează pe pași",
+                "Practic identic: robustețe confirmat",
+                "IDENTIC: finding cheie stabil",
                 "XML dublu-contorizează",
                 "Diferență de unitate, nu de valoare",
             ],

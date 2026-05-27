@@ -770,7 +770,7 @@ def compare_feature_importance(trained_models, FEATURES):
 def main():
     print("=" * 60)
     print("  RQ2 - COMPARATIE ALGORITMI + SHAP (JSON + 19 FEATURES)")
-    print("  RF vs XGBoost vs SVM — 19 features (16 + sleep/resp)")
+    print("  RF vs XGBoost vs SVM, 19 features (16 + sleep/resp)")
     print("  Split: TEMPORAL 80/20 + TimeSeriesSplit CV")
     print("=" * 60)
 

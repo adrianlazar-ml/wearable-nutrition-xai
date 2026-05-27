@@ -392,7 +392,7 @@ def main():
     meta, meta_filename = result
 
     sections = []
-    sections.append("# Cifre canonice — Disertație Adrian Lazar 2026\n")
+    sections.append("# Cifre canonice: Disertație Adrian Lazar 2026\n")
     sections.append(f"Generat automat din `outputs/tables/` si `models/{meta_filename}`.\n")
     sections.append(f"**Cutoff date:** {meta.get('cutoff_date', meta.get('train_end_date_requested', 'N/A'))}  |  "
                     f"**Last day in dataset:** {meta.get('last_day_in_dataset', meta.get('train_end_date_effective', 'N/A'))}  |  "
