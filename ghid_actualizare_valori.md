@@ -1,7 +1,23 @@
+# ================================================================
+# SUPERSEDED. Sursa unica de adevar pentru cifre: CIFRE_CANONICE.md
+# ================================================================
+# Cifrele "NOU" de mai jos au fost redactate cu valori intermediare
+# post-fix rhr_avg. O parte au fost RECALCULATE in Sprint 2 (regenerare
+# pipeline de-leaked) si NU mai sunt canonice. Divergente confirmate
+# (verificate pe outputs/tables/ + CIFRE_CANONICE.md):
+#   Ablation Combined:    ghid 0,482        ->  canonic 0,506
+#   Ablation Oura / AW:   ghid 0,380/0,358  ->  canonic 0,428/0,324
+#   SVM test F1 Macro:    ghid 0,482        ->  canonic 0,4347
+#   SMOTE k=3:            ghid 0,482        ->  canonic 0,506
+#   Threshold T3:         ghid 0,482        ->  canonic 0,506
+# Foloseste acest ghid DOAR pentru locatiile/structura din docx, NU pentru
+# valori. Verifica fiecare cifra in CIFRE_CANONICE.md inainte de a o scrie.
+# ================================================================
+
 # GHID ACTUALIZARE VALORI — Disertație Lazar Adrian
 # Post-fix rhr_avg, date curate, 31.03.2026
 # ================================================================
-# INSTRUCȚIUNI: Deschide Disertatie_Lazar_Adrian_2026.docx în Word.
+# INSTRUCȚIUNI: Deschide _referinte_upb/Disertatie_Lazar_Adrian_2026_Mai_CB.docx în Word.
 # Parcurge fiecare secțiune de mai jos și fă Ctrl+H (Find & Replace).
 # Bifează "Match case" unde e cazul.
 # ================================================================
