@@ -41,6 +41,13 @@ def fmt_int(x):
     return f"{int(x):,}".replace(",", ".")
 
 
+def fmt_signed(x, decimals=2):
+    """Format float cu semn explicit si virgula (RO style). Ex: +3,66 / -2,41."""
+    if pd.isna(x):
+        return "N/A"
+    return f"{x:+.{decimals}f}".replace(".", ",")
+
+
 def section(title, content):
     return f"\n## {title}\n\n{content}\n"
 
@@ -335,6 +342,37 @@ def build_circularity_section():
     return "\n".join(lines)
 
 
+def build_deltas_16f_19f_section():
+    """Deltas 16f vs 19f (FND-SVM-DELTA-001). Sursa: compare_16f_vs_19f.csv (#-comment)."""
+    path = TABLES_DIR / "compare_16f_vs_19f.csv"
+    if not path.exists():
+        return ("_Tabel indisponibil: ruleaza "
+                "`PYTHONUTF8=1 python scripts/canonical/compare_16f_vs_19f.py`._")
+    df = pd.read_csv(path, comment="#")
+    lines = [
+        "Contributia celor 3 features suplimentare (Apple Watch sleep deep/REM + resp rate) "
+        "la trecerea 16f -> 19f. Sursa JSON, split temporal 80/20, hiperparametri canonici "
+        "(RF din frozen_meta, XGB/SVM defaults). Delta = 19f - 16f (puncte procentuale).\n",
+    ]
+    lines.append("| Model | F1 Macro 16f | F1 Macro 19f | Delta F1 (pp) | F1 Active 16f | F1 Active 19f | Delta Active (pp) |")
+    lines.append("|---|---|---|---|---|---|---|")
+    for _, r in df.iterrows():
+        lines.append(
+            f"| {r['Model']} | {fmt_f(r['F1_Macro_16f'], 4)} | "
+            f"**{fmt_f(r['F1_Macro_19f'], 4)}** | **{fmt_signed(r['Delta_F1_pp'])}** | "
+            f"{fmt_f(r['F1_Active_16f'], 3)} | {fmt_f(r['F1_Active_19f'], 3)} | "
+            f"{fmt_signed(r['Delta_F1_Active_pp'])} |"
+        )
+    lines.append("")
+    lines.append("**Mapare in disertatie:** coloana 'Delta F1 (pp)' corespunde randului "
+                 "\"Δ F1 Macro vs. 16f\" din Tabel 5.4. Valorile canonice de mai sus inlocuiesc "
+                 "deltas stale (RF +3,6 / XGB +0,5 / SVM -3,1 pp), care fusesera calculate "
+                 "cand SVM 19f era 0,482 (stale). Doar SVM diverge semnificativ: 16f a scazut "
+                 "de la ~0,513 la 0,4588 post-fix rhr_avg, deci delta SVM trece de la -3,1pp la -2,41pp. "
+                 "RF (+3,66pp) si XGB (+0,50pp) raman practic neschimbate.")
+    return "\n".join(lines)
+
+
 def build_model_config_section(meta):
     lines = []
     lines.append("### Hiperparametri finali (RF, model de productie)\n")
@@ -416,6 +454,7 @@ def main():
 13. [Circularity sanity check](#13-circularity-sanity-check)
 14. [Model config & features](#14-model-config--features)
 15. [Reproducibilitate](#15-reproducibilitate)
+16. [Deltas 16f vs 19f (Tabel 5.4)](#16-deltas-16f-vs-19f-tabel-54)
 """)
     sections.append("---")
 
@@ -434,6 +473,7 @@ def main():
     sections.append(section("13. Circularity sanity check", build_circularity_section()))
     sections.append(section("14. Model config & features", build_model_config_section(meta)))
     sections.append(section("15. Reproducibilitate", build_reproducibility_section(meta, meta_filename)))
+    sections.append(section("16. Deltas 16f vs 19f (Tabel 5.4)", build_deltas_16f_19f_section()))
 
     content = "\n".join(sections)
     OUTPUT_FILE.write_text(content, encoding="utf-8")
@@ -444,7 +484,7 @@ def main():
     print(f"Generat: {OUTPUT_FILE}")
     print(f"  Linii: {n_lines}")
     print(f"  Randuri tabel: ~{n_tables}")
-    print(f"  Sectiuni: 15")
+    print(f"  Sectiuni: 16")
 
 
 if __name__ == "__main__":

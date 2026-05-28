@@ -23,6 +23,7 @@ Generat automat din `outputs/tables/` si `models/frozen_meta_20260331.json`.
 13. [Circularity sanity check](#13-circularity-sanity-check)
 14. [Model config & features](#14-model-config--features)
 15. [Reproducibilitate](#15-reproducibilitate)
+16. [Deltas 16f vs 19f (Tabel 5.4)](#16-deltas-16f-vs-19f-tabel-54)
 
 ---
 
@@ -317,3 +318,16 @@ Pentru dovada reproducibilitatii (util daca comisia AI/ML intreaba):
 - model: `models\rf_frozen_20260331.joblib`
 - imputer: `models\imputer_frozen_20260331.joblib`
 - meta: `models/frozen_meta_20260331.json`
+
+
+## 16. Deltas 16f vs 19f (Tabel 5.4)
+
+Contributia celor 3 features suplimentare (Apple Watch sleep deep/REM + resp rate) la trecerea 16f -> 19f. Sursa JSON, split temporal 80/20, hiperparametri canonici (RF din frozen_meta, XGB/SVM defaults). Delta = 19f - 16f (puncte procentuale).
+
+| Model | F1 Macro 16f | F1 Macro 19f | Delta F1 (pp) | F1 Active 16f | F1 Active 19f | Delta Active (pp) |
+|---|---|---|---|---|---|---|
+| Random Forest | 0,4697 | **0,5063** | **+3,66** | 0,353 | 0,444 | +9,15 |
+| XGBoost | 0,4710 | **0,4760** | **+0,50** | 0,364 | 0,333 | -3,03 |
+| SVM (RBF) | 0,4588 | **0,4347** | **-2,41** | 0,250 | 0,250 | +0,00 |
+
+**Mapare in disertatie:** coloana 'Delta F1 (pp)' corespunde randului "Δ F1 Macro vs. 16f" din Tabel 5.4. Valorile canonice de mai sus inlocuiesc deltas stale (RF +3,6 / XGB +0,5 / SVM -3,1 pp), care fusesera calculate cand SVM 19f era 0,482 (stale). Doar SVM diverge semnificativ: 16f a scazut de la ~0,513 la 0,4588 post-fix rhr_avg, deci delta SVM trece de la -3,1pp la -2,41pp. RF (+3,66pp) si XGB (+0,50pp) raman practic neschimbate.
