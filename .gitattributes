@@ -1,0 +1,10 @@
+# Forteaza LF pentru fisiere text, critic pentru hash reproductibil cross-platform
+*.csv text eol=lf
+*.py text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+# Binare, fara conversie
+*.png binary
+*.joblib binary
+*.docx binary
+*.pdf binary
