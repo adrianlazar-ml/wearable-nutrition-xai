@@ -189,14 +189,36 @@ Documentare in disertatie a **3 limitari** declarate explicit:
    2025-05-30, overlap 0). Metrica de test reflecta si transfer cross-device, nu
    doar generalizare temporala. De mentionat ca factor de confuzie hardware.
 3. **Active n=8 fara interval de incredere**: clasa Active are doar 8 esantioane
-   in test (F1 0.4444); metrica per-clasa este instabila la acest n. De raportat
-   cu rezerva explicita.
+   in test (F1 0.4444); metrica per-clasa este instabila la acest n. Cuantificat
+   acum prin bootstrap (vezi mai jos): CI 95% [0.111, 0.700], latime 0.589. De
+   raportat cu rezerva explicita.
 
-Optional:
+### Bootstrap CI: EXECUTAT (2026-05-29)
 
-- **Bootstrap CI pe test** (resampling cu inlocuire pe cele 192 zile) pentru a da
-  intervale de incredere la F1 Macro, MCC si F1 per clasa, in special pentru
-  clasa Active. Read-only fata de model, nu atinge nimic canonic.
+Rulat `bootstrap_ci_frozen.py` (read-only pe model frozen, 2000 resamples cu
+inlocuire pe cele 192 zile de test, seed 42, CI 95% = percentile 2.5-97.5).
+Point estimate reproduce canonicul bit-perfect inainte de bootstrap (sanity
+PASS pe toate 6 metricile). Rezultate:
+
+| Metric | Point | CI 95% | Latime |
+|---|---|---|---|
+| Accuracy | 0.6406 | [0.5729, 0.7083] | 0.135 |
+| F1 Macro | 0.5063 | [0.3733, 0.6095] | 0.236 |
+| MCC | 0.1416 | [-0.0045, 0.2843] | 0.289 |
+| F1 Rest (cls0) | 0.3218 | [0.1892, 0.4468] | 0.258 |
+| F1 Normal (cls1) | 0.7527 | [0.6914, 0.8068] | 0.115 |
+| F1 Active (cls2) | 0.4444 | [0.1111, 0.7000] | 0.589 |
+
+Interpretare:
+
+- **MCC CI [-0.0045, 0.2843] include zero. Aceasta este limitarea statistica cea
+  mai importanta de declarat in lucrare**: la n=192 cu dezechilibru de clase, nu
+  putem respinge cu incredere 95% ipoteza ca modelul nu este mai bun decat
+  hazardul. Tendinta este pozitiva (point 0.1416), dar fragila statistic.
+- **F1 Active CI [0.111, 0.700], latime 0.589**: cel mai larg interval, confirma
+  numeric ca point estimate 0.4444 este neinformativ ca valoare singulara la n=8.
+- **F1 Normal CI [0.691, 0.807]**: singura metrica solida (clasa majoritara,
+  140/192 esantioane). Modelul este fiabil pe Normal, incert pe minoritare.
 
 ---
 
@@ -208,3 +230,4 @@ Optional:
 | `outputs/b3_tvt/metrics_val_vs_test.csv` | val F1M 0.293318, MCC -0.096456; test F1M 0.417475, MCC 0.096512 |
 | Verificare device read-only (3 rulari) | train 657 Gen3 + 13 Gen4; val/test 100% Gen4; cutover 2025-05-30 overlap 0; canonic 80/20 train 657 Gen3 + 109 Gen4 |
 | `sanity_check_frozen.py` (PASS 2026-05-29) | frozen: Acc 0.640625, F1M 0.506324, MCC 0.141560, hash 63bc3a2915bae864, test 192 {0:44,1:140,2:8} |
+| `bootstrap_ci_frozen.py` + `outputs/bootstrap_ci/bootstrap_ci_frozen_test.csv` (2026-05-29) | CI 95% 2000 resamples seed 42: MCC [-0.0045, 0.2843] (include 0), F1 Active [0.1111, 0.7000] latime 0.589, F1 Normal [0.6914, 0.8068], F1 Macro [0.3733, 0.6095] |
