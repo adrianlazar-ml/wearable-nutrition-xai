@@ -1,0 +1,6 @@
+# steps_xml_vs_json_mae.csv -- MAE absoluta pasi XML (toate sursele) vs JSON, pe zi
+# generated_by: scripts/canonical/xml_vs_json_accuracy.py
+# read-only: agregare din data/apple_health/steps.csv + apple_watch_api/apple_health_daily.csv
+# mae_abs = mean(|xml_steps - json_steps|) ; mean_diff_signed = mean(xml - json)
+metric,n_days,xml_mean,json_mean,mean_diff_signed,mae_abs,median_abs_diff,corr
+Steps (XML all sources vs JSON),1069,15633.61,6902.06,8731.55,8733.88,7852.84,0.9602

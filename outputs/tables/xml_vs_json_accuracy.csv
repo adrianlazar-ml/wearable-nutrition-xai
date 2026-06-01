@@ -1,0 +1,8 @@
+# xml_vs_json_accuracy.csv -- RF accuracy 16 caracteristici, sursa XML vs JSON
+# generated_by: scripts/canonical/xml_vs_json_accuracy.py
+# conditii: split temporal 80/20, SMOTE k=3, random_state=42, RF(100, max_depth=10, min_samples_leaf=5)
+# read-only: dataseturile NU au fost reconstruite; canonic 63bc3a2915bae864 neatins
+source,dataset_file,built_by,n_features,n_rows,n_train,n_test,rf_accuracy,rf_f1_macro,input_sha256_16
+XML (16f nativ),data/dataset_combinat.csv,cap5_pipeline.py,16,953,762,191,0.6387,0.5153,e139bc9f68c61ee3
+JSON (16f nativ),data/dataset_combinat_json.csv,cap5_pipeline_json.py,16,953,762,191,0.6178,0.4242,0be1df0b9670f2dc
+JSON (19f-extended drop 3),data/dataset_combinat_json_extended.csv,compare_16f_vs_19f: 19f minus 3 feat AW,16,958,766,192,0.6562,0.4697,8d10f973c7f6cf62
