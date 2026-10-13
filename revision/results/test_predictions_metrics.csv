@@ -1,0 +1,4 @@
+model,f1,acc,mcc,status,argmax_proba_agrees_with_predict,seed,run_date
+rf,0.5063,0.6406,0.1416,PASS,1.0,42,2026-09-14
+xgb,0.476,0.6875,0.1503,PASS,1.0,42,2026-09-14
+svm,0.4347,0.6302,0.0956,PASS,0.9114583333333334,42,2026-09-14
