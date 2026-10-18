@@ -1,6 +1,6 @@
 # Plan de revizie KBS (Knowledge-Based Systems)
 
-Versiune: 14 septembrie 2026. Autor: Adrian Lazar, cu the LLM assistant ca partener de planificare.
+Versiune: 14 septembrie 2026, actualizat 19 oct 2026 (§3, §8). Autor: Adrian Lazar, cu the LLM assistant ca partener de planificare.
 Scop: input pentru proiectul de lucru cu codul disertației. Se continuă discuția de acolo, fază cu fază.
 
 ## 1. Context
@@ -29,7 +29,7 @@ Scop: input pentru proiectul de lucru cu codul disertației. Se continuă discu�
 - Ablație RF: Oura-only 0.428 (Active 0.286); Watch-only 0.324 (Active 0.100); Both 0.506 (Active 0.444).
 - Baseline majority (DummyClassifier): F1 0.281, accuracy 72.9%.
 - Modele: RF (100 arbori, depth 10, min leaf 5); XGB (100 est, depth 6, lr 0.1); SVM (RBF, C=1, gamma=scale). SMOTE k=3.
-- Safety layer: prag confidence 0.50; eroare calorică max 200 kcal; coverage 80%.
+- Safety layer: prag confidence 0.50; eroare calorică max 200 kcal; coverage 80% în manuscris, 65.6% pe modelul canonic (vezi §8 punctul 5).
 
 ## 4. Maparea cerințelor reviewerilor pe task-uri
 
@@ -136,9 +136,21 @@ Puncte de control cu Buiu: după F0 (rezultat persistence, confirmare termen), d
 - **Termenul real e 21 de zile.** Pe 4 oct există pachetul F0+F1 (6 puncte acoperite) și se negociază extensie pentru rest. De aceea F1 e înaintea F2.
 - **Buget de ore depășit.** Ordinea de sacrificiu: TabNet, apoi grilă sleep în T3.1, apoi permutation importance în T1.5. Nimic din F0, T1.1-T1.3, T3.2 nu se sacrifică.
 
-## 8. Întrebări deschise
+## 8. Întrebări deschise (actualizat 19 oct 2026)
 
+Rezolvate:
+- (fost 2) Calibrarea nu intră în safety layer: decizie T1.3, 19 oct (sub probabilități calibrate sistemul emite doar Normal; vezi CIFRE_REVIZIE, note T1.3). Se raportează ca rezultat și ca limită.
+
+Deschise:
 1. Confirmarea datei de 1 decembrie în Editorial Manager (Buiu).
-2. Dacă isotonic calibration intră în safety layer, se schimbă cifrele canonice de coverage și eroare calorică: se raportează ambele variante (brut și calibrat).
-3. Limita de cuvinte a abstractului la KBS (de verificat în Guide for Authors KBS, nu ESWA).
-4. Repo-ul public cu DOI (Zenodo) pentru revizie: anonimizarea profilului din `nutrition_recommender.py` rămâne de făcut înainte.
+2. Fișierul exact submis la KBS (ipoteză: ESWA_Manuscript_Anonymized_v2.docx); de cerut lui Buiu.
+3. Update Buiu netrimis; conținut: F0 + T1.1-T1.3 închid pe cifre R1.3, R1.8, R1.9, R2.b; corecția la 4.9 (punctul 5).
+4. Limita de cuvinte a abstractului la KBS (Guide for Authors KBS, nu ESWA).
+5. Errata CIFRE_CANONICE §7 la T4.3: tabelul provine din pipeline-ul XML 16 features (confidence_threshold.main(), commit f7cc4ca), nu din RF-ul canonic și nici din JSON 16f (care dă 0.4697). Cifre corecte pe canonic la 0.50: coverage 65.6% (66 overridden), eroare medie 58.3 kcal (71.9 la prag 0), max 200 kcal (se menține). Evidență: revision/scripts/_check_t13_safety_layer.py. Auditul de proveniență (19 oct): celelalte 15 secțiuni sunt pe modelul canonic.
+6. Manuscris 4.9 corectat la T4.1 (coverage, eroare medie; „76 la 69" devine „71.9 la 58.3"); frază de dezvăluire în response letter („during the revision the authors identified and corrected...").
+7. Eroarea calorică medie e minimizată de „mereu Normal" (54.2 kcal); nu se raportează singură, ci cu stările emise și F1 Active. Legătură directă cu R2.a (EE de referință).
+8. demo_end_to_end_v2.py șterge și reantrenează rf_model.joblib la fiecare rulare, fără hash check pe dataset; azi coincide cu modelul înghețat (sha256 b8113662). De rezolvat înainte de repo-ul public cu DOI (F5).
+9. Repo-ul public cu DOI (Zenodo): anonimizarea profilului din nutrition_recommender.py rămâne de făcut înainte.
+10. Durata dataset-ului e 10 iunie 2023 - 18 septembrie 2025 (aprox. 2 ani și 3 luni); de verificat formularea „3 ani" (T0.4 din acest plan, eventual manuscrisul) la F4.
+11. Ordinea de sacrificiu F2/F3 (TabNet, apoi grila sleep T3.1, apoi permutation importance T1.5) se aplică din start, nu la epuizarea bugetului: calendarul comprimat (F2 și F3 în 2 săptămâni, ~16 h) nu le încape pe toate. De decis odată cu mesajul către Buiu.
+12. Working tree-ul repo-ului are fișiere nestaged care nu țin de revizie: _referinte_upb/, eswa_architecture.py, outputs/figures/eswa_architecture/ și ștergerea disertatie_audit.zip. Înainte de repo-ul public cu DOI (F5): de decis ce se comite, ce intră în .gitignore, ce se șterge definitiv. Nu se atinge în F1-F4.
