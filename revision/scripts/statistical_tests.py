@@ -15,7 +15,8 @@ and the shared bootstrap index matrix written at T1.1.
     the exact binomial p (exact=True), and Holm-adjusted p over the family of 3
     pairs (multipletests(method="holm")). When n01 + n10 < 25 the exact
     variant is flagged as the recommended one.
-2b. Paired bootstrap of the metric difference for the same 3 pairs and two
+2b. Paired bootstrap of the metric difference for the same 3 pairs, plus
+    RF-persistence (T1.2b, baseline comparison outside the Holm family), and two
     metrics (macro F1 with labels=[0,1,2], zero_division=0; balanced accuracy).
     For every row r of the shared index matrix, the same indices are applied
     to y_true, y_pred_A and y_pred_B and diff_r = metric_A - metric_B.
@@ -88,12 +89,14 @@ METRIC_TITLE = {"f1_macro": "Macro F1", "balanced_accuracy": "Balanced accuracy"
 # Reference figures (CIFRE_CANONICE.md and T1.1): point values and marginal CIs on
 # the shared index matrix. The script must reproduce them exactly (sanity check).
 CANON_POINT = {
-    "f1_macro": {"rf": 0.5063, "xgb": 0.4760, "svm": 0.4347},
-    "balanced_accuracy": {"rf": 0.5227, "xgb": 0.4500, "svm": 0.4342},
+    "f1_macro": {"rf": 0.5063, "xgb": 0.4760, "svm": 0.4347, "persistence": 0.3039},
+    "balanced_accuracy": {"rf": 0.5227, "xgb": 0.4500, "svm": 0.4342, "persistence": 0.3039},
 }
 T11_CI = {
-    "f1_macro": {"rf": (0.3784, 0.6130), "xgb": (0.3406, 0.5933), "svm": (0.3279, 0.5395)},
-    "balanced_accuracy": {"rf": (0.3851, 0.6634), "xgb": (0.3439, 0.5763), "svm": (0.3288, 0.5683)},
+    "f1_macro": {"rf": (0.3784, 0.6130), "xgb": (0.3406, 0.5933), "svm": (0.3279, 0.5395),
+                 "persistence": (0.2612, 0.3501)},
+    "balanced_accuracy": {"rf": (0.3851, 0.6634), "xgb": (0.3439, 0.5763), "svm": (0.3288, 0.5683),
+                          "persistence": (0.2602, 0.3520)},
 }
 
 
@@ -275,7 +278,7 @@ def main() -> None:
     pb_rows: list[dict] = []
     with warnings.catch_warnings(record=True) as caught:
         warnings.simplefilter("always")
-        for a, b in PAIRS:
+        for a, b in PAIRS + [BASELINE_PAIR]:        # T1.2b: RF-persistence added (outside the Holm family)
             for mname, mfn in METRICS.items():
                 r = paired_bootstrap(y_true, preds[a], preds[b], mfn, idx)
                 pb_rows.append(dict(pair=f"{LABEL[a]}-{LABEL[b]}", metric=mname, **r))
@@ -330,7 +333,9 @@ def main() -> None:
               f"matrix {INDEX_FILE}, seed {SEED}, same indices applied to y_true, y_pred_A, y_pred_B). "
               "prop_diff_gt_0 = proportion of resamples with diff > 0 (descriptive, not a p-value). "
               "ci_A / ci_B = marginal CIs of each model on the same resamples (identical to T1.1). "
-              f"n_skipped = resamples with a class absent from y_true. Script: revision/scripts/statistical_tests.py, run {day}."]
+              "n_skipped = resamples with a class absent from y_true. RF-persistence (T1.2b) is a baseline "
+              "comparison, outside the Holm family of 3 model pairs; no multiplicity adjustment applies to CIs. "
+              f"Script: revision/scripts/statistical_tests.py, run {day}."]
     write_text(res / "t12_paired_bootstrap_table.md", "\n".join(pb_md) + "\n")
 
     meta = {

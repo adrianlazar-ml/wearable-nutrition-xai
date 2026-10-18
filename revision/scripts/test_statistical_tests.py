@@ -133,6 +133,23 @@ def test_cochran_q_two_identical_plus_one() -> None:
     assert q == cochran_q(y, [c, a, b])
 
 
+def test_arbitrary_pair_prop_in_unit_interval() -> None:
+    # Any pair of models, whatever the names: prop_diff_gt_0 is a proportion in [0, 1],
+    # equal to the fraction of used resamples with a positive difference.
+    rng = np.random.default_rng(21)
+    y = rng.integers(0, 3, 90)
+    baseline = np.concatenate([[1], y[:-1]])          # persistence-like: previous day's label
+    model = np.where(rng.random(90) < 0.7, y, rng.integers(0, 3, 90))
+    idx = _balanced_idx(90, n_boot=70, seed=22)
+    for metric in (F1, BA):
+        r = paired_bootstrap(y, model, baseline, metric, idx, L)
+        assert 0.0 <= r["prop_diff_gt_0"] <= 1.0
+        assert r["n_used"] + r["n_skipped"] == 70
+        assert r["ci_low"] <= r["ci_high"]
+        # the proportion is a multiple of 1 / n_used
+        assert math.isclose(r["prop_diff_gt_0"] * r["n_used"], round(r["prop_diff_gt_0"] * r["n_used"]), abs_tol=1e-9)
+
+
 if __name__ == "__main__":
     tests = [v for k, v in sorted(globals().items()) if k.startswith("test_") and callable(v)]
     for t in tests:
