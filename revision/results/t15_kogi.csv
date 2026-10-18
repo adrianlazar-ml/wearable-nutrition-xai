@@ -1,0 +1,7 @@
+config,group,n_features,features_kept,f1_macro,accuracy,mcc,balanced_accuracy,f1_rest,f1_normal,f1_active,cm_rr,cm_rn,cm_ra,cm_nr,cm_nn,cm_na,cm_ar,cm_an,cm_aa
+kogi,G1_composite_scores,2,oura_readiness_score;oura_sleep_score,0.2900205761,0.4479166667,-0.02673810187,0.295995671,0.2083333333,0.6172839506,0.04444444444,10,25,9,38,75,27,4,3,1
+kogi,G2_heart_rate,4,oura_recovery_index;oura_rhr_lowest;oura_rhr_avg;aw_hr_mean,0.3589491649,0.5572916667,0.04303035938,0.3667748918,0.2772277228,0.6996197719,0.1,14,27,3,40,92,8,3,4,1
+kogi,G3_hrv,3,oura_hrv_mean;oura_hrv_balance;aw_hrv_mean,0.3541471239,0.5729166667,0.06476011283,0.3583333333,0.2820512821,0.7232472325,0.05714285714,11,28,5,21,98,21,2,5,1
+kogi,G4_sleep_architecture,2,aw_sleep_deep_hours;aw_sleep_rem_hours,0.2751490905,0.3645833333,-0.02936098806,0.3416666667,0.2268041237,0.5090909091,0.08955223881,11,21,12,40,56,44,2,3,3
+kogi,G5_activity_energy,4,oura_activity_score;oura_steps;aw_steps;aw_active_calories,0.3238153878,0.4895833333,0.04244670144,0.4462121212,0.1408450704,0.6666666667,0.1639344262,5,25,14,22,84,34,0,3,5
+kogi,G6_resp_thermal_spo2,4,oura_respiratory_rate;oura_temp_deviation;aw_spo2;aw_resp_rate,0.3147153598,0.546875,0.002901624015,0.3123376623,0.2448979592,0.6992481203,0,12,26,6,41,93,6,1,7,0

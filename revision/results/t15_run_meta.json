@@ -1,0 +1,124 @@
+{
+  "run_date": "2026-10-19T01:10:42",
+  "elapsed_seconds": 19.5,
+  "seed": 42,
+  "n_resamples": 1000,
+  "n_test": 192,
+  "k_neighbors": 3,
+  "versions": {
+    "python": "3.11.9",
+    "numpy": "2.4.3",
+    "pandas": "2.3.3",
+    "scikit_learn": "1.8.0",
+    "imbalanced_learn": "0.14.1",
+    "matplotlib": "3.10.8"
+  },
+  "SLEEP_SCORE_GROUP": "G1",
+  "RUN_KOGI": true,
+  "groups": {
+    "G1": [
+      "readiness_score_lag1",
+      "sleep_score_lag1"
+    ],
+    "G2": [
+      "recovery_index_lag1",
+      "rhr_lowest_lag1",
+      "rhr_avg_lag1",
+      "aw_hr_mean_lag1"
+    ],
+    "G3": [
+      "hrv_mean_lag1",
+      "hrv_balance_lag1",
+      "aw_hrv_mean_lag1"
+    ],
+    "G4": [
+      "aw_sleep_deep_hours_lag1",
+      "aw_sleep_rem_hours_lag1"
+    ],
+    "G5": [
+      "activity_score_lag1",
+      "steps_oura_lag1",
+      "aw_steps_lag1",
+      "aw_active_calories_lag1"
+    ],
+    "G6": [
+      "respiratory_rate_lag1",
+      "temp_deviation_lag1",
+      "aw_spo2_lag1",
+      "aw_resp_rate_lag1"
+    ]
+  },
+  "t150_full": {
+    "f1_macro": 0.5063238989824085,
+    "accuracy": 0.640625,
+    "mcc": 0.14155971852108248,
+    "f1_active": 0.4444444444444444
+  },
+  "t150b_device": [
+    {
+      "config": "oura_only",
+      "n_features": 11,
+      "f1_macro": 0.4281336385355298,
+      "accuracy": 0.6197916666666666,
+      "mcc": 0.08124675905395869,
+      "balanced_accuracy": 0.4531385281385281,
+      "f1_rest": 0.24691358024691357,
+      "f1_normal": 0.75177304964539,
+      "f1_active": 0.2857142857142857,
+      "cm_rr": 10,
+      "cm_rn": 32,
+      "cm_ra": 2,
+      "cm_nr": 26,
+      "cm_nn": 106,
+      "cm_na": 8,
+      "cm_ar": 1,
+      "cm_an": 4,
+      "cm_aa": 3
+    },
+    {
+      "config": "watch_only",
+      "n_features": 8,
+      "f1_macro": 0.3243297318927571,
+      "accuracy": 0.4739583333333333,
+      "mcc": -0.035651411153038486,
+      "balanced_accuracy": 0.3390692640692641,
+      "f1_rest": 0.2689075630252101,
+      "f1_normal": 0.6040816326530613,
+      "f1_active": 0.1,
+      "cm_rr": 16,
+      "cm_rn": 26,
+      "cm_ra": 2,
+      "cm_nr": 57,
+      "cm_nn": 74,
+      "cm_na": 9,
+      "cm_ar": 2,
+      "cm_an": 5,
+      "cm_aa": 1
+    }
+  ],
+  "t11_rf_f1_macro_ci_from_cifre_revizie": [
+    0.3784,
+    0.613
+  ],
+  "full_f1_macro_marginal_ci": [
+    0.3784461356796262,
+    0.6130001721306069
+  ],
+  "bootstrap_indices_sha256": "fff3b2834c06196262ed4006fef99dce9106d25ab7e1e2c449e7bf889db30260",
+  "prediction_files_sha256": {
+    "t15_predictions_logo_G1_composite_scores.csv": "ddd08889d7effe57a74e93a63c93599ed75e79cdcedcc2495378842982973de0",
+    "t15_predictions_logo_G2_heart_rate.csv": "acab2379ed851577563b0e04813c40a1bcabe5cb65f1566909acc7e454def4a6",
+    "t15_predictions_logo_G3_hrv.csv": "f9c57edde5b7d90d19bf9ccacefbfcc706e4b98da2a6dd6b91c8ea0fda5cf9fb",
+    "t15_predictions_logo_G4_sleep_architecture.csv": "88a1ee1d86b938f128c4f611b2bfe1554a95e5eae97f29d6cf972eb5fcf28fc4",
+    "t15_predictions_logo_G5_activity_energy.csv": "3949e289f864e9399a2d9101485fc911015598ae4e437081924793e78f6d5c9e",
+    "t15_predictions_logo_G6_resp_thermal_spo2.csv": "528070c44e1ffa1a7fb73640afebeb85c70d87f017c7b9b7d6a36a1c95ffcdf2",
+    "t15_predictions_kogi_G1_composite_scores.csv": "17e0e63bd97688517f0965965ae844b0f9af2b84c6991da8a334d1b011a868de",
+    "t15_predictions_kogi_G2_heart_rate.csv": "40a21debaacc65238a19e9eab6e2a973ff3de21865623cb7b9e2dbbf6dd568ca",
+    "t15_predictions_kogi_G3_hrv.csv": "22fadaae89a9a1454f4a083aebb85d54e593a8b9a3dc830e4550ff03c00c9076",
+    "t15_predictions_kogi_G4_sleep_architecture.csv": "e644e959372346f5c3447530b08078208052bf6b59cf64dc82141e2546254d28",
+    "t15_predictions_kogi_G5_activity_energy.csv": "7bd2ab8b3122eddcadaeea4cc1c47fafe36ef8ac2b4a08542834a4d0e8570c9d",
+    "t15_predictions_kogi_G6_resp_thermal_spo2.csv": "2b7f5d0e4ae19073afc61aec4e3f0658e4dc2ebefa2ebb31375f9b75c16bbffc"
+  },
+  "figure_axes": 2,
+  "sanity_checks_failed": []
+}
