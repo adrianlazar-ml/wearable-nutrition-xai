@@ -77,7 +77,7 @@ Ipoteză: nicio diferență semnificativă la 0.05. Se raportează ca atare; con
 
 **T1.4 Stabilitate SHAP (R1.6).** 100 de modele RF antrenate pe bootstrap samples din train (aceiași hiperparametri). Pentru fiecare: ranking SHAP (mean |SHAP|). Raportezi: frecvența cu care aw_hr_mean e pe locul 1; top-5 overlap (Jaccard) față de ranking-ul canonic; Kendall tau mediu între ranking-uri, cu CI. O figură (boxplot al rangului per feature).
 
-**T1.5 Ablație pe grupuri (R1.7).** Definești grupuri: HR (Watch), HRV (Oura), somn (Oura), activitate/pași (ambele), temperatură (Oura), alte. Leave-one-group-out cu RF, aceeași procedură ca ablația existentă. Plus permutation importance pe test pentru cele 19 feature-uri (10 repetări). Un tabel și, opțional, o figură.
+**T1.5 Ablație pe grupuri (R1.7).** Leave-one-group-out si keep-one-group-in cu RF, 6 grupuri definite pe mecanism fiziologic (composite scores, heart rate, HRV, sleep architecture, activity/energy, respiration/thermal/SpO2), aceeasi procedura ca ablatia pe dispozitive, paired bootstrap fata de modelul complet pe matricea seed 42. Permutation importance: sacrificat (§8.11); se adauga doar daca ramane timp dupa F3.
 
 ### Faza 2: modele și tuning (5-18 oct, ~16h)
 
@@ -134,12 +134,13 @@ Puncte de control cu Buiu: după F0 (rezultat persistence, confirmare termen), d
 - **Tuning-ul schimbă ierarhia.** Se raportează ambele; nu se ascunde.
 - **F3 alunecă.** T3.3 se reduce la 2 folduri; T3.1 se reduce la grila 3x3 fără sleep.
 - **Termenul real e 21 de zile.** Pe 4 oct există pachetul F0+F1 (6 puncte acoperite) și se negociază extensie pentru rest. De aceea F1 e înaintea F2.
-- **Buget de ore depășit.** Ordinea de sacrificiu: TabNet, apoi grilă sleep în T3.1, apoi permutation importance în T1.5. Nimic din F0, T1.1-T1.3, T3.2 nu se sacrifică.
+- **Buget de ore depășit.** Ordinea de sacrificiu se aplica din start (§8.11): TabNet, permutation importance (T1.5), CatBoost, T2.2 redus la 20 configuratii si 3 folduri, grila sleep din T3.1, T3.3 la 2 folduri. Protejate: T1.4, T3.1 3x3, T3.2, T3.3 cu minimum 2 folduri, LightGBM default. F3 are prioritate peste F2.
 
 ## 8. Întrebări deschise (actualizat 19 oct 2026)
 
 Rezolvate:
 - (fost 2) Calibrarea nu intră în safety layer: decizie T1.3, 19 oct (sub probabilități calibrate sistemul emite doar Normal; vezi CIFRE_REVIZIE, note T1.3). Se raportează ca rezultat și ca limită.
+- (fost 11) Decis 19 oct: ordinea de sacrificiu se aplica din start; lista in §7. De comunicat lui Buiu in update (§8.3).
 
 Deschise:
 1. Confirmarea datei de 1 decembrie în Editorial Manager (Buiu).
@@ -152,5 +153,4 @@ Deschise:
 8. demo_end_to_end_v2.py șterge și reantrenează rf_model.joblib la fiecare rulare, fără hash check pe dataset; azi coincide cu modelul înghețat (sha256 b8113662). De rezolvat înainte de repo-ul public cu DOI (F5).
 9. Repo-ul public cu DOI (Zenodo): anonimizarea profilului din nutrition_recommender.py rămâne de făcut înainte.
 10. Durata dataset-ului e 10 iunie 2023 - 18 septembrie 2025 (aprox. 2 ani și 3 luni); de verificat formularea „3 ani" (T0.4 din acest plan, eventual manuscrisul) la F4.
-11. Ordinea de sacrificiu F2/F3 (TabNet, apoi grila sleep T3.1, apoi permutation importance T1.5) se aplică din start, nu la epuizarea bugetului: calendarul comprimat (F2 și F3 în 2 săptămâni, ~16 h) nu le încape pe toate. De decis odată cu mesajul către Buiu.
 12. Working tree-ul repo-ului are fișiere nestaged care nu țin de revizie: _referinte_upb/, eswa_architecture.py, outputs/figures/eswa_architecture/ și ștergerea disertatie_audit.zip. Înainte de repo-ul public cu DOI (F5): de decis ce se comite, ce intră în .gitignore, ce se șterge definitiv. Nu se atinge în F1-F4.
