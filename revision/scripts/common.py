@@ -91,8 +91,19 @@ def canonical_split(X: pd.DataFrame, y: pd.Series, dates: pd.Series,
                     k_neighbors: int = 3, seed: int = SEED) -> Split:
     """Temporal 80/20 split + imputer/SMOTE/scaler exactly as the canonical script."""
     i = int(len(X) * TRAIN_RATIO)
-    X_tr, X_te, y_tr, y_te = X.iloc[:i], X.iloc[i:], y.iloc[:i], y.iloc[i:]
+    return preprocess_split(X.iloc[:i], X.iloc[i:], y.iloc[:i], y.iloc[i:], dates.iloc[i:],
+                            k_neighbors=k_neighbors, seed=seed)
 
+
+def preprocess_split(X_tr: pd.DataFrame, X_te: pd.DataFrame, y_tr: pd.Series, y_te: pd.Series,
+                     dates_te: pd.Series, k_neighbors: int = 3, seed: int = SEED) -> Split:
+    """Imputer / SMOTE / scaler fit on the given train part only, applied to the test part.
+
+    Extracted from canonical_split() at T1.3 (2026-10-18) so that temporal CV folds
+    (TimeSeriesSplit on the 766 train days) reuse the canonical preprocessing without
+    copy-paste. Behaviour is identical: canonical_split() calls this function and
+    save_test_predictions.py reproduces the T0.2 csv files byte for byte.
+    """
     imputer = SimpleImputer(strategy="median")
     X_tr_imp = pd.DataFrame(imputer.fit_transform(X_tr), columns=FEATURES)
     X_te_imp = pd.DataFrame(imputer.transform(X_te), columns=FEATURES)
@@ -106,7 +117,7 @@ def canonical_split(X: pd.DataFrame, y: pd.Series, dates: pd.Series,
 
     return Split(X_tr_imp, X_te_imp, y_tr.reset_index(drop=True), y_te.reset_index(drop=True),
                  X_tr_sm, pd.Series(y_tr_sm), X_tr_scaled_sm, pd.Series(y_tr_scaled_sm),
-                 X_te_scaled, dates.iloc[i:].reset_index(drop=True), imputer, scaler)
+                 X_te_scaled, dates_te.reset_index(drop=True), imputer, scaler)
 
 
 def check_canonical_sizes(X, y, split: Split) -> None:

@@ -1,0 +1,223 @@
+split,fit_folds,variant,metric,point,ci_low,ci_high,n_skipped,note,seed
+test,1-4,raw,ece_top,0.1377008522,0.08151262351,0.2073556165,0,,42
+test,1-4,raw,mce_top,0.8831834231,,,,,42
+test,1-4,raw,brier_multiclass,0.5090987584,0.4747396167,0.5489217056,0,,42
+test,1-4,raw,log_loss,0.8521754673,0.7700815009,0.9648246452,0,,42
+test,1-4,raw,ece_rest,0.1430160516,,,,,42
+test,1-4,raw,brier_rest,0.199891744,,,,,42
+test,1-4,raw,ece_normal,0.256496262,,,,,42
+test,1-4,raw,brier_normal,0.259008315,,,,,42
+test,1-4,raw,ece_active,0.09360140937,,,,"point only; 8 positives, bins practically empty, no CI",42
+test,1-4,raw,brier_active,0.05019869936,0.03223065116,0.07209186532,0,,42
+test,1-4,raw,n_true_class_p_zero,0,,,,,42
+test,1-4,raw,n_zero_sum_rows,0,,,,,42
+test,1-4,raw,n_rows,192,,,,,42
+test,1-4,raw,n_active,8,,,,,42
+test,1-4,raw,f1_macro_argmax,0.506323899,,,,"informative, NON-canonical",42
+test,1-4,raw,f1_active_argmax,0.4444444444,,,,"informative, NON-canonical",42
+test,1-4,raw,accuracy_argmax,0.640625,,,,"informative, NON-canonical",42
+test,1-4,raw,mcc_argmax,0.1415597185,,,,"informative, NON-canonical",42
+test,1-4,raw,n_argmax_changed_vs_raw,0,,,,"informative, NON-canonical",42
+test,1-4,raw,p_active_min,0.0009088398964,,,,,42
+test,1-4,raw,p_active_median,0.07158516509,,,,,42
+test,1-4,raw,p_active_max,0.6311968093,,,,,42
+test,1-4,raw,n_p_active_ge_050,2,,,,,42
+test,1-4,platt,ece_top,0.03606276422,0.01234440461,0.09963466128,0,,42
+test,1-4,platt,mce_top,0.8397998056,,,,,42
+test,1-4,platt,brier_multiclass,0.4123540489,0.3458534173,0.4783058957,0,,42
+test,1-4,platt,log_loss,0.6968828134,0.6018148363,0.7970536626,0,,42
+test,1-4,platt,ece_rest,0.01564257522,,,,,42
+test,1-4,platt,brier_rest,0.1750947275,,,,,42
+test,1-4,platt,ece_normal,0.03606276422,,,,,42
+test,1-4,platt,brier_normal,0.1978078079,,,,,42
+test,1-4,platt,ece_active,0.02062229023,,,,"point only; 8 positives, bins practically empty, no CI",42
+test,1-4,platt,brier_active,0.03945151343,0.01675323066,0.0673108785,0,,42
+test,1-4,platt,n_true_class_p_zero,0,,,,,42
+test,1-4,platt,n_zero_sum_rows,0,,,,,42
+test,1-4,platt,n_rows,192,,,,,42
+test,1-4,platt,n_active,8,,,,,42
+test,1-4,platt,f1_macro_argmax,0.281124498,,,,"informative, NON-canonical",42
+test,1-4,platt,f1_active_argmax,0,,,,"informative, NON-canonical",42
+test,1-4,platt,accuracy_argmax,0.7291666667,,,,"informative, NON-canonical",42
+test,1-4,platt,mcc_argmax,0,,,,"informative, NON-canonical",42
+test,1-4,platt,n_argmax_changed_vs_raw,53,,,,"informative, NON-canonical",42
+test,1-4,platt,p_active_min,0.02184658422,,,,,42
+test,1-4,platt,p_active_median,0.05125312524,,,,,42
+test,1-4,platt,p_active_max,0.1029097739,,,,,42
+test,1-4,platt,n_p_active_ge_050,0,,,,,42
+test,1-4,isotonic,ece_top,0.04048147544,0.01892771706,0.1076738423,0,,42
+test,1-4,isotonic,mce_top,0.5721426447,,,,,42
+test,1-4,isotonic,brier_multiclass,0.4095168901,0.3417244142,0.4759207879,0,,42
+test,1-4,isotonic,log_loss,0.7110982892,0.5994162287,0.832763435,0,,42
+test,1-4,isotonic,ece_rest,0.03268963918,,,,,42
+test,1-4,isotonic,brier_rest,0.1748610075,,,,,42
+test,1-4,isotonic,ece_normal,0.04048147544,,,,,42
+test,1-4,isotonic,brier_normal,0.1954127966,,,,,42
+test,1-4,isotonic,ece_active,0.03403328024,,,,"point only; 8 positives, bins practically empty, no CI",42
+test,1-4,isotonic,brier_active,0.03924308589,0.01718157871,0.06666207418,0,,42
+test,1-4,isotonic,n_true_class_p_zero,0,,,,,42
+test,1-4,isotonic,n_zero_sum_rows,0,,,,,42
+test,1-4,isotonic,n_rows,192,,,,,42
+test,1-4,isotonic,n_active,8,,,,,42
+test,1-4,isotonic,f1_macro_argmax,0.281124498,,,,"informative, NON-canonical",42
+test,1-4,isotonic,f1_active_argmax,0,,,,"informative, NON-canonical",42
+test,1-4,isotonic,accuracy_argmax,0.7291666667,,,,"informative, NON-canonical",42
+test,1-4,isotonic,mcc_argmax,0,,,,"informative, NON-canonical",42
+test,1-4,isotonic,n_argmax_changed_vs_raw,53,,,,"informative, NON-canonical",42
+test,1-4,isotonic,p_active_min,0.006273654451,,,,,42
+test,1-4,isotonic,p_active_median,0.06760711541,,,,,42
+test,1-4,isotonic,p_active_max,0.1895878626,,,,,42
+test,1-4,isotonic,n_p_active_ge_050,0,,,,,42
+oof,1-4,raw,ece_top,0.07387170398,,,,in-sample for platt/isotonic,42
+oof,1-4,raw,mce_top,0.1315708321,,,,in-sample for platt/isotonic,42
+oof,1-4,raw,brier_multiclass,0.5183239893,,,,in-sample for platt/isotonic,42
+oof,1-4,raw,log_loss,0.8938216845,,,,in-sample for platt/isotonic,42
+oof,1-4,raw,ece_rest,0.1467463943,,,,in-sample for platt/isotonic,42
+oof,1-4,raw,brier_rest,0.1881691025,,,,in-sample for platt/isotonic,42
+oof,1-4,raw,ece_normal,0.2272009539,,,,in-sample for platt/isotonic,42
+oof,1-4,raw,brier_normal,0.25321664,,,,in-sample for platt/isotonic,42
+oof,1-4,raw,ece_active,0.09767919807,,,,in-sample for platt/isotonic,42
+oof,1-4,raw,brier_active,0.07693824687,,,,in-sample for platt/isotonic,42
+oof,1-4,raw,n_true_class_p_zero,1,,,,in-sample for platt/isotonic,42
+oof,1-4,raw,n_zero_sum_rows,0,,,,in-sample for platt/isotonic,42
+oof,1-4,raw,n_rows,612,,,,in-sample for platt/isotonic,42
+oof,1-4,raw,n_active,33,,,,in-sample for platt/isotonic,42
+oof,1-4,platt,ece_top,0.0123146871,,,,in-sample for platt/isotonic,42
+oof,1-4,platt,mce_top,0.11680923,,,,in-sample for platt/isotonic,42
+oof,1-4,platt,brier_multiclass,0.4042528934,,,,in-sample for platt/isotonic,42
+oof,1-4,platt,log_loss,0.6972562836,,,,in-sample for platt/isotonic,42
+oof,1-4,platt,ece_rest,0.005744767503,,,,in-sample for platt/isotonic,42
+oof,1-4,platt,brier_rest,0.1618421493,,,,in-sample for platt/isotonic,42
+oof,1-4,platt,ece_normal,0.0123146871,,,,in-sample for platt/isotonic,42
+oof,1-4,platt,brier_normal,0.1919221745,,,,in-sample for platt/isotonic,42
+oof,1-4,platt,ece_active,0.0008070893028,,,,in-sample for platt/isotonic,42
+oof,1-4,platt,brier_active,0.05048856962,,,,in-sample for platt/isotonic,42
+oof,1-4,platt,n_true_class_p_zero,0,,,,in-sample for platt/isotonic,42
+oof,1-4,platt,n_zero_sum_rows,0,,,,in-sample for platt/isotonic,42
+oof,1-4,platt,n_rows,612,,,,in-sample for platt/isotonic,42
+oof,1-4,platt,n_active,33,,,,in-sample for platt/isotonic,42
+oof,1-4,isotonic,ece_top,0.01878080769,,,,in-sample for platt/isotonic,42
+oof,1-4,isotonic,mce_top,0.3510448855,,,,in-sample for platt/isotonic,42
+oof,1-4,isotonic,brier_multiclass,0.3953758546,,,,in-sample for platt/isotonic,42
+oof,1-4,isotonic,log_loss,0.6777699131,,,,in-sample for platt/isotonic,42
+oof,1-4,isotonic,ece_rest,0.01186672136,,,,in-sample for platt/isotonic,42
+oof,1-4,isotonic,brier_rest,0.1581127405,,,,in-sample for platt/isotonic,42
+oof,1-4,isotonic,ece_normal,0.01877922246,,,,in-sample for platt/isotonic,42
+oof,1-4,isotonic,brier_normal,0.1872755874,,,,in-sample for platt/isotonic,42
+oof,1-4,isotonic,ece_active,0.002873849125,,,,in-sample for platt/isotonic,42
+oof,1-4,isotonic,brier_active,0.04998752665,,,,in-sample for platt/isotonic,42
+oof,1-4,isotonic,n_true_class_p_zero,0,,,,in-sample for platt/isotonic,42
+oof,1-4,isotonic,n_zero_sum_rows,0,,,,in-sample for platt/isotonic,42
+oof,1-4,isotonic,n_rows,612,,,,in-sample for platt/isotonic,42
+oof,1-4,isotonic,n_active,33,,,,in-sample for platt/isotonic,42
+test,2-4,raw,ece_top,0.1377008522,0.08151262351,0.2073556165,0,,42
+test,2-4,raw,mce_top,0.8831834231,,,,,42
+test,2-4,raw,brier_multiclass,0.5090987584,0.4747396167,0.5489217056,0,,42
+test,2-4,raw,log_loss,0.8521754673,0.7700815009,0.9648246452,0,,42
+test,2-4,raw,ece_rest,0.1430160516,,,,,42
+test,2-4,raw,brier_rest,0.199891744,,,,,42
+test,2-4,raw,ece_normal,0.256496262,,,,,42
+test,2-4,raw,brier_normal,0.259008315,,,,,42
+test,2-4,raw,ece_active,0.09360140937,,,,"point only; 8 positives, bins practically empty, no CI",42
+test,2-4,raw,brier_active,0.05019869936,0.03223065116,0.07209186532,0,,42
+test,2-4,raw,n_true_class_p_zero,0,,,,,42
+test,2-4,raw,n_zero_sum_rows,0,,,,,42
+test,2-4,raw,n_rows,192,,,,,42
+test,2-4,raw,n_active,8,,,,,42
+test,2-4,raw,f1_macro_argmax,0.506323899,,,,"informative, NON-canonical",42
+test,2-4,raw,f1_active_argmax,0.4444444444,,,,"informative, NON-canonical",42
+test,2-4,raw,accuracy_argmax,0.640625,,,,"informative, NON-canonical",42
+test,2-4,raw,mcc_argmax,0.1415597185,,,,"informative, NON-canonical",42
+test,2-4,raw,n_argmax_changed_vs_raw,0,,,,"informative, NON-canonical",42
+test,2-4,raw,p_active_min,0.0009088398964,,,,,42
+test,2-4,raw,p_active_median,0.07158516509,,,,,42
+test,2-4,raw,p_active_max,0.6311968093,,,,,42
+test,2-4,raw,n_p_active_ge_050,2,,,,,42
+test,2-4,platt,ece_top,0.02807436758,0.01132513792,0.08901388442,0,,42
+test,2-4,platt,mce_top,0.3167553774,,,,,42
+test,2-4,platt,brier_multiclass,0.4130002793,0.3434858048,0.480765633,0,,42
+test,2-4,platt,log_loss,0.7017469586,0.5975058548,0.8135864973,0,,42
+test,2-4,platt,ece_rest,0.02965230671,,,,,42
+test,2-4,platt,brier_rest,0.1757611641,,,,,42
+test,2-4,platt,ece_normal,0.02807436758,,,,,42
+test,2-4,platt,brier_normal,0.198241692,,,,,42
+test,2-4,platt,ece_active,0.04081823838,,,,"point only; 8 positives, bins practically empty, no CI",42
+test,2-4,platt,brier_active,0.03899742322,0.01685207993,0.06639827511,0,,42
+test,2-4,platt,n_true_class_p_zero,0,,,,,42
+test,2-4,platt,n_zero_sum_rows,0,,,,,42
+test,2-4,platt,n_rows,192,,,,,42
+test,2-4,platt,n_active,8,,,,,42
+test,2-4,platt,f1_macro_argmax,0.281124498,,,,"informative, NON-canonical",42
+test,2-4,platt,f1_active_argmax,0,,,,"informative, NON-canonical",42
+test,2-4,platt,accuracy_argmax,0.7291666667,,,,"informative, NON-canonical",42
+test,2-4,platt,mcc_argmax,0,,,,"informative, NON-canonical",42
+test,2-4,platt,n_argmax_changed_vs_raw,53,,,,"informative, NON-canonical",42
+test,2-4,platt,p_active_min,0.009621832931,,,,,42
+test,2-4,platt,p_active_median,0.04780011896,,,,,42
+test,2-4,platt,p_active_max,0.1433950422,,,,,42
+test,2-4,platt,n_p_active_ge_050,0,,,,,42
+test,2-4,isotonic,ece_top,0.0546787542,0.02433919957,0.1175020537,0,,42
+test,2-4,isotonic,mce_top,0.578476335,,,,,42
+test,2-4,isotonic,brier_multiclass,0.411081303,0.3395950115,0.4816410211,0,,42
+test,2-4,isotonic,log_loss,1.198651901,0.6554029043,1.896597615,0,,42
+test,2-4,isotonic,ece_rest,0.03927189099,,,,,42
+test,2-4,isotonic,brier_rest,0.1756851819,,,,,42
+test,2-4,isotonic,ece_normal,0.0546787542,,,,,42
+test,2-4,isotonic,brier_normal,0.1958657611,,,,,42
+test,2-4,isotonic,ece_active,0.03722144261,,,,"point only; 8 positives, bins practically empty, no CI",42
+test,2-4,isotonic,brier_active,0.03953036007,0.01761500712,0.06677740822,0,,42
+test,2-4,isotonic,n_true_class_p_zero,3,,,,,42
+test,2-4,isotonic,n_zero_sum_rows,0,,,,,42
+test,2-4,isotonic,n_rows,192,,,,,42
+test,2-4,isotonic,n_active,8,,,,,42
+test,2-4,isotonic,f1_macro_argmax,0.281124498,,,,"informative, NON-canonical",42
+test,2-4,isotonic,f1_active_argmax,0,,,,"informative, NON-canonical",42
+test,2-4,isotonic,accuracy_argmax,0.7291666667,,,,"informative, NON-canonical",42
+test,2-4,isotonic,mcc_argmax,0,,,,"informative, NON-canonical",42
+test,2-4,isotonic,n_argmax_changed_vs_raw,53,,,,"informative, NON-canonical",42
+test,2-4,isotonic,p_active_min,0,,,,,42
+test,2-4,isotonic,p_active_median,0.08019141113,,,,,42
+test,2-4,isotonic,p_active_max,0.1992379559,,,,,42
+test,2-4,isotonic,n_p_active_ge_050,0,,,,,42
+oof,2-4,raw,ece_top,0.08074415221,,,,in-sample for platt/isotonic,42
+oof,2-4,raw,mce_top,0.1737995878,,,,in-sample for platt/isotonic,42
+oof,2-4,raw,brier_multiclass,0.5265603084,,,,in-sample for platt/isotonic,42
+oof,2-4,raw,log_loss,0.849839494,,,,in-sample for platt/isotonic,42
+oof,2-4,raw,ece_rest,0.1581858826,,,,in-sample for platt/isotonic,42
+oof,2-4,raw,brier_rest,0.1837599155,,,,in-sample for platt/isotonic,42
+oof,2-4,raw,ece_normal,0.2557205601,,,,in-sample for platt/isotonic,42
+oof,2-4,raw,brier_normal,0.2592206084,,,,in-sample for platt/isotonic,42
+oof,2-4,raw,ece_active,0.1032758697,,,,in-sample for platt/isotonic,42
+oof,2-4,raw,brier_active,0.08357978449,,,,in-sample for platt/isotonic,42
+oof,2-4,raw,n_true_class_p_zero,0,,,,in-sample for platt/isotonic,42
+oof,2-4,raw,n_zero_sum_rows,0,,,,in-sample for platt/isotonic,42
+oof,2-4,raw,n_rows,459,,,,in-sample for platt/isotonic,42
+oof,2-4,raw,n_active,27,,,,in-sample for platt/isotonic,42
+oof,2-4,platt,ece_top,0.01345083433,,,,in-sample for platt/isotonic,42
+oof,2-4,platt,mce_top,0.08665621722,,,,in-sample for platt/isotonic,42
+oof,2-4,platt,brier_multiclass,0.3920742973,,,,in-sample for platt/isotonic,42
+oof,2-4,platt,log_loss,0.6809408965,,,,in-sample for platt/isotonic,42
+oof,2-4,platt,ece_rest,0.002755201818,,,,in-sample for platt/isotonic,42
+oof,2-4,platt,brier_rest,0.1514683791,,,,in-sample for platt/isotonic,42
+oof,2-4,platt,ece_normal,0.01345083433,,,,in-sample for platt/isotonic,42
+oof,2-4,platt,brier_normal,0.186039391,,,,in-sample for platt/isotonic,42
+oof,2-4,platt,ece_active,0.003296541703,,,,in-sample for platt/isotonic,42
+oof,2-4,platt,brier_active,0.05456652717,,,,in-sample for platt/isotonic,42
+oof,2-4,platt,n_true_class_p_zero,0,,,,in-sample for platt/isotonic,42
+oof,2-4,platt,n_zero_sum_rows,0,,,,in-sample for platt/isotonic,42
+oof,2-4,platt,n_rows,459,,,,in-sample for platt/isotonic,42
+oof,2-4,platt,n_active,27,,,,in-sample for platt/isotonic,42
+oof,2-4,isotonic,ece_top,0.02085062607,,,,in-sample for platt/isotonic,42
+oof,2-4,isotonic,mce_top,0.3586215773,,,,in-sample for platt/isotonic,42
+oof,2-4,isotonic,brier_multiclass,0.3811052441,,,,in-sample for platt/isotonic,42
+oof,2-4,isotonic,log_loss,0.657695265,,,,in-sample for platt/isotonic,42
+oof,2-4,isotonic,ece_rest,0.01232924452,,,,in-sample for platt/isotonic,42
+oof,2-4,isotonic,brier_rest,0.1470566531,,,,in-sample for platt/isotonic,42
+oof,2-4,isotonic,ece_normal,0.02085062607,,,,in-sample for platt/isotonic,42
+oof,2-4,isotonic,brier_normal,0.1802045782,,,,in-sample for platt/isotonic,42
+oof,2-4,isotonic,ece_active,0.00588482564,,,,in-sample for platt/isotonic,42
+oof,2-4,isotonic,brier_active,0.05384401287,,,,in-sample for platt/isotonic,42
+oof,2-4,isotonic,n_true_class_p_zero,0,,,,in-sample for platt/isotonic,42
+oof,2-4,isotonic,n_zero_sum_rows,0,,,,in-sample for platt/isotonic,42
+oof,2-4,isotonic,n_rows,459,,,,in-sample for platt/isotonic,42
+oof,2-4,isotonic,n_active,27,,,,in-sample for platt/isotonic,42

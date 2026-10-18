@@ -1,0 +1,128 @@
+{
+  "run_date": "2026-10-19T00:01:57",
+  "seed": 42,
+  "n_splits": 4,
+  "n_boot": 1000,
+  "n_test": 192,
+  "n_bins": 10,
+  "python": "3.11.9",
+  "scikit_learn": "1.8.0",
+  "numpy": "2.4.3",
+  "pandas": "2.3.3",
+  "matplotlib": "3.10.8",
+  "imblearn": "0.14.1",
+  "joblib": "1.5.3",
+  "platt": {
+    "C": "inf",
+    "l1_ratio": 0,
+    "note": "LogisticRegression(C=np.inf, l1_ratio=0) = no regularisation (sklearn 1.8 deprecates penalty=None; coefficients identical), solver lbfgs, max_iter 10000, tol 1e-8, feature logit(p) with p clipped to [1e-6, 1 - 1e-6]"
+  },
+  "isotonic": {
+    "y_min": 0.0,
+    "y_max": 1.0,
+    "out_of_bounds": "clip",
+    "increasing": true
+  },
+  "normalisation": "per-class calibrated probabilities divided by their row sum; rows with sum 0 fall back to 1/3 each and are counted (n_zero_sum_rows)",
+  "brier_convention": "mean over samples of the sum over classes of (p_c - y_c)^2, range [0, 2]; equal to sklearn brier_score_loss(scale_by_half=False)",
+  "ece_bins": "top-label, 10 equal-width bins on [0, 1], bin ids as sklearn.calibration.calibration_curve(strategy='uniform')",
+  "oof_rows_total": 612,
+  "oof_active_total": 33,
+  "train_active_total": 38,
+  "oof_active_note": "OOF covers 33 of the 38 Active train days: the 5 Active days in the fold-1 train part (first 154 days) have no out-of-fold probability",
+  "active_per_fold_validation": {
+    "1": 6,
+    "2": 6,
+    "3": 8,
+    "4": 13
+  },
+  "active_per_fold_train": {
+    "1": 5,
+    "2": 11,
+    "3": 17,
+    "4": 25
+  },
+  "oof_rows": {
+    "1-4": 612,
+    "2-4": 459
+  },
+  "oof_active": {
+    "1-4": 33,
+    "2-4": 27
+  },
+  "platt_coefficients": {
+    "1-4": {
+      "Rest": {
+        "slope": 0.396961578399626,
+        "intercept": -1.0592797159308762,
+        "n_iter": 8
+      },
+      "Normal": {
+        "slope": 0.22103842408389587,
+        "intercept": 1.0260139226181824,
+        "n_iter": 8
+      },
+      "Active": {
+        "slope": 0.20947142439494035,
+        "intercept": -2.3672827818329347,
+        "n_iter": 12
+      }
+    },
+    "2-4": {
+      "Rest": {
+        "slope": 0.36502637496720974,
+        "intercept": -1.188015066767343,
+        "n_iter": 8
+      },
+      "Normal": {
+        "slope": 0.17801140430141515,
+        "intercept": 1.1034584441848667,
+        "n_iter": 7
+      },
+      "Active": {
+        "slope": 0.38296642135028863,
+        "intercept": -2.0062761965072196,
+        "n_iter": 11
+      }
+    }
+  },
+  "isotonic_monotone": {
+    "1-4": {
+      "Rest": true,
+      "Normal": true,
+      "Active": true
+    },
+    "2-4": {
+      "Rest": true,
+      "Normal": true,
+      "Active": true
+    }
+  },
+  "n_fallback_rows": {
+    "test/1-4/raw": 0,
+    "test/1-4/platt": 0,
+    "test/1-4/isotonic": 0,
+    "oof/1-4/raw": 0,
+    "oof/1-4/platt": 0,
+    "oof/1-4/isotonic": 0,
+    "test/2-4/raw": 0,
+    "test/2-4/platt": 0,
+    "test/2-4/isotonic": 0,
+    "oof/2-4/raw": 0,
+    "oof/2-4/platt": 0,
+    "oof/2-4/isotonic": 0
+  },
+  "bootstrap_warnings": 0,
+  "n_resamples_skipped_total": 0,
+  "inputs_sha256": {
+    "test_predictions_rf.csv": "aea39c6dd2989e244397ec5d0fce0261036883b8b2c97984bef1ddd4f1b49d0c",
+    "t13_oof_probabilities_rf.csv": "0f3aa702fada78c9bc3b6ae90b43ee8ed30d9f228ed80fbab73e9872eab48fe3",
+    "t13_oof_folds_rf.csv": "2c0f1ab0e8f675bb309e78d9f47d792355c5e33ff8f40c86273f5ca286b4f988",
+    "bootstrap_indices_1000x192_seed42.npy": "fff3b2834c06196262ed4006fef99dce9106d25ab7e1e2c449e7bf889db30260",
+    "rf_revision.joblib": "b8113662207ab5480b12d8b7cad18783fa371182d873e9632eaaaa4280674014"
+  },
+  "figure_panels": 2,
+  "figure_axes": 4,
+  "sanity_checks_failed": [],
+  "elapsed_seconds": 6.9
+}
