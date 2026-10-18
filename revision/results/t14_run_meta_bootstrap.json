@@ -1,0 +1,81 @@
+{
+  "task": "T1.4",
+  "mode": "bootstrap",
+  "n_runs": 100,
+  "seed": 42,
+  "run_date": "2026-10-19",
+  "versions": {
+    "python": "3.11.9",
+    "sklearn": "1.8.0",
+    "numpy": "2.4.3",
+    "pandas": "2.3.3",
+    "shap": "0.51.0",
+    "imblearn": "0.14.1",
+    "scipy": "1.17.1",
+    "matplotlib": "3.10.8"
+  },
+  "shap_procedure": {
+    "explainer": "shap.TreeExplainer(rf), defaults (feature_perturbation tree_path_dependent, model_output raw = class probabilities)",
+    "data": "imputed test set, 192 days, unscaled (imputer fit on the run's train part)",
+    "aggregation": "np.abs(shap_values).mean(axis=(0, 2)) on the (192, 19, 3) array: mean |SHAP| over samples and the 3 classes (identical to run_shap() in cap5_compare_algorithms_json_ext.py, the script behind Figure 2)",
+    "rank": "1 = largest mean |SHAP|; ties -> smallest rank (scipy rankdata method min); top-5 = 5 largest values, stable tie-break by feature order"
+  },
+  "rf_hyperparameters": {
+    "n_estimators": 100,
+    "max_depth": 10,
+    "min_samples_leaf": 5
+  },
+  "reference_model": "revision/results/models/rf_revision.joblib",
+  "reference_ranking": [
+    "aw_hr_mean",
+    "oura_hrv_balance",
+    "aw_active_calories",
+    "oura_readiness_score",
+    "oura_activity_score",
+    "oura_rhr_lowest",
+    "aw_sleep_deep_hours",
+    "oura_temp_deviation",
+    "oura_hrv_mean",
+    "oura_respiratory_rate",
+    "oura_sleep_score",
+    "aw_steps",
+    "oura_steps",
+    "oura_recovery_index",
+    "oura_rhr_avg",
+    "aw_hrv_mean",
+    "aw_sleep_rem_hours",
+    "aw_resp_rate",
+    "aw_spo2"
+  ],
+  "identity_test": {
+    "ranking_equal": true,
+    "max_abs_diff_mean_abs_shap": 0.0,
+    "f1_macro": 0.506324,
+    "f1_active": 0.444444
+  },
+  "bootstrap_indices": {
+    "path": "revision/results/bootstrap_train_indices_100x766_seed42.npy",
+    "shape": [
+      100,
+      766
+    ],
+    "dtype": "int64",
+    "rng": "np.random.default_rng(42).integers(0, 766, size=(100, 766))",
+    "sha256": "f4052b964e758aca8bb084b0636b3ee7e9255bf3b0822571a3d485cd9da5ad1c",
+    "mean_unique_rows": 485.19
+  },
+  "what_varies": "train rows (bootstrap, before imputation / SMOTE); SMOTE seed 42 and RF seed 42 fixed",
+  "train_active_per_run": {
+    "min": 23,
+    "mean": 38.37,
+    "max": 59
+  },
+  "train_rest_per_run": {
+    "min": 134,
+    "mean": 157.37,
+    "max": 180
+  },
+  "figure_axes": 1,
+  "sanity_checks_failed": [],
+  "elapsed_seconds": 54.4
+}

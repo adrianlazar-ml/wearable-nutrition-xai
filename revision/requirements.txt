@@ -3,3 +3,6 @@
 # see models/frozen_meta_20260331.json). The repo has no root requirements.txt.
 # Installed 2026-10-18 for T1.2 (McNemar, Cochran's Q, Holm).
 statsmodels==0.15.0
+# Installed before the revision (present in the environment since the dissertation pipeline,
+# cap5_compare_algorithms_json_ext.py); pinned 2026-10-19 for T1.4 (SHAP ranking stability).
+shap==0.51.0
