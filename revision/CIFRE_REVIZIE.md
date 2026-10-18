@@ -17,6 +17,35 @@ Cifrele canonice ale modelului raportat (CIFRE_CANONICE.md) NU se schimba; tot c
 | T0.4 | Persistence MCC [CI 95%] | -0.0566 [-0.1632, 0.0597] | persistence_baseline.py | 42 | 2026-09-14 | |
 | T0.4 | Persistence accuracy | 0.5625 | persistence_baseline.py | 42 | 2026-09-14 | |
 | T0.4 | Majority F1 macro / accuracy | 0.2811 / 0.7292 | persistence_baseline.py | 42 | 2026-09-14 | reproduce 0.281 / 72.9% din CIFRE_CANONICE |
+| T1.1 | RF balanced accuracy [CI 95%] | 0.5227 [0.3851, 0.6634] | revision/scripts/extended_metrics.py | 42 | 2026-10-18 | 1000 resamples, matrice partajata, 0 sarite |
+| T1.1 | RF Cohen's kappa (simplu) [CI 95%] | 0.1415 [-0.0050, 0.2924] | extended_metrics.py | 42 | 2026-10-18 | QWK canonic 0.2551 ramane |
+| T1.1 | RF G-mean [CI 95%] | 0.4923 [0.2960, 0.6228] | extended_metrics.py | 42 | 2026-10-18 | media geometrica a recall-urilor Rest/Normal/Active |
+| T1.1 | RF macro ROC-AUC OvR [CI 95%] | 0.5581 [0.4199, 0.6921] | extended_metrics.py | 42 | 2026-10-18 | CI include 0.5; de raportat ca atare |
+| T1.1 | RF macro PR-AUC [CI 95%] | 0.4983 [0.3716, 0.6359] | extended_metrics.py | 42 | 2026-10-18 | peste prevalenta medie 0.3333 |
+| T1.1 | XGB balanced accuracy [CI 95%] | 0.4500 [0.3439, 0.5763] | extended_metrics.py | 42 | 2026-10-18 | |
+| T1.1 | XGB Cohen's kappa (simplu) [CI 95%] | 0.1459 [0.0065, 0.2905] | extended_metrics.py | 42 | 2026-10-18 | |
+| T1.1 | XGB G-mean [CI 95%] | 0.3759 [0.0000, 0.5156] | extended_metrics.py | 42 | 2026-10-18 | CI atinge 0: in unele resample-uri recall Active = 0 |
+| T1.1 | XGB macro ROC-AUC OvR [CI 95%] | 0.5892 [0.4610, 0.7022] | extended_metrics.py | 42 | 2026-10-18 | cel mai mare ROC-AUC dintre cele 3; CI include 0.5 |
+| T1.1 | XGB macro PR-AUC [CI 95%] | 0.4598 [0.3616, 0.6082] | extended_metrics.py | 42 | 2026-10-18 | |
+| T1.1 | SVM balanced accuracy [CI 95%] | 0.4342 [0.3288, 0.5683] | extended_metrics.py | 42 | 2026-10-18 | |
+| T1.1 | SVM Cohen's kappa (simplu) [CI 95%] | 0.0955 [-0.0395, 0.2310] | extended_metrics.py | 42 | 2026-10-18 | |
+| T1.1 | SVM G-mean [CI 95%] | 0.3824 [0.0000, 0.5355] | extended_metrics.py | 42 | 2026-10-18 | CI atinge 0 |
+| T1.1 | SVM macro ROC-AUC OvR [CI 95%] | 0.5595 [0.4493, 0.6733] | extended_metrics.py | 42 | 2026-10-18 | probabilitati Platt; CI include 0.5 |
+| T1.1 | SVM macro PR-AUC [CI 95%] | 0.4603 [0.3565, 0.6064] | extended_metrics.py | 42 | 2026-10-18 | |
+| T1.1 | Persistence balanced accuracy [CI 95%] | 0.3039 [0.2602, 0.3520] | extended_metrics.py | 42 | 2026-10-18 | == F1 macro la punct (vezi nota T0.4); CI difera |
+| T1.1 | Persistence Cohen's kappa (simplu) [CI 95%] | -0.0566 [-0.1626, 0.0593] | extended_metrics.py | 42 | 2026-10-18 | == MCC la punct (vezi nota T0.4) |
+| T1.1 | Persistence G-mean [CI 95%] | 0.0000 [0.0000, 0.0000] | extended_metrics.py | 42 | 2026-10-18 | recall Active = 0 in toate resample-urile |
+| T1.1 | Persistence / Majority ROC-AUC, PR-AUC | n/a | extended_metrics.py | 42 | 2026-10-18 | hard labels only |
+| T1.1 | Majority balanced accuracy [CI 95%] | 0.3333 [0.3333, 0.3333] | extended_metrics.py | 42 | 2026-10-18 | = 1/3 exact |
+| T1.1 | Majority Cohen's kappa (simplu) [CI 95%] | 0.0000 [0.0000, 0.0000] | extended_metrics.py | 42 | 2026-10-18 | |
+| T1.1 | Majority G-mean [CI 95%] | 0.0000 [0.0000, 0.0000] | extended_metrics.py | 42 | 2026-10-18 | |
+| T1.1 | RF F1 / acc / MCC / QWK (sanity, CI pe matricea partajata) | 0.5063 [0.3784, 0.6130] / 0.6406 [0.5729, 0.7083] / 0.1416 [-0.0050, 0.2929] / 0.2551 [0.1025, 0.3966] | extended_metrics.py | 42 | 2026-10-18 | puncte identice cu CIFRE_CANONICE; CI difera usor de cel canonic [0.373, 0.610] / [-0.0045, 0.2843] (alte resample-uri) |
+| T1.1 | XGB F1 / acc / MCC / QWK (sanity) | 0.4760 [0.3406, 0.5933] / 0.6875 [0.6198, 0.7552] / 0.1503 [0.0067, 0.3042] / 0.1805 [0.0192, 0.3376] | extended_metrics.py | 42 | 2026-10-18 | puncte identice cu CIFRE_CANONICE |
+| T1.1 | SVM F1 / acc / MCC / QWK (sanity) | 0.4347 [0.3279, 0.5395] / 0.6302 [0.5573, 0.6979] / 0.0956 [-0.0398, 0.2316] / 0.1709 [0.0263, 0.3146] | extended_metrics.py | 42 | 2026-10-18 | puncte identice cu CIFRE_CANONICE |
+| T1.1 | Persistence F1 / acc / MCC / QWK (sanity) | 0.3039 [0.2612, 0.3501] / 0.5625 [0.4948, 0.6354] / -0.0566 [-0.1632, 0.0597] / 0.0055 [-0.1175, 0.1225] | extended_metrics.py | 42 | 2026-10-18 | CI F1 si MCC identice cu T0.4 (acelasi flux RNG) |
+| T1.1 | Majority F1 / acc / MCC / QWK (sanity) | 0.2811 [0.2667, 0.2946] / 0.7292 [0.6667, 0.7917] / 0.0000 [0.0000, 0.0000] / 0.0000 [0.0000, 0.0000] | extended_metrics.py | 42 | 2026-10-18 | |
+| T1.1 | Abatere maxima suma probabilitati (RF, XGB, SVM) | 1.066e-07 | extended_metrics.py | 42 | 2026-10-18 | prag 1e-6; PASS |
+| T1.1 | Resample-uri sarite per metrica | 0 pentru toate cele 9 metrici | extended_metrics.py | 42 | 2026-10-18 | niciun resample fara vreo clasa in y_true (1000 x 192, seed 42) |
 
 ## Note metodologice
 
@@ -26,6 +55,25 @@ Cifrele canonice ale modelului raportat (CIFRE_CANONICE.md) NU se schimba; tot c
 - T0.2: `predict()` la SVC(probability=True) foloseste functia de decizie, iar `predict_proba` foloseste Platt scaling (CV intern); pot diferi pe cateva zile. Faza 1 foloseste `y_pred` (= predict, ca in scriptul canonic) pentru metrici si McNemar, si probabilitatile doar pentru calibrare.
 
 - T0.4: balanced_accuracy == f1_macro pentru persistence (0.30389610...) NU e bug. Verificat in `revision/scripts/_check_t04_coincidence.py` (rulat 2026-10-14): numarul de predictii per clasa (44/140/8) este exact egal cu suportul per clasa, deci precision = recall per clasa, deci F1 per clasa = recall si macro F1 = macro recall = balanced accuracy. Structural: predictiile persistence sunt etichetele de test shiftate cu o zi, iar ultima eticheta din train (Normal) coincide cu ultima din test (Normal), deci multiset-ul predictiilor = multiset-ul adevarului. Acelasi fapt explica si kappa == MCC. Scriptul persistence_baseline.py e corect.
+
+- T1.1: toate metricile sunt calculate din predictiile salvate la T0.2 (`results/test_predictions_{rf,xgb,svm}.csv`), fara reantrenare. Inventarul intrarilor (`_check_t11_inputs.py`, 2026-10-18): 192 randuri x 6 coloane in fiecare fisier, etichete int 0/1/2 (Rest/Normal/Active), coloane p_rest, p_normal, p_active in ordinea claselor [0, 1, 2], date sortata crescator si identica in cele trei fisiere, y_true identic element cu element, suport 44/140/8. `persistence_baseline.csv` e doar rezumat; predictiile persistence au fost reconstruite din y_true cu pred[0] = ultima eticheta din train citita din `models/dataset_snapshot_20260331.csv` (= 1, Normal) si sunt identice cu `test_predictions_persistence.csv` salvat la T0.4. Metricile canonice recalculate din csv (F1, acc, MCC, QWK) coincid la 4 zecimale pentru RF, XGB, SVM.
+
+- T1.1, G-mean multiclass: G = (recall_Rest x recall_Normal x recall_Active)^(1/3), cu recall_c = TP_c / suport_c si clasele fixate explicit (labels = [0, 1, 2]). Implementare manuala in `extended_metrics.gmean()`, testata in `revision/scripts/test_extended_metrics.py` (6 teste, ALL PASS, 2026-10-18: predictie perfecta = 1, clasa neprezisa = 0, recall-uri cunoscute 0.5/1.0/0.25 -> 0.5, egalitate cu media geometrica a `recall_score`, nan cand o clasa lipseste din y_true, independenta de ordinea etichetelor). Pentru persistence si majority G-mean = 0 pentru ca recall Active = 0 (Active nu e prezis niciodata corect).
+
+- T1.1, ROC-AUC si PR-AUC n/a pentru persistence si majority: cele doua baseline-uri produc doar etichete hard (one-hot), nu scoruri ordonabile; o curba ROC/PR pe one-hot are un singur punct operational, iar AUC-ul rezultat nu e comparabil cu cel al modelelor cu probabilitati. Pentru RF, XGB, SVM probabilitatile vin din p_rest, p_normal, p_active (verificat: ordinea coloanelor = ordinea claselor la `label_binarize(classes=[0, 1, 2])`; abaterea maxima a sumei pe rand fata de 1 este 1.066e-07). Etichetele hard pentru balanced accuracy, kappa, G-mean vin din y_pred (SVM: predict(), nu argmax(proba), conform notei T0.2).
+
+- T1.1, bootstrap: o singura matrice de indici 1000 x 192, `np.random.default_rng(42).integers(0, 192, size=(1000, 192))`, salvata in `results/bootstrap_indices_1000x192_seed42.npy` si folosita pentru toate sistemele si toate metricile (T1.2 o va folosi pentru paired bootstrap). CI = percentile 2.5 / 97.5. Niciun resample nu are vreo clasa absenta din y_true, deci 0 resample-uri sarite pentru fiecare dintre cele 9 metrici si 0 warning-uri sklearn in bucla. Matricea coincide cu fluxul RNG din `persistence_baseline.py` (1000 apeluri succesive `integers(0, 192, 192)` cu acelasi seed), de aceea CI-urile persistence pentru F1 si MCC sunt identice cu T0.4. CI-urile RF pe F1 [0.3784, 0.6130] si MCC [-0.0050, 0.2929] difera usor de cele canonice [0.373, 0.610] / [-0.0045, 0.2843], care au fost obtinute cu alte resample-uri; punctele sunt identice. In manuscris se citeaza CI-urile canonice pentru cifrele canonice si CI-urile T1.1 pentru metricile noi.
+
+- T1.1, plauzibilitate (Task 5, raportat): persistence balanced accuracy == F1 macro (0.303896) si kappa == MCC (-0.056604) la punct, conform notei T0.4; CI-urile lor difera insa ([0.2602, 0.3520] vs [0.2612, 0.3501]) pentru ca egalitatea multiset-urilor nu se pastreaza in resample-uri. Majority: balanced accuracy = 1/3, kappa = 0, G-mean = 0, exact. RF: balanced accuracy 0.5227 intre F1 macro 0.5063 si 1.0. ROC-AUC peste 0.5 si PR-AUC peste prevalenta medie (1/3) pentru toate cele trei modele la punct; dar CI-ul ROC-AUC include 0.5 pentru toate trei (RF [0.4199, 0.6921], XGB [0.4610, 0.7022], SVM [0.4493, 0.6733]), iar CI-ul G-mean atinge 0 pentru XGB si SVM. Se raporteaza ca atare, consistent cu regula 4.
+
+- T1.1, ierarhie: pe balanced accuracy si G-mean RF ramane primul (0.5227 / 0.4923), XGB si SVM sunt apropiate (0.4500 / 0.3759 si 0.4342 / 0.3824); pe ROC-AUC XGB e primul (0.5892), pe PR-AUC RF (0.4983). Kappa simplu este foarte apropiat de MCC pentru toate sistemele (diferenta maxima 0.0044, la XGB: 0.1459 vs 0.1503).
+
+## Status Faza 1
+
+In lucru. Deschisa: 2026-10-18.
+
+- T1.1 PASS (2026-10-18): inventar intrari PASS (`_check_t11_inputs.py`), metrici canonice din csv PASS la 4 zecimale, `extended_metrics.py` rulat de doua ori consecutiv cu iesiri byte-identice (sha256 identic pe csv, md si npy), 26.5 s / 18.0 s, 0 erori; tabel md == csv (`_check_t11_outputs.py`); diff pe CIFRE_CANONICE.md gol. Iesiri: `results/t11_extended_metrics.csv`, `results/t11_extended_metrics_table.md`, `results/bootstrap_indices_1000x192_seed42.npy`.
+- T1.2, T1.3, T1.4, T1.5: nu au inceput.
 
 ## Status Faza 0
 
