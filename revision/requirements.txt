@@ -1,0 +1,5 @@
+# Revision-only dependencies (added on top of the frozen environment:
+# Python 3.11.9 / scikit-learn 1.8.0 / numpy 2.4.3 / pandas 2.3.3,
+# see models/frozen_meta_20260331.json). The repo has no root requirements.txt.
+# Installed 2026-10-18 for T1.2 (McNemar, Cochran's Q, Holm).
+statsmodels==0.15.0

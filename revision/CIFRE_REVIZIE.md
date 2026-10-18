@@ -46,6 +46,31 @@ Cifrele canonice ale modelului raportat (CIFRE_CANONICE.md) NU se schimba; tot c
 | T1.1 | Majority F1 / acc / MCC / QWK (sanity) | 0.2811 [0.2667, 0.2946] / 0.7292 [0.6667, 0.7917] / 0.0000 [0.0000, 0.0000] / 0.0000 [0.0000, 0.0000] | extended_metrics.py | 42 | 2026-10-18 | |
 | T1.1 | Abatere maxima suma probabilitati (RF, XGB, SVM) | 1.066e-07 | extended_metrics.py | 42 | 2026-10-18 | prag 1e-6; PASS |
 | T1.1 | Resample-uri sarite per metrica | 0 pentru toate cele 9 metrici | extended_metrics.py | 42 | 2026-10-18 | niciun resample fara vreo clasa in y_true (1000 x 192, seed 42) |
+| T1.2 | McNemar RF-XGB (n01 / n10) | 15 / 24; chi2_cc 1.6410, p_cc 0.2002, p_exact 0.1996, p_holm 0.4004 | revision/scripts/statistical_tests.py | 42 | 2026-10-18 | n00 45, n11 108; discordante 39 >= 25, varianta cc raportata; nesemnificativ la 0.05 |
+| T1.2 | McNemar RF-SVM (n01 / n10) | 22 / 20; chi2_cc 0.0238, p_cc 0.8774, p_exact 0.8776, p_holm 0.8774 | statistical_tests.py | 42 | 2026-10-18 | n00 49, n11 101; discordante 42; nesemnificativ |
+| T1.2 | McNemar XGB-SVM (n01 / n10) | 27 / 16; chi2_cc 2.3256, p_cc 0.1273, p_exact 0.1263, p_holm 0.3818 | statistical_tests.py | 42 | 2026-10-18 | n00 44, n11 105; discordante 43; nesemnificativ (XGB are acuratetea cea mai mare, 0.6875) |
+| T1.2 | Paired bootstrap RF-XGB, F1 macro | diff 0.0303 [-0.0796, 0.1561]; proportie resample-uri cu diff > 0 = 0.684 | statistical_tests.py | 42 | 2026-10-18 | CI include 0; matricea partajata T1.1 |
+| T1.2 | Paired bootstrap RF-XGB, balanced accuracy | diff 0.0727 [-0.0322, 0.1998]; proportie diff > 0 = 0.891 | statistical_tests.py | 42 | 2026-10-18 | CI include 0 |
+| T1.2 | Paired bootstrap RF-SVM, F1 macro | diff 0.0716 [-0.0337, 0.1775]; proportie diff > 0 = 0.902 | statistical_tests.py | 42 | 2026-10-18 | CI include 0 |
+| T1.2 | Paired bootstrap RF-SVM, balanced accuracy | diff 0.0885 [-0.0232, 0.2159]; proportie diff > 0 = 0.929 | statistical_tests.py | 42 | 2026-10-18 | CI include 0 (cel mai aproape de a-l exclude) |
+| T1.2 | Paired bootstrap XGB-SVM, F1 macro | diff 0.0413 [-0.1021, 0.1647]; proportie diff > 0 = 0.730 | statistical_tests.py | 42 | 2026-10-18 | CI include 0 |
+| T1.2 | Paired bootstrap XGB-SVM, balanced accuracy | diff 0.0158 [-0.1195, 0.1508]; proportie diff > 0 = 0.606 | statistical_tests.py | 42 | 2026-10-18 | CI include 0 |
+| T1.2 | Cochran's Q (RF, XGB, SVM, corect/incorect) | Q 3.3226, df 2, p 0.1899 | statistical_tests.py | 42 | 2026-10-18 | 192 zile x 3 modele; nesemnificativ; fara post-hoc suplimentar (perechile McNemar sunt post-hoc-ul) |
+| T1.2 | McNemar RF-persistence (n01 / n10), comparatie cu baseline-ul | 50 / 35; chi2_cc 2.3059, p_cc 0.1289, p_exact 0.1284 | statistical_tests.py | 42 | 2026-10-18 | in afara familiei Holm (neajustat); n00 34, n11 73; NESEMNIFICATIV la 0.05 pe corect/incorect per zi, desi CI-urile marginale F1 macro RF / persistence nu se suprapun (T0.4); vezi nota |
+| T1.2 | Versiune statsmodels | 0.15.0 | pip; pin in revision/requirements.txt | | 2026-10-18 | instalat la T1.2; python / numpy / pandas / sklearn neschimbate (3.11.9 / 2.4.3 / 2.3.3 / 1.8.0) |
+| T1.2 | Resample-uri sarite (paired bootstrap) | 0 pentru toate cele 6 perechi x metrici | statistical_tests.py | 42 | 2026-10-18 | 1000 folosite din 1000; 0 warning-uri sklearn/statsmodels in bucla |
+
+## Artefacte
+
+Modele si preprocesoare salvate la T0.2 (`revision/scripts/save_test_predictions.py`, rulat 2026-09-14; inventar `_check_t12_inputs.py`, 2026-10-18). NU sunt folosite de T1.1 si T1.2 (care citesc doar csv-urile si matricea npy); necesare incepand cu T1.3 (calibrare) si T1.4. Toate sunt urmarite de git din commit-ul d3e1047 (Faza 0); total 2,779,243 bytes (2.78 MB), sub pragul de 20 MB.
+
+| Cale | Bytes | sha256 (primele 16) | Data modificarii | Script producator | Status git |
+|---|---|---|---|---|---|
+| revision/results/models/rf_revision.joblib | 1,810,593 | b8113662207ab548 | 2026-09-14 22:46:54 | revision/scripts/save_test_predictions.py | urmarit |
+| revision/results/models/xgb_revision.joblib | 751,753 | 268760acaf1055c5 | 2026-09-14 22:46:54 | revision/scripts/save_test_predictions.py | urmarit |
+| revision/results/models/svm_revision.joblib | 213,939 | 811a86c96f08a586 | 2026-09-14 22:46:54 | revision/scripts/save_test_predictions.py | urmarit |
+| revision/results/models/imputer_revision.joblib | 1,295 | 9b5e16ba6cf9a70a | 2026-09-14 22:46:54 | revision/scripts/save_test_predictions.py | urmarit |
+| revision/results/models/scaler_revision.joblib | 1,663 | 981b7001eaf30521 | 2026-09-14 22:46:54 | revision/scripts/save_test_predictions.py | urmarit |
 
 ## Note metodologice
 
@@ -68,16 +93,29 @@ Cifrele canonice ale modelului raportat (CIFRE_CANONICE.md) NU se schimba; tot c
 
 - T1.1, ierarhie: pe balanced accuracy si G-mean RF ramane primul (0.5227 / 0.4923), XGB si SVM sunt apropiate (0.4500 / 0.3759 si 0.4342 / 0.3824); pe ROC-AUC XGB e primul (0.5892), pe PR-AUC RF (0.4983). Kappa simplu este foarte apropiat de MCC pentru toate sistemele (diferenta maxima 0.0044, la XGB: 0.1459 vs 0.1503).
 
+- T1.2, McNemar: pentru perechea A-B, corect = `y_pred == y_true` pe fiecare dintre cele 192 zile; n01 = A corect si B gresit, n10 = A gresit si B corect, n11 = ambele corecte, n00 = ambele gresite; tabelul dat la statsmodels este [[n11, n01], [n10, n00]], iar statistica depinde doar de n01 si n10. McNemar testeaza acuratetea per zi (corect/incorect), nu F1 macro: e insensibil la clasa pe care se greseste, deci nu "vede" diferentele pe clasa Active. Etichetele hard vin din `y_pred` (SVM: `predict()`, conform notei T0.2); probabilitatile nu intra in T1.2.
+
+- T1.2, varianta exacta: chi-patratul cu corectie de continuitate (`mcnemar(exact=False, correction=True)`) e o aproximare asimptotica; cu putine discordante (regula uzuala: n01 + n10 < 25) se recomanda testul binomial exact (`exact=True`). Aici discordantele sunt 39 / 42 / 43 (85 pentru RF-persistence), deci varianta cc e cea raportata, iar cea exacta e listata alaturi; difera abia la a 3-a zecimala si duce la aceeasi concluzie. Coloana `recommended` din `t12_mcnemar.csv` aplica regula automat.
+
+- T1.2, "proportie resample-uri cu diff > 0" NU e p-value: e fractia din distributia bootstrap a diferentei metric_A - metric_B care cade peste 0, o descriere a distributiei, nu o probabilitate sub ipoteza nula (nu exista o ipoteza nula simulata). Inferenta se face pe CI-ul percentile al diferentei: daca include 0, diferenta nu e distinsa de 0 la 95%. Toate cele 6 CI-uri (3 perechi x F1 macro / balanced accuracy) includ 0.
+
+- T1.2, familii de teste: ajustarea Holm (`multipletests(method="holm")`) se aplica pe familia de 3 perechi de modele (RF-XGB, RF-SVM, XGB-SVM), separat pentru p_cc si p_exact. RF-persistence raspunde la o alta intrebare (model vs baseline, cerinta Reviewer 2), deci e raportat in afara familiei, neajustat. Cochran's Q e testul global pe cele 3 modele simultan (Q 3.3226, df 2, p 0.1899); perechile McNemar sunt post-hoc-ul lui, nu se face alt post-hoc.
+
+- T1.2, paired bootstrap: aceeasi matrice de indici ca T1.1 (`bootstrap_indices_1000x192_seed42.npy`, verificata byte-identic cu `default_rng(42).integers(0, 192, size=(1000, 192))`), acelasi vector de indici aplicat la y_true, y_pred_A si y_pred_B in fiecare resample, deci diferenta e pe aceleasi zile. Sanity check marginal PASS: cele 12 CI-uri marginale (RF / XGB / SVM x F1 macro / balanced accuracy) coincid la 4 zecimale cu T1.1, iar cele 6 diferente la punct coincid cu diferentele cifrelor canonice / T1.1 (de ex. RF-XGB F1 0.5063 - 0.4760 = 0.0303). 0 resample-uri sarite, 0 warning-uri in bucla.
+
+- T1.2, rezultat neasteptat (raportat, nu ajustat): McNemar RF vs persistence NU e semnificativ la 0.05 (p_cc 0.1289; 50 zile RF corect / persistence gresit vs 35 invers), desi la T0.4 CI-urile marginale F1 macro ale RF [0.3784, 0.6130] si persistence [0.2612, 0.3501] nu se suprapun. Nu e o contradictie: McNemar compara acuratetea per zi (RF 0.6406 vs persistence 0.5625), pe care persistence o obtine prin zilele Normal consecutive, iar F1 macro penalizeaza puternic F1 Active = 0 al persistence. In response letter se formuleaza exact asa: avantajul RF fata de persistence e pe clasele minoritare (F1 macro, balanced accuracy, G-mean), nu pe acuratetea bruta; comparatia formala RF-persistence pe F1 macro (paired bootstrap, aceeasi procedura ca 2b) nu a fost ceruta la T1.2 si ramane de adaugat daca e nevoie pentru T4.2.
+
 ## Status Faza 1
 
 In lucru. Deschisa: 2026-10-18.
 
-- T1.1 PASS (2026-10-18): inventar intrari PASS (`_check_t11_inputs.py`), metrici canonice din csv PASS la 4 zecimale, `extended_metrics.py` rulat de doua ori consecutiv cu iesiri byte-identice (sha256 identic pe csv, md si npy), 26.5 s / 18.0 s, 0 erori; tabel md == csv (`_check_t11_outputs.py`); diff pe CIFRE_CANONICE.md gol. Iesiri: `results/t11_extended_metrics.csv`, `results/t11_extended_metrics_table.md`, `results/bootstrap_indices_1000x192_seed42.npy`.
-- T1.2, T1.3, T1.4, T1.5: nu au inceput.
+- T1.1 PASS (2026-10-18, commit e54883d): inventar intrari PASS (`_check_t11_inputs.py`), metrici canonice din csv PASS la 4 zecimale, `extended_metrics.py` rulat de doua ori consecutiv cu iesiri byte-identice (sha256 identic pe csv, md si npy), 26.5 s / 18.0 s, 0 erori; tabel md == csv (`_check_t11_outputs.py`); diff pe CIFRE_CANONICE.md gol. Iesiri: `results/t11_extended_metrics.csv`, `results/t11_extended_metrics_table.md`, `results/bootstrap_indices_1000x192_seed42.npy`.
+- T1.2 PASS (2026-10-18): inventar intrari PASS (`_check_t12_inputs.py`: 4 csv x 192 randuri, `date` si `y_true` identice, suport 44/140/8, matrice npy (1000, 192) int64 byte-identica cu `default_rng(42)`); `statistical_tests.py` cu 29 sanity check-uri interne PASS (sanity 2b: 12 CI marginale == T1.1 la 4 zecimale, 6 diff_point == diferente canonice; p-value-uri in [0, 1]; n00+n01+n10+n11 = 192 pe fiecare pereche); teste unitare 7/7 PASS (`test_statistical_tests.py`, pytest 9.1.1, 2.7 s); rulat de doua ori consecutiv cu iesiri byte-identice (sha256 identic pe 5 fisiere csv/md, json identic fara `run_date`), 10.0 s / 10.0 s, 0 warning-uri; LF pe toate iesirile si pe CIFRE_REVIZIE.md (`_check_t12_outputs.py`); diff gol pe CIFRE_CANONICE.md si pe rezultatele T0.x / T1.1; statsmodels 0.15.0 instalat si pinuit in `revision/requirements.txt`. Iesiri: `results/t12_mcnemar.csv`, `results/t12_mcnemar_table.md`, `results/t12_paired_bootstrap.csv`, `results/t12_paired_bootstrap_table.md`, `results/t12_cochran_q.csv`, `results/t12_run_meta.json`.
+- T1.3, T1.4, T1.5: nu au inceput.
 
 ## Status Faza 0
 
-Inchisa: 2026-10-14.
+Inchisa: 2026-10-14, commit d3e1047.
 
 - T0.1 PASS: rerun sanity_check_frozen.py reproduce exact cifrele canonice RF (F1 0.5063, acc 0.6406, MCC 0.1416), hash dataset match; versiuni mediu identice cu frozen_meta.
 - T0.2 PASS: RF / XGB / SVM reproduse la 4 zecimale din revision/; predictii si probabilitati salvate in results/; acord SVM argmax(proba) vs predict() = 0.9115.

@@ -1,0 +1,27 @@
+{
+  "run_date": "2026-10-18T23:17:44",
+  "seed": 42,
+  "n_boot": 1000,
+  "n_test": 192,
+  "python": "3.11.9",
+  "numpy": "2.4.3",
+  "pandas": "2.3.3",
+  "scikit_learn": "1.8.0",
+  "statsmodels": "0.15.0",
+  "inputs_sha256": {
+    "test_predictions_rf.csv": "aea39c6dd2989e244397ec5d0fce0261036883b8b2c97984bef1ddd4f1b49d0c",
+    "test_predictions_xgb.csv": "e0afa80d264405344791ee6a630629e9e76cc0020403f358294b27734fc2ec08",
+    "test_predictions_svm.csv": "c48625b27debfcd2966c4012877460f22dfe2088fa595f31b577c63aec95d22c",
+    "test_predictions_persistence.csv": "ab228a11e65bfe17be7711eeb43f35af528299e2889c57cfc2d75ec4ab5312f2",
+    "bootstrap_indices_1000x192_seed42.npy": "fff3b2834c06196262ed4006fef99dce9106d25ab7e1e2c449e7bf889db30260"
+  },
+  "pairs_holm_family": [
+    "RF-XGB",
+    "RF-SVM",
+    "XGB-SVM"
+  ],
+  "baseline_pair": "RF-persistence",
+  "n_warnings_in_bootstrap_loop": 0,
+  "n_resamples_skipped_total": 0,
+  "sanity_checks_failed": []
+}
