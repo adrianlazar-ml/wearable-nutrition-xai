@@ -37,6 +37,7 @@ EXPLAINED = {
     "61.8%": "base manuscript Table 13: JSON accuracy, 16 features, aligned subset; dissertation; unchanged",
     "2.41": "base manuscript 4.1: SVM delta 19f minus 16f in percentage points; CIFRE_CANONICE section 16 lists it as -2,41 (sign convention); unchanged",
     "63,153": "base manuscript Table 14: N of Mason et al. (2022), literature value; unchanged",
+    "953": "v8 wording of 4.10 (T4.1-C): aligned XML/JSON subset of the pre-freeze dataset, 16 features; dissertation data-quality analysis",
 }
 TEST_MARKERS = ("p =", "p-value", "p-values", "McNemar", "Holm", "Cochran", "interval", "bootstrap", "test", "excluding zero", "exclude zero")
 

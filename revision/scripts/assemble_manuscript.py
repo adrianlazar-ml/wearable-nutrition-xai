@@ -50,6 +50,20 @@ OUT_PLAN = MAN / "assembly_plan.md"
 OUT_MARKED = MAN / "KBS_Manuscript_R1_marked.docx"
 # T4.1-B: base references not cited in the v2 text that are removed (the four that v8 had already dropped)
 UNCITED_REFS_TO_REMOVE = ("De La Torre, K.", "Ferreira, R. E. P.", "Gu, L., & Qian, C.", "Liang, Y.-T.")
+# T4.1-C: paragraphs whose wording is taken verbatim from ESWA_Manuscript_Anonymized_v8.docx (in-text citations of the
+# method references, Figure 1 legend, 3.9 first sentence, 4.7 aligned-subset sentence). (base prefix, v8 prefix)
+V8_WORDING = [
+    ("AI systems for nutritional recommendation. AI applications", "AI systems for nutritional recommendation. AI applications"),
+    ("Wearables in personalized health. Consumer wearables", "Wearables in personalized health. Consumer wearables"),
+    ("Three supervised algorithms with distinct inductive biases", "Three supervised algorithms with distinct inductive biases"),
+    ("Data were split temporally: the first 80% of days", "Data were split temporally: the first 80% of days"),
+    ("SHAP (SHapley Additive exPlanations) was integrated", "SHAP (SHapley Additive exPlanations; Lundberg & Lee, 2017)"),
+    ("The system follows a five-stage flow", "The system follows a staged flow"),
+    ("Figure 1. Overview of the five-stage system architecture", "Figure 1. End-to-end flow of the proposed system"),
+    ("Table 9 compares models trained on the XML and JSON", "Table 9 compares models trained on the XML and JSON"),
+]
+V8_EXPECTED_CITATIONS = ("Breiman, 2001", "Chen & Guestrin, 2016", "Vapnik, 1995", "Chawla et al., 2002", "Lundberg & Lee, 2017",
+                         "Shapley, 1953/2016", "Lundberg et al., 2020", "Zheng et al., 2024", "Thapa et al., 2026")
 OUT_FIGDIR = MAN / "figures"
 
 RUN_DATE = "2026-10-19"
@@ -94,8 +108,8 @@ NEW_HEADINGS = {
 BASE_XREFS = [
     ("XML versus JSON data source. A key design decision", "Section 4.7", "Section 4.10"),
     ("Data were split temporally: the first 80% of days", "(Section 4.6)", "(Section 4.9)"),
-    ("SHAP (SHapley Additive exPlanations) was integrated", "(Section 4.8)", "(Section 4.11)"),
-    ("The system follows a five-stage flow", "(Section 4.9)", "(Section 4.12)"),
+    ("SHAP (SHapley Additive exPlanations", "(Section 4.8)", "(Section 4.11)"),
+    ("The system follows a ", "(Section 4.9)", "(Section 4.12)"),
     ("An ablation study trained the Random Forest model", "(Table 6)", "(Table 7)"),
     ("Table 6. Per-device ablation", "Table 6.", "Table 7."),
     ("Five strategies were compared (Table 8)", "(Table 8)", "(Table 12)"),
@@ -448,8 +462,36 @@ def md_table_to_rows(tbl: list[list[str]], t11: dict[str, str] | None = None) ->
     return rows
 
 
-def assemble_manuscript(blocks: dict) -> None:
+def apply_v8_wording(doc, v8_path: Path) -> None:
+    """T4.1-C: replace the listed base (v2) paragraphs by their v8 wording, verbatim from the v8 file."""
+    v8 = docx.Document(str(v8_path))
+    v8_text = "\n".join(p.text for p in v8.paragraphs)
+    for base_prefix, v8_prefix in V8_WORDING:
+        hits = [p.text for p in v8.paragraphs if p.text.startswith(v8_prefix)]
+        if len(hits) != 1:
+            raise SystemExit(f"STOP: v8 paragraph '{v8_prefix}' matched {len(hits)} paragraphs")
+        new_text = hits[0].strip()
+        if "—" in new_text:
+            raise SystemExit(f"STOP: em dash in v8 paragraph '{v8_prefix}'")
+        p = find_par(doc, base_prefix)
+        if p.text.strip() == new_text:
+            continue
+        set_text(p, new_text)
+        plan("(v8 wording)", base_prefix, "replace paragraph text by the v8 wording", "unchanged position")
+    body = "\n".join(p.text for p in doc.paragraphs)
+    missing = [c for c in V8_EXPECTED_CITATIONS if c not in body]
+    if missing:
+        raise SystemExit(f"STOP: expected v8 in-text citations missing after replacement: {missing}")
+    DEVIATIONS.append("base = v2 text with v8 citations, Figure 1 legend, 3.9 and 4.7 wording (T4.1-C): the paragraphs of Related Work (2 paragraphs), 3.4, 3.5, 3.7 (now 3.8), "
+                      "3.9 (now 3.13, 'staged flow' sentence), the legend of Figure 1 (mentions the safety layer, matches the diagram in use) and 4.7 (now 4.10, "
+                      "aligned subset of 953 days) take their wording verbatim from ESWA_Manuscript_Anonymized_v8.docx, which adds the in-text citations "
+                      + ", ".join(V8_EXPECTED_CITATIONS) + ". The v8 title and the v8 GenAI declaration are NOT taken.")
+
+
+def assemble_manuscript(blocks: dict, v8_path: Path | None = None) -> None:
     doc = docx.Document(str(BASE))
+    if v8_path is not None:
+        apply_v8_wording(doc, v8_path)
     body_tmpl = find_par(doc, "The dataset comprises physiological data from a single participant")
     h2_tmpl = find_par(doc, "3.7. Explainability")
     cap_tmpl = find_par(doc, "Table 4. Detailed metrics on 19 features")
@@ -585,7 +627,7 @@ def assemble_manuscript(blocks: dict) -> None:
     plan("3.7 Calibration", "3.7. Explainability (heading, insert before)", "new subsection", "3.7")
 
     # ---- 3.8 Explainability --------------------------------------------------------------------
-    p = find_par(doc, "SHAP (SHapley Additive exPlanations) was integrated")
+    p = find_par(doc, "SHAP (SHapley Additive exPlanations")
     new_body(p, renumber(paras(block(blocks, "3.8 Explainability"))[0]))
     plan("3.8 Explainability", "SHAP (SHapley Additive exPlanations) was integrated", "insert after", "3.8, paragraph 2")
 
@@ -824,8 +866,7 @@ def assemble_manuscript(blocks: dict) -> None:
         else:
             kept.append(rp.text[:60])
     DEVIATIONS.append("References not cited anywhere in the assembled text (base list of v2): " + str(len(uncited)) + ". Removed (the four that v8 had already dropped): "
-                      + "; ".join(removed) + ". KEPT, decision pending (v8 cites them in Sections 2, 3.4, 3.5 and 3.8 with sentences that v2 does not have; either add those in-text citations or delete the entries): "
-                      + "; ".join(kept) + ".")
+                      + "; ".join(removed) + ". Kept although uncited: " + ("; ".join(kept) if kept else "none (the nine method references are cited through the v8 wording, T4.1-C)") + ".")
     for r in removed:
         plan("(uncited reference)", r, "delete reference entry", "References")
 
@@ -1346,7 +1387,8 @@ def write_plan(fig_rows, highlights, base_sha, legacy_dir) -> None:
     for i, r in enumerate(PLAN_ROWS, 1):
         L.append(f"| {i} | {r['block']} | {r['target']} | {r['op']} | {r['final']} |")
     L.append("\nEvery target was matched by a unique paragraph prefix in the base (the script stops otherwise). Base sections not listed above "
-             "(1 Introduction except the two marked blocks, 2 Related Work, 3.3, 4.1, 4.9, 4.10, declarations, data availability) are unchanged apart from section, table and figure numbers.\n")
+             "(1 Introduction except the two marked blocks, 3.3, 4.1, 4.9, declarations, data availability) are unchanged apart from section, table and figure numbers; "
+             "the '(v8 wording)' rows take the v8 text of the paragraph (T4.1-C).\n")
     L.append("## Cross-references resolved in F4 text\n")
     L.append("- `Figure [t13]` -> Figure 2; `Figure [t15]` -> Figure 3 (citation added, see deviations); `Figure [t33]` -> Figure 4; `Figure [t14]` -> Figure 5; `Figure 2` (SHAP bar) -> Figure 6; `Figure 3` (confusion) -> Figure 7.")
     L.append("- `Table A` -> Table 6; `Table 6` (device ablation) -> Table 7; `Table 6b` -> Table 8; `Table 7` -> Table 9; `Table 7b` -> Table 10; `Table 8` (expanding window) -> Table 11; `Table 10` -> Table 14; `Table B1` / `Appendix Table B1` -> Table A1 / Appendix A, Table A1.")
@@ -1381,10 +1423,12 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--legacy-figures-dir", default=r"C:\Users\Adrian\Downloads\assa",
                     help="folder with Figure_1_architecture_EN, Figure2_shap_bar_rf, Figure3_confusion_matrices (.pdf + .png)")
+    ap.add_argument("--v8-docx", default=r"C:\Users\Adrian\Downloads\ESWA_Manuscript_Anonymized_v8.docx",
+                    help="v8 of the ESWA manuscript, source of the in-text citations and wording listed in V8_WORDING (T4.1-C)")
     args = ap.parse_args()
     base_sha = sha256(BASE)
     blocks = parse_md_blocks(F4)
-    assemble_manuscript(blocks)
+    assemble_manuscript(blocks, Path(args.v8_docx))
     highlights = make_highlights(blocks)
     make_supplementary()
     make_response()

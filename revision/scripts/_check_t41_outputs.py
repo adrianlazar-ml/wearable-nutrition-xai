@@ -155,6 +155,26 @@ def main() -> None:
                 bad += 1
         rec(f"{DOCS[k].name}: tables without vertical lines and shading", bad == 0, f"{len(d.tables)} tables, {bad} non-conforming")
 
+    # every reference entry cited in the text (surname followed by the year within 80 characters)
+    ref_started, refs, body_txt = False, [], []
+    for kind, el in items:
+        if kind == "p":
+            if el.text.strip() == "References":
+                ref_started = True; continue
+            (refs if ref_started else body_txt).append(el.text)
+        elif kind == "t" and not ref_started:
+            body_txt.extend(" ".join(c.text for c in r.cells) for r in el.rows)
+    btxt = "\n".join(body_txt)
+    uncited = []
+    for rt in refs:
+        if not rt.strip():
+            continue
+        surname = rt.split(",")[0].strip()
+        m = re.search(r"\((\d{4})", rt)
+        if not m or not re.search(re.escape(surname) + r"[^)]{0,80}?" + m.group(1), btxt):
+            uncited.append(rt[:40])
+    rec("Every reference entry is cited in the text", not uncited, f"{len([r for r in refs if r.strip()])} entries; uncited: " + "; ".join(uncited))
+
     # comments on new references
     cm = [c for c in man.comments if "verify in Zotero" in c.text]
     rec("6 Word comments 'verify in Zotero' on the new references", len(cm) == 6, f"{len(cm)} comments")
