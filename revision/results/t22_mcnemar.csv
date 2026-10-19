@@ -1,0 +1,8 @@
+model,pair,n00,n01,n10,n11,chi2_cc,p_cc,p_exact,p_cc_holm,p_exact_holm,recommended,discordant
+rf,RF tuned - RF canonical,54,15,7,116,2.227272727,0.1355930013,0.1338005066,0.4464470732,0.4407366607,exact,22
+xgb,XGB tuned - RF canonical,43,26,13,110,3.692307692,0.05466393589,0.0532519141,0.2733196795,0.2662595705,cc,39
+svm,SVM tuned - RF canonical,48,21,22,101,0,1,1,1,1,cc,43
+lgbm,LightGBM tuned - RF canonical,48,21,11,112,2.53125,0.1116117683,0.1101841652,0.4464470732,0.4407366607,cc,32
+catboost,CatBoost tuned - RF canonical,55,14,13,110,0,1,1,1,1,cc,27
+tabnet,TabNet tuned - RF canonical,47,22,44,79,6.681818182,0.009740122405,0.009210489695,0.06818085684,0.06447342786,cc,66
+ftt,FT-Transformer tuned - RF canonical,53,16,35,88,6.352941176,0.0117186856,0.0109735629,0.0703121136,0.0658413774,cc,51
