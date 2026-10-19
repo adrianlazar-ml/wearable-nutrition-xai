@@ -1,0 +1,107 @@
+{
+  "run_date": "2026-10-19T06:22:11",
+  "elapsed_seconds": 30.9,
+  "seed": 42,
+  "n_resamples": 1000,
+  "block": 192,
+  "n_total": 958,
+  "n_folds": 4,
+  "fold_bounds": {
+    "fold1": {
+      "train_rows": [
+        0,
+        765
+      ],
+      "test_rows": [
+        766,
+        957
+      ]
+    },
+    "fold2": {
+      "train_rows": [
+        0,
+        573
+      ],
+      "test_rows": [
+        574,
+        765
+      ]
+    },
+    "fold3": {
+      "train_rows": [
+        0,
+        381
+      ],
+      "test_rows": [
+        382,
+        573
+      ]
+    },
+    "fold4": {
+      "train_rows": [
+        0,
+        189
+      ],
+      "test_rows": [
+        190,
+        381
+      ]
+    }
+  },
+  "comparability": {
+    "min_active_test": 5,
+    "min_active_train": 4
+  },
+  "smote_k_per_fold": {
+    "fold1": 3,
+    "fold2": 3,
+    "fold3": 3,
+    "fold4": 3
+  },
+  "versions": {
+    "python": "3.11.9",
+    "numpy": "2.4.3",
+    "pandas": "2.3.3",
+    "scikit_learn": "1.8.0",
+    "imbalanced_learn": "0.14.1",
+    "shap": "0.51.0",
+    "matplotlib": "3.10.8"
+  },
+  "t330_fold1": {
+    "f1_macro": 0.5063238989824085,
+    "accuracy": 0.640625,
+    "mcc": 0.14155971852108248,
+    "f1_active": 0.4444444444444444,
+    "pers_f1_macro": 0.30389610389610394,
+    "delta_f1_macro": 0.20242779508630454
+  },
+  "t11_rf_f1_macro_ci_from_cifre_revizie": [
+    0.3784,
+    0.613
+  ],
+  "fold1_rf_f1_macro_marginal_ci": [
+    0.3784461356796262,
+    0.6130001721306069
+  ],
+  "pooled": {
+    "n_test": 768,
+    "f1_macro": 0.39315170323002446,
+    "f1_macro_ci_low": 0.35226067819933615,
+    "f1_macro_ci_high": 0.43488200376253267,
+    "f1_active": 0.13861386138613863,
+    "f1_active_ci_low": 0.05217391304347826,
+    "f1_active_ci_high": 0.23159304511278195,
+    "accuracy": 0.6028645833333334,
+    "mcc": 0.08944081302742102,
+    "n_skipped": 0
+  },
+  "bootstrap_indices_sha256": "fff3b2834c06196262ed4006fef99dce9106d25ab7e1e2c449e7bf889db30260",
+  "prediction_files_sha256": {
+    "t33_predictions_rf_fold1.csv": "56ae01513e4217af3279ae0cf39110efa156ed58f63e5c9ccb9b9d1a89fe306f",
+    "t33_predictions_rf_fold2.csv": "e3aa6c26585bab4b8458963be28cf9c3b7f3b93f6c11aaab6b530263dad2b41b",
+    "t33_predictions_rf_fold3.csv": "02d9e0dc3f377c777d0b4001dccc5aefae9f6ba4e76461af5c608b237640ef37",
+    "t33_predictions_rf_fold4.csv": "85136044365d398495c27d5cba876ef00447342b5b4876ca0078bfd974ad58ac"
+  },
+  "figure_axes": 1,
+  "sanity_checks_failed": []
+}
