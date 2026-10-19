@@ -102,14 +102,15 @@ def main() -> None:
     # tables: captions in order, cited in text, first citation in order
     text_pars = [p.text for p in pars]
     full = "\n".join(text_pars)
-    caps = [re.match(r"Table (A?\d+)\.", t).group(1) for t in text_pars if re.match(r"Table (A?\d+)\. ", t)]
+    # T5.3 (F5, KBS p. 28): the appendix table is "Table A.1" (dot), no longer "Table A1".
+    caps = [re.match(r"Table (A\.\d+|\d+)\.", t).group(1) for t in text_pars if re.match(r"Table (A\.\d+|\d+)\. ", t)]
     main_caps = [c for c in caps if not c.startswith("A")]
     rec("Table captions numbered consecutively 1..N in order of appearance", main_caps == [str(i) for i in range(1, len(main_caps) + 1)], " ".join(main_caps))
-    rec("Appendix table caption A1 present", "A1" in caps, " ".join(caps))
-    body_wo_caps = "\n".join(t for t in text_pars if not re.match(r"Table (A?\d+)\. ", t))
+    rec("Appendix table caption A.1 present (and no 'Table A1' anywhere)", "A.1" in caps and "Table A1" not in full, " ".join(caps))
+    body_wo_caps = "\n".join(t for t in text_pars if not re.match(r"Table (A\.\d+|\d+)\. ", t))
     first_cite = {}
-    for m in re.finditer(r"\bTables? ((?:A?\d+)(?:,? (?:and )?A?\d+)*)", body_wo_caps):
-        for n in re.findall(r"A?\d+", m.group(1)):
+    for m in re.finditer(r"\bTables? ((?:A\.\d+|\d+)(?:,? (?:and )?(?:A\.\d+|\d+))*)", body_wo_caps):
+        for n in re.findall(r"A\.\d+|\d+", m.group(1)):
             first_cite.setdefault(n, m.start())
     missing = [c for c in caps if c not in first_cite]
     rec("Every table cited in the text at least once", not missing, "missing: " + ", ".join(missing) if missing else "")

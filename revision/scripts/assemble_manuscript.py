@@ -80,7 +80,8 @@ TITLE = ("Explainable Artificial Intelligence for Personalized Nutrition: "
 # ----------------------------------------------------------------------------------------------
 # F4 label -> final table number
 TABLE_MAP = {"1": "1", "2": "2", "3": "3", "4": "4", "5": "5", "A": "6", "6": "7", "6b": "8",
-             "7": "9", "7b": "10", "8": "11", "9": "13", "10": "14", "B1": "A1"}
+             "7": "9", "7b": "10", "8": "11", "9": "13", "10": "14",
+             "B1": "A.1"}  # T5.3 (KBS p. 28): the appendix table is "Table A.1"
 # base table label -> final (base numbering differs from F4 for Table 8/9: base Table 8 = imbalance)
 BASE_TABLE_MAP = {"6": "7", "8": "12", "9": "13", "10": "14"}
 # F4 figure label -> final figure number
@@ -281,6 +282,8 @@ def bullets(items: list) -> list[str]:
 def renumber(text: str) -> str:
     def tab(m):
         lab = m.group(2)
+        if lab in ("A1", "A.1"):          # already final (T5.3): idempotent
+            return f"{m.group(1)} A.1"
         if lab not in TABLE_MAP:
             raise SystemExit(f"STOP: unmapped table label '{lab}' in: {text[:80]}")
         return f"{m.group(1)} {TABLE_MAP[lab]}"
@@ -291,9 +294,9 @@ def renumber(text: str) -> str:
             raise SystemExit(f"STOP: unmapped figure label '{lab}' in: {text[:80]}")
         return f"{m.group(1)} {FIGURE_MAP[lab]}"
 
-    text = re.sub(r"\b(Table) (A1|B1|A|6b|7b|\d+)(?![0-9A-Za-z])", tab, text)
+    text = re.sub(r"\b(Table) (A\.1|A1|B1|A|6b|7b|\d+)(?![0-9A-Za-z])", tab, text)
     text = re.sub(r"\b(Figure) (\[t\d+\]|\d+)(?![0-9A-Za-z])", fig, text)
-    text = text.replace("Appendix Table A1", "Appendix A, Table A1")
+    text = text.replace("Appendix Table A.1", "Appendix A, Table A.1")
     for old, new in SECTION_MAP_TEXT.items():
         text = text.replace(f"Section {old}", f"Section {new}")
     # response letter only
@@ -707,7 +710,7 @@ def assemble_manuscript(blocks: dict, v8_path: Path | None = None) -> None:
     new_table(anchor, md_table_to_rows(tb), before=True)
     new_note(anchor, renumber(ps[2]), before=True)
     new_body(anchor, renumber(ps[3]), before=True)
-    plan("4.4 Additional classifiers and hyperparameter search", "4.6. Ablation by Device and by Feature Group (heading, insert before)", "new subsection (2 paragraphs, Table A, note)", "4.4; Table A -> Table 6; Table B1 -> Table A1")
+    plan("4.4 Additional classifiers and hyperparameter search", "4.6. Ablation by Device and by Feature Group (heading, insert before)", "new subsection (2 paragraphs, Table A, note)", "4.4; Table A -> Table 6; Table B1 -> Table A.1")
     items = block(blocks, "4.5 Calibration")
     ps = paras(items)
     new_h2(anchor, NEW_HEADINGS["4.5"], before=True)
@@ -864,7 +867,7 @@ def assemble_manuscript(blocks: dict, v8_path: Path | None = None) -> None:
     new_caption(refs_h, renumber(ps[0]), before=True)
     new_table(refs_h, md_table_to_rows(tb), size_pt=7, before=True)
     new_note(refs_h, renumber(ps[1]), before=True)
-    plan("APPENDIX / Table B1", "References (heading, insert before)", "new appendix (heading, caption, table, note)", "Appendix A, Table A1")
+    plan("APPENDIX / Table B1", "References (heading, insert before)", "new appendix (heading, caption, table, note)", "Appendix A, Table A.1")
 
     # ---- References: 6 new entries, alphabetical, with Word comments ---------------------------
     ref_pars = []
@@ -1430,7 +1433,7 @@ def write_plan(fig_rows, highlights, base_sha, legacy_dir) -> None:
              "the '(v8 wording)' rows take the v8 text of the paragraph (T4.1-C).\n")
     L.append("## Cross-references resolved in F4 text\n")
     L.append("- `Figure [t13]` -> Figure 2; `Figure [t15]` -> Figure 3 (citation added, see deviations); `Figure [t33]` -> Figure 4; `Figure [t14]` -> Figure 5; `Figure 2` (SHAP bar) -> Figure 6; `Figure 3` (confusion) -> Figure 7.")
-    L.append("- `Table A` -> Table 6; `Table 6` (device ablation) -> Table 7; `Table 6b` -> Table 8; `Table 7` -> Table 9; `Table 7b` -> Table 10; `Table 8` (expanding window) -> Table 11; `Table 10` -> Table 14; `Table B1` / `Appendix Table B1` -> Table A1 / Appendix A, Table A1.")
+    L.append("- `Table A` -> Table 6; `Table 6` (device ablation) -> Table 7; `Table 6b` -> Table 8; `Table 7` -> Table 9; `Table 7b` -> Table 10; `Table 8` (expanding window) -> Table 11; `Table 10` -> Table 14; `Table B1` / `Appendix Table B1` -> Table A.1 / Appendix A, Table A.1.")
     L.append("- `Section 3.x` -> Section 3.5. Sections 4.2 to 4.12, 3.2, 3.8, 3.9, 3.13, 4.6, 4.7, 4.8, 4.11, 4.12 and 5 cited in F4 already use the final numbering and were verified against the final headings.")
     L.append("- `[t11]` -> F1 Rest 0.205 and F1 Normal 0.707 for persistence (results/persistence_baseline.csv, f1_rest 0.2045 / f1_normal 0.7071; results/t11_extended_metrics.csv has no per-class F1).")
     L.append("- Base cross-references renumbered: " + "; ".join(f"'{o}' -> '{n}' in '{p[:40]}...'" for p, o, n in BASE_XREFS) + ".\n")
