@@ -491,7 +491,9 @@ def apply_v8_wording(doc, v8_path: Path) -> None:
     if missing:
         raise SystemExit(f"STOP: expected v8 in-text citations missing from the base: {missing}")
     plan("(v8 wording, verified no-op)", "8 paragraphs listed in V8_WORDING", "verified identical to the v8 file", "unchanged")
-    DEVIATIONS.append("base = v8, confirmed in Editorial Manager (reported by the first author on 2026-10-19; T4.1-E): BASE_MANUSCRIPT_v8.docx is ESWA_Manuscript_Anonymized_v8.docx. "
+    DEVIATIONS.append("base = v8, the first author's working assumption on 2026-10-19; confirmation of the submitted title in Editorial Manager is pending (co-author). "
+                      "If the submitted file turns out to be v2, rerun T4.1 with BASE_MANUSCRIPT.docx (v2) as base; all replacement targets exist in both versions "
+                      "(verified at T4.1-C and T4.1-E). (T4.1-E, updated T4.1-G): BASE_MANUSCRIPT_v8.docx is ESWA_Manuscript_Anonymized_v8.docx. "
                       "The eight paragraphs that T4.1-C had taken from v8 (Related Work x2, 3.4, 3.5, 3.8, 3.13, Figure 1 legend, 4.10) are now base text and are verified identical to the v8 file; "
                       "the nine method citations (" + ", ".join(V8_EXPECTED_CITATIONS) + ") are therefore in the submitted version, not additions of the revision. "
                       "v8 embeds Figures 1-3 as images (kept in place; the new Figures 2-5 are separate files, legends in text), has the 3.6 equations as OMML objects (untouched) "

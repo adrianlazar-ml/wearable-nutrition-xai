@@ -7,7 +7,7 @@ Scop: input pentru proiectul de lucru cu codul disertației. Se continuă discu�
 
 - Manuscris: "AI System for Personalized Nutrition and Diet Recommendations Based on Wearable and mHealth Data" (Lazar & Buiu), trimis de prof. Buiu la Knowledge-Based Systems (Elsevier) după desk rejection la ESWA.
 - Decizie editor (13 sept 2026): **Revision** (KBS nu distinge minor/major). Termen: **1 decembrie 2026**, confirmat de Buiu în Editorial Manager (19 oct). Scrisoarea menționează și "21 days for first revision"; data din Editorial Manager e cea care contează.
-- Fișierul submis la KBS: manuscrisul ESWA (ESWA_Manuscript_Anonymized_v2.docx), confirmat 19 oct; F4 pornește de pe el.
+- Fișierul submis la KBS: manuscrisul ESWA; versiunea exactă (v2 sau v8, diferă prin titlu, citările metodelor, legenda Fig. 1, formularea 3.9 și 4.7, declarația GenAI) este în curs de confirmare în Editorial Manager (coautor). Baza de lucru curentă a F4 este v8 (`revision/manuscript/BASE_MANUSCRIPT_v8.docx`, T4.1-E, commit 33a3796); v2 este păstrată în `BASE_MANUSCRIPT.docx` și toate țintele de înlocuire există în ambele versiuni.
 - Poziția lui Buiu pe Reviewer 2: validarea nutrițională nu se poate face cu datele existente, se declară obiectiv viitor. Mergem înainte cu revizia.
 - Buget de timp: ~8 ore/săptămână, 11 săptămâni, ~88 ore total. Planul e dimensionat pentru ~80 ore, cu ~8 ore rezervă.
 - Pipeline: set de scripturi, freeze din 31 martie 2026, reproduce rezultatele din disertație. Pragurile de etichetare sunt (probabil) parametri, de verificat.
@@ -136,6 +136,7 @@ Puncte de control cu Buiu: după F0 (rezultat persistence, confirmare termen), d
 - **Tuning-ul schimbă ierarhia.** Se raportează ambele; nu se ascunde. S-a întâmplat (T2.2, 19 oct): LightGBM / RF / CatBoost tuned peste RF canonic la punct, nedistinse între ele; ambele ierarhii sunt în CIFRE_REVIZIE cu CI-urile paired, RF canonic rămâne modelul raportat (de confirmat cu Buiu la F4).
 - **F3 alunecă.** T3.3 se reduce la 2 folduri; T3.1 se reduce la grila 3x3 fără sleep.
 - **Termenul real e 21 de zile.** Pe 4 oct există pachetul F0+F1 (6 puncte acoperite) și se negociază extensie pentru rest. De aceea F1 e înaintea F2.
+- **Base version mismatch:** if the submitted file is v2, the marked copy and the response letter's General changes must be regenerated (one rerun, under one hour).
 - **Buget de ore depășit.** Ordinea de sacrificiu (actualizată 19 oct, după decizia Buiu de a rula toate cele 4 modele): T2.2 redus la 10 configurații x 3 folduri pentru modelele tabulare; grila rețelelor redusă la 3; grila sleep din T3.1 (deja sacrificată); T3.3 la 2 folduri (deja rulat cu 4, nu se mai aplică). NU se sacrifică: niciunul dintre cele 4 modele din T2.1, T1.4, T3.1-T3.3 (rulate). Permutation importance rămâne sacrificat (§8.11). F3 a avut prioritate peste F2 (închisă 19 oct).
 
 ## 8. Întrebări deschise (actualizat 19 oct 2026)

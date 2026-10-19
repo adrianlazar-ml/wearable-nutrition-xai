@@ -79,7 +79,7 @@ def main() -> None:
 
     # T4.1-E: the base is v8, so the letter must not claim citations added or references removed by the revision
     plan = PLAN.read_text(encoding="utf-8")
-    rec("Plan records base = v8 (confirmed in Editorial Manager)", "- base = v8, confirmed in Editorial Manager" in plan)
+    rec("Plan records base = v8 (working assumption, confirmation pending)", "- base = v8, the first author's working assumption" in plan)
     rec("Letter does not claim added method citations or removed reference entries (already absent in v8)",
         "In-text citations were added" not in resp and "cited nowhere in the text were removed" not in resp)
     removed_line = [l for l in plan.splitlines() if l.startswith("- References not cited anywhere")]
