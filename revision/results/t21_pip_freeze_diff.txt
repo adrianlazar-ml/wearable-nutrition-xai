@@ -1,0 +1,8 @@
+34a35
+> catboost==1.2.10
+81a83
+> graphviz==0.21
+212a215
+> pytorch-tabnet==4.1.0
+230a234
+> rtdl_revisiting_models==0.0.2

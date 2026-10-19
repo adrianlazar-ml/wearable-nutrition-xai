@@ -6,3 +6,17 @@ statsmodels==0.15.0
 # Installed before the revision (present in the environment since the dissertation pipeline,
 # cap5_compare_algorithms_json_ext.py); pinned 2026-10-19 for T1.4 (SHAP ranking stability).
 shap==0.51.0
+# T2.1 (2026-10-19), extra models (LightGBM, CatBoost, TabNet, FT-Transformer). torch (CPU wheel,
+# 2.11.0+cpu) and lightgbm were ALREADY installed in the environment before T2.1 and were NOT changed
+# (the brief listed torch 2.14.1 / lightgbm 4.7.0 as the PyPI versions of 19 Oct 2026; the rule
+# "never change an existing version" takes precedence, so the installed versions are pinned as found).
+# catboost pulled graphviz==0.21 (new, not protected). pytorch-tabnet and rtdl_revisiting_models were
+# installed with --no-deps; pytorch-tabnet is IMPORTED FROM revision/vendor (one-line scipy import patch,
+# see revision/vendor/pytorch_tabnet/PATCH.md), never from site-packages. Frozen versions unchanged:
+# python 3.11.9 / scikit-learn 1.8.0 / numpy 2.4.3 / pandas 2.3.3 / imbalanced-learn 0.14.1 / shap 0.51.0 /
+# xgboost 3.2.0 / scipy 1.17.1 / statsmodels 0.15.0 (revision/results/t21_pip_freeze_{before,after,diff}.txt).
+torch==2.11.0
+lightgbm==4.6.0
+catboost==1.2.10
+pytorch-tabnet==4.1.0
+rtdl_revisiting_models==0.0.2
