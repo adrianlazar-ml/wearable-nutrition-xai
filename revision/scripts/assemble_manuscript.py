@@ -47,6 +47,9 @@ OUT_HIGH = MAN / "KBS_Highlights_R1.docx"
 OUT_SUPP = MAN / "KBS_Supplementary_R1.docx"
 OUT_RESP = MAN / "KBS_Response_R1.docx"
 OUT_PLAN = MAN / "assembly_plan.md"
+OUT_MARKED = MAN / "KBS_Manuscript_R1_marked.docx"
+# T4.1-B: base references not cited in the v2 text that are removed (the four that v8 had already dropped)
+UNCITED_REFS_TO_REMOVE = ("De La Torre, K.", "Ferreira, R. E. P.", "Gu, L., & Qian, C.", "Liang, Y.-T.")
 OUT_FIGDIR = MAN / "figures"
 
 RUN_DATE = "2026-10-19"
@@ -66,6 +69,7 @@ FIGURE_MAP = {"1": "1", "t13": "2", "t15": "3", "t33": "4", "t14": "5", "2": "6"
 SECTION_MAP_TEXT = {"3.x": "3.5"}
 # base heading text -> final heading text (sections 3 and 4)
 HEADING_MAP = {
+    "3.5. Class-Imbalance Handling and Data Splitting": "3.5. Data Splitting, Class Imbalance, Baselines and Hyperparameter Search",
     "3.7. Explainability": "3.8. Explainability",
     "3.8. Nutritional Recommendation Module": "3.12. Nutritional Recommendation Module",
     "3.9. System Architecture and Implementation": "3.13. System Architecture and Implementation",
@@ -102,6 +106,8 @@ BASE_XREFS = [
     ("Figure 3. Confusion matrices on the temporal test set", "Figure 3.", "Figure 7."),
     ("Comparison with the state of the art. Table 10 positions", "Table 10 positions", "Table 14 positions"),
     ("Table 10. Positioning against representative", "Table 10.", "Table 14."),
+    # T4.1-B: wording in the retained base paragraph of 4.3
+    ("Because the Active class is represented by only 8 test samples", "for the best model", "for the reported model"),
 ]
 # [t11] cells: persistence per-class F1 from results/persistence_baseline.csv (3 decimals)
 T11_SOURCE = RES / "persistence_baseline.csv"
@@ -808,12 +814,56 @@ def assemble_manuscript(blocks: dict) -> None:
         ref_pars.sort(key=lambda q: q.text.split("(")[0].strip().lower())
         plan("REFERINTE NOI", f"References: {ref[:40]}", "insert alphabetically + comment 'verify in Zotero'", "References")
 
+    # ---- uncited base references (T4.1-B) ------------------------------------------------------
+    uncited = find_uncited_references(doc)
+    removed, kept = [], []
+    for rp in uncited:
+        if rp.text.startswith(UNCITED_REFS_TO_REMOVE):
+            removed.append(rp.text[:60])
+            rp._p.getparent().remove(rp._p)
+        else:
+            kept.append(rp.text[:60])
+    DEVIATIONS.append("References not cited anywhere in the assembled text (base list of v2): " + str(len(uncited)) + ". Removed (the four that v8 had already dropped): "
+                      + "; ".join(removed) + ". KEPT, decision pending (v8 cites them in Sections 2, 3.4, 3.5 and 3.8 with sentences that v2 does not have; either add those in-text citations or delete the entries): "
+                      + "; ".join(kept) + ".")
+    for r in removed:
+        plan("(uncited reference)", r, "delete reference entry", "References")
+
     # ---- restyle all tables (KBS: no vertical lines, no shading) -------------------------------
     for t in doc.tables:
         style_table_kbs(t)
     DEVIATIONS.append("All tables (base and new) were restyled to the KBS format (horizontal rules only, no vertical lines, no shading); cell contents of base tables are unchanged.")
 
     doc.save(str(OUT_MAN))
+
+
+def find_uncited_references(doc) -> list[Paragraph]:
+    """Reference entries whose first author surname does not appear with the entry's year anywhere in the text
+    (paragraphs and table cells before the References heading)."""
+    body_text, refs, started = [], [], False
+    for child in doc.element.body.iterchildren():
+        tag = child.tag.split("}")[1]
+        if tag == "p":
+            p = Paragraph(child, doc)
+            if p.text.strip() == "References":
+                started = True; continue
+            (refs if started else body_text).append(p if started else p.text)
+        elif tag == "tbl" and not started:
+            for row in Table(child, doc).rows:
+                body_text.append(" ".join(c.text for c in row.cells))
+    text = "\n".join(body_text)
+    out = []
+    for rp in refs:
+        if not rp.text.strip():
+            continue
+        surname = rp.text.split(",")[0].strip()
+        m = re.search(r"\((\d{4})", rp.text)
+        year = m.group(1) if m else None
+        # surname followed, within 80 characters and before any closing parenthesis, by the entry's year
+        pat = re.escape(surname) + r"[^)]{0,80}?" + (re.escape(year) if year else "")
+        if year is None or re.search(pat, text) is None:
+            out.append(rp)
+    return out
 
 
 # ----------------------------------------------------------------------------------------------
@@ -1079,6 +1129,160 @@ def make_response() -> None:
 
 
 # ----------------------------------------------------------------------------------------------
+# Marked copy (T4.1-B): yellow highlight on new / changed text relative to the base, removed text listed at the end
+# ----------------------------------------------------------------------------------------------
+def _tokens(s: str) -> list[str]:
+    return re.findall(r"\S+|\s+", s)
+
+
+def _inserted_spans(new: str, old: str) -> list[tuple[int, int]]:
+    """Character spans of `new` that are not in `old` (word-level SequenceMatcher)."""
+    import difflib
+    a, b = _tokens(old), _tokens(new)
+    sm = difflib.SequenceMatcher(None, a, b, autojunk=False)
+    pos, spans = [], []
+    off = 0
+    for t in b:
+        pos.append(off); off += len(t)
+    pos.append(off)
+    for tag, i1, i2, j1, j2 in sm.get_opcodes():
+        if tag in ("replace", "insert") and j2 > j1:
+            spans.append((pos[j1], pos[j2]))
+    return spans
+
+
+def _deleted_segments(new: str, old: str, min_words: int = 6) -> list[str]:
+    import difflib
+    a, b = _tokens(old), _tokens(new)
+    sm = difflib.SequenceMatcher(None, a, b, autojunk=False)
+    out = []
+    for tag, i1, i2, j1, j2 in sm.get_opcodes():
+        if tag in ("replace", "delete"):
+            seg = "".join(a[i1:i2]).strip()
+            if len(seg.split()) >= min_words:
+                out.append(seg)
+    return out
+
+
+def _highlight_run(run) -> None:
+    from docx.enum.text import WD_COLOR_INDEX
+    run.font.highlight_color = WD_COLOR_INDEX.YELLOW
+
+
+def _highlight_spans(par: Paragraph, spans: list[tuple[int, int]]) -> None:
+    """Split the runs of `par` so that exactly the characters inside `spans` are highlighted."""
+    if not spans:
+        return
+    runs = list(par.runs)
+    start = 0
+    for run in runs:
+        text = run.text
+        end = start + len(text)
+        cuts = {0, len(text)}
+        for s, e in spans:
+            for c in (s - start, e - start):
+                if 0 < c < len(text):
+                    cuts.add(c)
+        cuts = sorted(cuts)
+        pieces = [(text[c0:c1], c0 + start) for c0, c1 in zip(cuts[:-1], cuts[1:]) if c1 > c0]
+        if len(pieces) <= 1:
+            if any(s <= start and end <= e for s, e in spans) and text:
+                _highlight_run(run)
+            start = end
+            continue
+        run.text = pieces[0][0]
+        prev = run
+        for ptxt, poff in pieces[1:]:
+            new_r = copy.deepcopy(run._r)
+            prev._r.addnext(new_r)
+            from docx.text.run import Run
+            nr = Run(new_r, par)
+            nr.text = ptxt
+            nr.font.highlight_color = None
+            prev = nr
+        # apply highlight piece by piece
+        for r in [run] + [Run(x, par) for x in [prev._r] if False]:
+            pass
+        cur = start
+        node = run._r
+        from docx.text.run import Run as _Run
+        for ptxt, poff in pieces:
+            rr = _Run(node, par)
+            if any(s <= poff and poff + len(ptxt) <= e for s, e in spans):
+                _highlight_run(rr)
+            else:
+                rr.font.highlight_color = None
+            node = node.getnext()
+            cur += len(ptxt)
+        start = end
+
+
+def make_marked_copy() -> dict:
+    import difflib
+    base = docx.Document(str(BASE))
+    doc = docx.Document(str(OUT_MAN))
+    base_pars = [p.text for p in base.paragraphs if p.text.strip()]
+    base_tables = [[[c.text for c in r.cells] for r in t.rows] for t in base.tables]
+    removed: list[str] = []
+    matched_base: set[int] = set()
+    n_marked_pars = 0
+    for p in doc.paragraphs:
+        txt = p.text
+        if not txt.strip():
+            continue
+        if txt in base_pars:
+            matched_base.add(base_pars.index(txt))
+            continue
+        # best base paragraph by the fraction of the base text that survives in the new paragraph (word tokens)
+        best, best_i = 0.0, -1
+        new_tok = _tokens(txt)
+        for i, bt in enumerate(base_pars):
+            old_tok = _tokens(bt)
+            sm = difflib.SequenceMatcher(None, old_tok, new_tok, autojunk=False)
+            # only runs of at least 4 consecutive tokens count, so shared common words do not pair unrelated paragraphs
+            kept = sum(b.size for b in sm.get_matching_blocks() if b.size >= 4) / max(1, len(old_tok))
+            if kept > best:
+                best, best_i = kept, i
+        if best >= 0.6:
+            matched_base.add(best_i)
+            _highlight_spans(p, _inserted_spans(txt, base_pars[best_i]))
+            for seg in _deleted_segments(txt, base_pars[best_i]):
+                removed.append(f"From the paragraph beginning '{base_pars[best_i][:50]}...': \"{seg}\"")
+        else:
+            for r in p.runs:
+                _highlight_run(r)
+        n_marked_pars += 1
+    for i, bt in enumerate(base_pars):
+        if i not in matched_base and bt.strip() not in ("Abstract", "References"):
+            removed.append(f"Paragraph: \"{bt}\"")
+    n_marked_cells = 0
+    for t in doc.tables:
+        rows = [[c.text for c in r.cells] for r in t.rows]
+        if rows in base_tables:
+            continue
+        same_shape = [bt for bt in base_tables if len(bt) == len(rows) and len(bt[0]) == len(rows[0]) and bt[0] == rows[0]]
+        ref = same_shape[0] if same_shape else None
+        for ri, row in enumerate(t.rows):
+            for ci, cell in enumerate(row.cells):
+                if ref is None or ref[ri][ci] != cell.text:
+                    for par in cell.paragraphs:
+                        for r in par.runs:
+                            _highlight_run(r)
+                    n_marked_cells += 1
+    # removed-text section at the very end
+    tmpl_h = find_par(doc, "References")
+    tmpl_body = find_par(doc, "Ring data were retrieved through a cloud REST API")
+    sect = doc.element.body.find(qn("w:sectPr"))
+    sect.addprevious(clone_paragraph(tmpl_h, "Removed from the submitted version"))
+    sect.addprevious(clone_paragraph(tmpl_body, "Text of the submitted manuscript (BASE_MANUSCRIPT.docx) that does not appear in the revised version. "
+                                     "Yellow highlighting in the body marks text that is new or changed relative to the submitted version."))
+    for item in removed:
+        sect.addprevious(clone_paragraph(tmpl_body, item))
+    doc.save(str(OUT_MARKED))
+    return {"paragraphs_marked": n_marked_pars, "cells_marked": n_marked_cells, "removed_items": len(removed)}
+
+
+# ----------------------------------------------------------------------------------------------
 # Figures folder
 # ----------------------------------------------------------------------------------------------
 def make_figures(legacy_dir: Path) -> list[tuple[str, str, str]]:
@@ -1118,7 +1322,7 @@ def write_plan(fig_rows, highlights, base_sha, legacy_dir) -> None:
              "Text source: `F4_manuscript_changes.md` (verbatim; only placeholders and numbers of sections, tables and figures are resolved). "
              "Output: `KBS_Manuscript_R1.docx`, `KBS_Highlights_R1.docx`, `KBS_Supplementary_R1.docx`, `KBS_Response_R1.docx`, `figures/`.\n")
     L.append("## Final numbering\n")
-    L.append("Methods: 3.1 Dataset, 3.2 Labeling, 3.3 Feature engineering, 3.4 Classification models, 3.5 Class-imbalance handling and data splitting (+ baselines, + hyperparameter search), "
+    L.append("Methods: 3.1 Dataset, 3.2 Labeling, 3.3 Feature engineering, 3.4 Classification models, 3.5 Data splitting, class imbalance, baselines and hyperparameter search (heading renamed at T4.1-B), "
              "3.6 Evaluation metrics, 3.7 Calibration (new), 3.8 Explainability, 3.9 Feature-group ablation (new), 3.10 Label validation (new), 3.11 Temporal robustness (new), "
              "3.12 Nutritional recommendation module, 3.13 System architecture.\n")
     L.append("Results: 4.1 Feature set, 4.2 Detailed results, 4.3 Statistical uncertainty and model comparison, 4.4 Additional classifiers and hyperparameter search (new), "
@@ -1156,7 +1360,11 @@ def write_plan(fig_rows, highlights, base_sha, legacy_dir) -> None:
     L.append("- Response letter: the heading '(draft, ...)' was rendered as '(Revision 1, Knowledge-Based Systems)'; '[title as submitted]' -> the base title; reviewer comments are italic indented paragraphs; placeholders resolved with the same mapping as the manuscript.")
     L.append("- Discussion paragraphs 'Temporal robustness', 'Choice of classifier' and 'Generalization from a single subject' received a bold run-in lead (base convention); in 4.7 the run-in leads 'Threshold sensitivity.' and 'Agreement with label-independent indicators.' present in F4 were set in bold.")
     L.append("- Keywords: 'Keywords:' label kept from the base, list replaced by the F4 list (Random Forest -> Decision support systems).")
-    L.append("- New references: six provisional APA 7 entries inserted alphabetically, each carrying the Word comment 'verify in Zotero'; details (volumes, pages, DOIs) are from memory and must be checked.\n")
+    L.append("- New references: six provisional APA 7 entries inserted alphabetically, each carrying the Word comment 'verify in Zotero'; details (volumes, pages, DOIs) are from memory and must be checked.")
+    L.append("- T4.1-B: base paragraph of 4.3 'Table 5 reports bootstrap confidence intervals for the best model' -> 'for the reported model'; Abstract: first 'SHAP' expanded to 'SHAP (Shapley additive explanations)' in F4_manuscript_changes.md (248 words); heading 3.5 renamed; "
+             "the two persistence per-class F1 cells of Table 4 now have a row in CIFRE_REVIZIE.md (T0.4).")
+    L.append("- Marked copy `KBS_Manuscript_R1_marked.docx`: every run of text that is new or changed relative to BASE_MANUSCRIPT.docx is highlighted in yellow (word-level diff per paragraph; whole new tables and changed table cells highlighted); "
+             "base paragraphs and sentences that no longer appear are listed at the end under 'Removed from the submitted version'. It is a reading aid, not Word track changes.\n")
     L.append("## Figures folder (revision/manuscript/figures/)\n")
     L.append(f"Legacy figures 1-3 copied from `{legacy_dir}` (the figure files of the submitted manuscript; outside the repo).\n")
     L.append("| File | Source | sha256 (16) |\n|---|---|---|")
@@ -1181,10 +1389,13 @@ def main() -> None:
     make_supplementary()
     make_response()
     fig_rows = make_figures(Path(args.legacy_figures_dir))
+    marked = make_marked_copy()
+    DEVIATIONS.append(f"Marked copy statistics: {marked['paragraphs_marked']} paragraphs with highlighted text, {marked['cells_marked']} highlighted table cells, "
+                      f"{marked['removed_items']} removed items listed at the end.")
     write_plan(fig_rows, highlights, base_sha, args.legacy_figures_dir)
     if sha256(BASE) != base_sha:
         raise SystemExit("STOP: BASE_MANUSCRIPT.docx changed during assembly")
-    print(f"OK: {OUT_MAN.name}, {OUT_HIGH.name}, {OUT_SUPP.name}, {OUT_RESP.name}, {len(fig_rows)} figure files, {len(PLAN_ROWS)} plan rows")
+    print(f"OK: {OUT_MAN.name}, {OUT_MARKED.name}, {OUT_HIGH.name}, {OUT_SUPP.name}, {OUT_RESP.name}, {len(fig_rows)} figure files, {len(PLAN_ROWS)} plan rows; marked {marked}")
 
 
 if __name__ == "__main__":

@@ -20,7 +20,8 @@ ROOT = Path(__file__).resolve().parents[2]
 MAN = ROOT / "revision" / "manuscript"
 BASE_SHA = "6cfe1763e7dca2b4a54d9d5cad02d07089fdf695a317bc8d68d721b5c36017f6"  # ESWA_Manuscript_Anonymized_v2.docx
 DOCS = {"manuscript": MAN / "KBS_Manuscript_R1.docx", "highlights": MAN / "KBS_Highlights_R1.docx",
-        "supplementary": MAN / "KBS_Supplementary_R1.docx", "response": MAN / "KBS_Response_R1.docx"}
+        "supplementary": MAN / "KBS_Supplementary_R1.docx", "response": MAN / "KBS_Response_R1.docx",
+        "marked": MAN / "KBS_Manuscript_R1_marked.docx"}
 PLACEHOLDER = re.compile(r"\[t\d+\]|\[Section 4\.x\]|\b3\.x\b|\[Figure tNN\]|\[Table X\]|\[title as submitted\]|\[t11\]")
 RESULTS: list[tuple[str, bool, str]] = []
 
@@ -62,8 +63,14 @@ def main() -> None:
             rec(f"{p.name} opens with python-docx", True, f"{len(docs[k].paragraphs)} paragraphs, {len(docs[k].tables)} tables")
         except Exception as e:  # noqa: BLE001
             rec(f"{p.name} opens with python-docx", False, str(e))
-    if len(docs) < 4:
+    if len(docs) < 5:
         finish(); return
+    # marked copy: same body text as the manuscript (before the appended "Removed" section), highlights present
+    mk_pars = [p.text for p in docs["marked"].paragraphs]
+    cut = mk_pars.index("Removed from the submitted version") if "Removed from the submitted version" in mk_pars else len(mk_pars)
+    rec("Marked copy: body text identical to KBS_Manuscript_R1.docx", mk_pars[:cut] == [p.text for p in docs["manuscript"].paragraphs])
+    n_hl = sum(1 for p in docs["marked"].paragraphs for r in p.runs if r.font.highlight_color is not None)
+    rec("Marked copy: highlighted runs present and a 'Removed from the submitted version' section exists", n_hl > 0 and cut < len(mk_pars), f"{n_hl} highlighted runs, {len(mk_pars) - cut - 1} removed items")
 
     man = docs["manuscript"]
     items = body(man)
@@ -162,11 +169,20 @@ def main() -> None:
 
     # git: tracked files in revision/ outside manuscript/ and scripts/ unchanged (requirements.txt pin excepted)
     st = subprocess.run(["git", "status", "--porcelain", "--", "revision/", "CIFRE_CANONICE.md"], cwd=ROOT, capture_output=True, text=True).stdout.splitlines()
-    others = [l for l in st if not l[3:].startswith(("revision/manuscript/", "revision/scripts/")) and l[3:] != "revision/requirements.txt"]
-    rec("Git: no changes in tracked revision/ files outside manuscript/, scripts/ (requirements.txt pin excepted)", not others, "; ".join(others))
-    for f in ("revision/CIFRE_REVIZIE.md", "CIFRE_CANONICE.md", "revision/TEXT_DECISIONS.md"):
+    others = [l for l in st if not l[3:].startswith(("revision/manuscript/", "revision/scripts/"))
+              and l[3:] not in ("revision/requirements.txt", "revision/CIFRE_REVIZIE.md")]
+    rec("Git: no changes in tracked revision/ files outside manuscript/, scripts/ (requirements.txt pin and the CIFRE_REVIZIE T0.4 row excepted)", not others, "; ".join(others))
+    for f in ("CIFRE_CANONICE.md", "revision/TEXT_DECISIONS.md"):
         r = subprocess.run(["git", "diff", "--quiet", "--", f], cwd=ROOT)
         rec(f"Git diff empty on {f}", r.returncode == 0)
+    # CIFRE_REVIZIE.md: either unchanged or changed only by the T0.4 persistence per-class row (T4.1-B)
+    d = subprocess.run(["git", "diff", "--", "revision/CIFRE_REVIZIE.md"], cwd=ROOT, capture_output=True, text=True, encoding="utf-8").stdout
+    changed = [l for l in d.splitlines() if (l.startswith("+") or l.startswith("-")) and not l.startswith(("+++", "---"))]
+    ok = not changed or (len(changed) == 1 and changed[0].startswith("+| T0.4 | Persistence F1 Rest / F1 Normal"))
+    rec("Git diff on revision/CIFRE_REVIZIE.md empty or limited to the T0.4 persistence per-class row", ok, f"{len(changed)} changed lines")
+    cif = (ROOT / "revision" / "CIFRE_REVIZIE.md").read_text(encoding="utf-8")
+    rec("CIFRE_REVIZIE.md has the T0.4 row for persistence F1 Rest / F1 Normal (0.205 / 0.707)", "| T0.4 | Persistence F1 Rest / F1 Normal | 0.205 / 0.707 |" in cif)
+    rec("LF line endings: CIFRE_REVIZIE.md", b"\r\n" not in (ROOT / "revision" / "CIFRE_REVIZIE.md").read_bytes())
 
     # LF on produced text files
     for f in list(MAN.glob("*.md")) + [ROOT / "revision" / "scripts" / n for n in ("assemble_manuscript.py", "_check_t41_numbers.py", "_check_t41_outputs.py")]:

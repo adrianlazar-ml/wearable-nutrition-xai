@@ -16,6 +16,7 @@ Cifrele canonice ale modelului raportat (CIFRE_CANONICE.md) NU se schimba; tot c
 | T0.4 | Persistence F1 Active | 0.0000 | persistence_baseline.py | 42 | 2026-09-14 | |
 | T0.4 | Persistence MCC [CI 95%] | -0.0566 [-0.1632, 0.0597] | persistence_baseline.py | 42 | 2026-09-14 | |
 | T0.4 | Persistence accuracy | 0.5625 | persistence_baseline.py | 42 | 2026-09-14 | |
+| T0.4 | Persistence F1 Rest / F1 Normal | 0.205 / 0.707 | persistence_baseline.py | 42 | 2026-09-14 | results/persistence_baseline.csv (f1_rest 0.2045 / f1_normal 0.7071); sursa celulelor [t11] din Table 4 (T4.1-B, 2026-10-19) |
 | T0.4 | Majority F1 macro / accuracy | 0.2811 / 0.7292 | persistence_baseline.py | 42 | 2026-09-14 | reproduce 0.281 / 72.9% din CIFRE_CANONICE |
 | T1.1 | RF balanced accuracy [CI 95%] | 0.5227 [0.3851, 0.6634] | revision/scripts/extended_metrics.py | 42 | 2026-10-18 | 1000 resamples, matrice partajata, 0 sarite |
 | T1.1 | RF Cohen's kappa (simplu) [CI 95%] | 0.1415 [-0.0050, 0.2924] | extended_metrics.py | 42 | 2026-10-18 | QWK canonic 0.2551 ramane |
