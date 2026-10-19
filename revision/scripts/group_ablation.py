@@ -229,21 +229,21 @@ def make_figure(logo: pd.DataFrame, kogi: pd.DataFrame, full_f1: float, groups: 
 
     lg = logo.set_index("group")
     off = 0.17
-    for k, (col, color, lab) in enumerate([("f1_macro", c_macro, "delta macro F1"),
-                                           ("f1_active", c_active, "delta F1 Active")]):
+    # T3.1.6 figure hygiene (2026-10-19): short panel titles, plain y label, square marker for the
+    # F1 Active series (same colours); method details go to the caption / CIFRE_REVIZIE. Numbers unchanged.
+    for k, (col, color, marker, lab) in enumerate([("f1_macro", c_macro, "o", "delta macro F1"),
+                                                   ("f1_active", c_active, "s", "delta F1 Active")]):
         pos = x + (off if k else -off)
         d = lg.loc[[group_name(g) for g in gids], f"delta_{col}"].to_numpy()
         lo = lg.loc[[group_name(g) for g in gids], f"delta_{col}_ci_low"].to_numpy()
         hi = lg.loc[[group_name(g) for g in gids], f"delta_{col}_ci_high"].to_numpy()
-        ax1.errorbar(pos, d, yerr=[d - lo, hi - d], fmt="o", color=color, ms=7, lw=1.6, capsize=4,
+        ax1.errorbar(pos, d, yerr=[d - lo, hi - d], fmt=marker, color=color, ms=7, lw=1.6, capsize=4,
                      capthick=1.6, label=lab)
     ax1.axhline(0, color="#555555", lw=1.0)
     ax1.set_xticks(x)
     ax1.set_xticklabels(labels, fontsize=8.5)
-    ax1.set_ylabel("full RF minus LOGO RF (positive = removing the group lowers the test score)", fontsize=8.5)
-    ax1.set_title("(a) Leave-one-group-out: delta vs full RF, paired bootstrap 95% CI\n"
-                  f"(1000 resamples of the 192 test days, seed {SEED}; CIs unadjusted for 6 comparisons)",
-                  fontsize=9.5, fontweight="bold")
+    ax1.set_ylabel("Delta (full RF minus ablated RF)", fontsize=8.5)
+    ax1.set_title("(a) Leave-one-group-out", fontsize=9.5, fontweight="bold")
     ax1.grid(alpha=0.3, axis="y")
     ax1.legend(fontsize=8.5, loc="upper left")
 
@@ -260,9 +260,7 @@ def make_figure(logo: pd.DataFrame, kogi: pd.DataFrame, full_f1: float, groups: 
     ax2.set_xticklabels(labels, fontsize=8.5)
     ax2.set_ylim(0, max(0.72, float(vals.max()) + 0.12))
     ax2.set_ylabel("macro F1 on the test set (absolute, non-canonical)", fontsize=8.5)
-    ax2.set_title("(b) Keep-one-group-in: RF trained on one group only\n"
-                  "(descriptive, no CI; label = macro F1, F1 Active in brackets)",
-                  fontsize=9.5, fontweight="bold")
+    ax2.set_title("(b) Keep-one-group-in", fontsize=9.5, fontweight="bold")
     ax2.grid(alpha=0.3, axis="y")
     ax2.legend(fontsize=8.5, loc="upper left")
 

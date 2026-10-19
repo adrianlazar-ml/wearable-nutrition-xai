@@ -1,0 +1,90 @@
+{
+  "run_date": "2026-10-19T05:55:20",
+  "elapsed_seconds": 36.1,
+  "seed": 42,
+  "n_resamples": 1000,
+  "n_test": 192,
+  "n_train": 766,
+  "n_total": 958,
+  "grid": {
+    "R": [
+      55,
+      60,
+      65
+    ],
+    "A_r": [
+      80,
+      85,
+      90
+    ],
+    "A_s": 75,
+    "n_cells": 9
+  },
+  "canonical_cell": [
+    60,
+    85,
+    75
+  ],
+  "comparability": {
+    "min_active_test": 5,
+    "min_active_train": 4
+  },
+  "smote_k_convention": "canonical Table 7 script: 3 if n_min >= 4 else n_min - 1 if n_min >= 2 else no SMOTE",
+  "versions": {
+    "python": "3.11.9",
+    "numpy": "2.4.3",
+    "pandas": "2.3.3",
+    "scikit_learn": "1.8.0",
+    "imbalanced_learn": "0.14.1",
+    "shap": "0.51.0",
+    "matplotlib": "3.10.8"
+  },
+  "t310a_canonical": {
+    "f1_macro": 0.5063238989824085,
+    "accuracy": 0.640625,
+    "mcc": 0.14155971852108248,
+    "f1_active": 0.4444444444444444,
+    "pers_f1_macro": 0.30389610389610394,
+    "maj_f1_macro": 0.28112449799196787,
+    "maj_accuracy": 0.7291666666666666
+  },
+  "t11_rf_f1_macro_ci_from_cifre_revizie": [
+    0.3784,
+    0.613
+  ],
+  "canonical_rf_f1_macro_marginal_ci": [
+    0.3784461356796262,
+    0.6130001721306069
+  ],
+  "table7_checks": {
+    "R55_A85": "T2",
+    "R60_A85": "T3",
+    "R65_A85": "T5",
+    "R60_A90": "T4*",
+    "R65_A90": "T6*"
+  },
+  "labels_identical_to_table7_90_80": {
+    "R55_A90": true,
+    "R60_A90": true,
+    "R65_A90": true
+  },
+  "cells_per_smote_k": {
+    "1": 3,
+    "3": 6
+  },
+  "n_comparable": 6,
+  "bootstrap_indices_sha256": "fff3b2834c06196262ed4006fef99dce9106d25ab7e1e2c449e7bf889db30260",
+  "prediction_files_sha256": {
+    "t31_predictions_rf_R55_A80.csv": "2adcd8538a71036353952651c3bc2f7683c9c767316cdc29a1014cf7d180f254",
+    "t31_predictions_rf_R55_A85.csv": "32d1be28ee010cb3ceeceed702157d5b691b69c2d11ed9c39adb518b81c8d4a1",
+    "t31_predictions_rf_R55_A90.csv": "db7606dcd65ce50c83c54ff1312c9f068b688e167ae2137821699559157e778b",
+    "t31_predictions_rf_R60_A80.csv": "ba27fe19c085bcfa53aaaa0637fe736d667c4535ce5ccb2abfe17bba5e191fae",
+    "t31_predictions_rf_R60_A85.csv": "939e82a4d60b82b5b84f25cb259ba2867d113feffa417f88fc629209878804ce",
+    "t31_predictions_rf_R60_A90.csv": "6e73eb1b997068a7ac631be1f88fc58aa90f7bb29e215a18c4e3be9927b9fa4e",
+    "t31_predictions_rf_R65_A80.csv": "01bbcfdd798949d0467c62d8b765014b40145be0cd6a7fae7bad9c5e7d1b5159",
+    "t31_predictions_rf_R65_A85.csv": "ed13f9432c0ee7f66dfb37b4ad3d9e11f4da82091cbe57eaafd958349d728af1",
+    "t31_predictions_rf_R65_A90.csv": "2a323314987814e22328f1db11cfae34dc22727b862bdbae0f9184e1e467feac"
+  },
+  "figure_axes": 4,
+  "sanity_checks_failed": []
+}
