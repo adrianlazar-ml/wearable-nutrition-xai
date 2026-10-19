@@ -1,0 +1,40 @@
+variable,display,level,unit,cls,n,mean,median,p25,p75,iqr
+aw_hr_mean,aw_hr_mean,A,bpm,Rest,202,91.47683168,91.95,88.7575,94.28,5.5225
+aw_hr_mean,aw_hr_mean,A,bpm,Normal,704,86.21849432,86.02,82.6975,89.8575,7.16
+aw_hr_mean,aw_hr_mean,A,bpm,Active,45,81.61977778,81.32,78.77,84.1,5.33
+aw_hrv_mean,aw_hrv_mean,A,ms,Rest,202,23.71683168,22.825,19.9775,26.3325,6.355
+aw_hrv_mean,aw_hrv_mean,A,ms,Normal,698,25.31187679,24.87,21.6125,28.68,7.0675
+aw_hrv_mean,aw_hrv_mean,A,ms,Active,45,24.99622222,23.85,21.32,28.62,7.3
+aw_active_calories,aw_active_calories,A,kcal,Rest,202,841.3930693,883.6,600.7,1006.7,406
+aw_active_calories,aw_active_calories,A,kcal,Normal,704,801.2839489,809.4,574.975,1001.1,426.125
+aw_active_calories,aw_active_calories,A,kcal,Active,45,649.2511111,579.3,470.6,779.2,308.6
+aw_steps,aw_steps,A,steps,Rest,202,7321.919406,8056.925,4080.085,9861.21,5781.125
+aw_steps,aw_steps,A,steps,Normal,704,7056.26848,7079.06,3717.6325,9587.015,5869.3825
+aw_steps,aw_steps,A,steps,Active,45,5266.214222,4498.69,2368.26,6518,4149.74
+aw_resp_rate,aw_resp_rate,A,breaths/min,Rest,202,16.49262376,16.415,15.7875,17.11,1.3225
+aw_resp_rate,aw_resp_rate,A,breaths/min,Normal,704,15.72051136,15.61,14.965,16.29,1.325
+aw_resp_rate,aw_resp_rate,A,breaths/min,Active,45,14.984,14.85,14.38,15.65,1.27
+aw_spo2,aw_spo2,A,%,Rest,202,94.3540099,94.365,93.275,95.4425,2.1675
+aw_spo2,aw_spo2,A,%,Normal,696,94.60571839,94.695,93.71,95.6425,1.9325
+aw_spo2,aw_spo2,A,%,Active,45,94.72933333,94.81,93.54,95.6,2.06
+hrv_mean,oura_hrv_mean,B,ms,Rest,200,14.53083333,13,11,16,5
+hrv_mean,oura_hrv_mean,B,ms,Normal,710,17.83192488,17,15,20,5
+hrv_mean,oura_hrv_mean,B,ms,Active,46,18.82608696,18,16,22,6
+rhr_lowest,oura_rhr_lowest,B,bpm,Rest,200,81.35,82,76,87,11
+rhr_lowest,oura_rhr_lowest,B,bpm,Normal,710,73.58591549,73,70,76,6
+rhr_lowest,oura_rhr_lowest,B,bpm,Active,46,69.52173913,69,68,71,3
+temp_deviation,oura_temp_deviation,B,deg C,Rest,200,0.0936,0.12,-0.0725,0.3325,0.405
+temp_deviation,oura_temp_deviation,B,deg C,Normal,710,-0.001366197183,0.01,-0.16,0.1775,0.3375
+temp_deviation,oura_temp_deviation,B,deg C,Active,46,-0.03,0.01,-0.12,0.1175,0.2375
+steps_oura,oura_steps,B,steps,Rest,202,6846.445545,7058,3541.75,9725,6183.25
+steps_oura,oura_steps,B,steps,Normal,709,6770.763047,6503,3429,9531,6102
+steps_oura,oura_steps,B,steps,Active,46,5225.434783,4263,2099.25,7222,5122.75
+aw_active_calories_lag1,aw_active_calories (t-1),A_lag1,kcal,Rest,201,824.618408,863,574.7,1007.3,432.6
+aw_active_calories_lag1,aw_active_calories (t-1),A_lag1,kcal,Normal,705,803.1231206,815.3,578.7,993.5,414.8
+aw_active_calories_lag1,aw_active_calories (t-1),A_lag1,kcal,Active,46,690.4521739,682.5,514,852.95,338.95
+aw_steps_lag1,aw_steps (t-1),A_lag1,steps,Rest,201,7270.091592,7617.33,4052.53,10034.58,5982.05
+aw_steps_lag1,aw_steps (t-1),A_lag1,steps,Normal,705,6996.21078,7159.93,3661,9637.14,5976.14
+aw_steps_lag1,aw_steps (t-1),A_lag1,steps,Active,46,5886.749565,5115.25,2714.25,8311.6125,5597.3625
+steps_oura_lag1,oura_steps (t-1),B_lag1,steps,Rest,202,6983.405941,6795,3373.5,10075.75,6702.25
+steps_oura_lag1,oura_steps (t-1),B_lag1,steps,Normal,710,6581.376056,6483.5,3220.5,9364,6143.5
+steps_oura_lag1,oura_steps (t-1),B_lag1,steps,Active,46,5501.565217,4903,2642.5,7618.25,4975.75

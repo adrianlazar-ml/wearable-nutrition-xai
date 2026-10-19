@@ -1,0 +1,14 @@
+variable,display,level,source,unit,expected_active_vs_rest,n_valid,n_rest,n_normal,n_active,n_missing
+aw_hr_mean,aw_hr_mean,A,apple_health_daily.csv: aw_hr_mean,bpm,-,951,202,704,45,7
+aw_hrv_mean,aw_hrv_mean,A,apple_health_daily.csv: aw_hrv_mean,ms,+,945,202,698,45,13
+aw_active_calories,aw_active_calories,A,apple_health_daily.csv: aw_active_energy_kj / 4.184,kcal,+,951,202,704,45,7
+aw_steps,aw_steps,A,apple_health_daily.csv: aw_steps,steps,+,951,202,704,45,7
+aw_resp_rate,aw_resp_rate,A,apple_health_daily.csv: aw_resp_rate,breaths/min,0,951,202,704,45,7
+aw_spo2,aw_spo2,A,apple_health_daily.csv: aw_spo2,%,0,943,202,696,45,15
+hrv_mean,oura_hrv_mean,B,oura_combined.csv: hrv_mean,ms,+,956,200,710,46,2
+rhr_lowest,oura_rhr_lowest,B,oura_combined.csv: rhr_lowest,bpm,-,956,200,710,46,2
+temp_deviation,oura_temp_deviation,B,oura_combined.csv: temp_deviation,deg C,-,956,200,710,46,2
+steps_oura,oura_steps,B,oura_combined.csv: steps_oura,steps,+,957,202,709,46,1
+aw_active_calories_lag1,aw_active_calories (t-1),A_lag1,shift(1) of aw_active_calories (== canonical lag-1 feature),kcal,+,952,201,705,46,6
+aw_steps_lag1,aw_steps (t-1),A_lag1,shift(1) of aw_steps (== canonical lag-1 feature),steps,+,952,201,705,46,6
+steps_oura_lag1,oura_steps (t-1),B_lag1,shift(1) of steps_oura (== canonical lag-1 feature),steps,+,958,202,710,46,0

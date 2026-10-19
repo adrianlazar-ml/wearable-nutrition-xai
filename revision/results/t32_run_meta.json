@@ -1,0 +1,211 @@
+{
+  "run_date": "2026-10-19T06:05:40",
+  "elapsed_seconds": 2.4,
+  "seed": 42,
+  "n_boot": 1000,
+  "n_days": 958,
+  "label_distribution": [
+    202,
+    710,
+    46
+  ],
+  "thresholds": {
+    "R": 60,
+    "A_r": 85,
+    "A_s": 75
+  },
+  "variables": {
+    "aw_hr_mean": {
+      "level": "A",
+      "source": "apple_health_daily.csv: aw_hr_mean",
+      "unit": "bpm",
+      "expected": "-"
+    },
+    "aw_hrv_mean": {
+      "level": "A",
+      "source": "apple_health_daily.csv: aw_hrv_mean",
+      "unit": "ms",
+      "expected": "+"
+    },
+    "aw_active_calories": {
+      "level": "A",
+      "source": "apple_health_daily.csv: aw_active_energy_kj / 4.184",
+      "unit": "kcal",
+      "expected": "+"
+    },
+    "aw_steps": {
+      "level": "A",
+      "source": "apple_health_daily.csv: aw_steps",
+      "unit": "steps",
+      "expected": "+"
+    },
+    "aw_resp_rate": {
+      "level": "A",
+      "source": "apple_health_daily.csv: aw_resp_rate",
+      "unit": "breaths/min",
+      "expected": "0"
+    },
+    "aw_spo2": {
+      "level": "A",
+      "source": "apple_health_daily.csv: aw_spo2",
+      "unit": "%",
+      "expected": "0"
+    },
+    "hrv_mean": {
+      "level": "B",
+      "source": "oura_combined.csv: hrv_mean",
+      "unit": "ms",
+      "expected": "+"
+    },
+    "rhr_lowest": {
+      "level": "B",
+      "source": "oura_combined.csv: rhr_lowest",
+      "unit": "bpm",
+      "expected": "-"
+    },
+    "temp_deviation": {
+      "level": "B",
+      "source": "oura_combined.csv: temp_deviation",
+      "unit": "deg C",
+      "expected": "-"
+    },
+    "steps_oura": {
+      "level": "B",
+      "source": "oura_combined.csv: steps_oura",
+      "unit": "steps",
+      "expected": "+"
+    },
+    "aw_active_calories_lag1": {
+      "level": "A_lag1",
+      "source": "shift(1) of aw_active_calories (== canonical lag-1 feature)",
+      "unit": "kcal",
+      "expected": "+"
+    },
+    "aw_steps_lag1": {
+      "level": "A_lag1",
+      "source": "shift(1) of aw_steps (== canonical lag-1 feature)",
+      "unit": "steps",
+      "expected": "+"
+    },
+    "steps_oura_lag1": {
+      "level": "B_lag1",
+      "source": "shift(1) of steps_oura (== canonical lag-1 feature)",
+      "unit": "steps",
+      "expected": "+"
+    }
+  },
+  "n_per_class": {
+    "aw_hr_mean": [
+      202,
+      704,
+      45
+    ],
+    "aw_hrv_mean": [
+      202,
+      698,
+      45
+    ],
+    "aw_active_calories": [
+      202,
+      704,
+      45
+    ],
+    "aw_steps": [
+      202,
+      704,
+      45
+    ],
+    "aw_resp_rate": [
+      202,
+      704,
+      45
+    ],
+    "aw_spo2": [
+      202,
+      696,
+      45
+    ],
+    "hrv_mean": [
+      200,
+      710,
+      46
+    ],
+    "rhr_lowest": [
+      200,
+      710,
+      46
+    ],
+    "temp_deviation": [
+      200,
+      710,
+      46
+    ],
+    "steps_oura": [
+      202,
+      709,
+      46
+    ],
+    "aw_active_calories_lag1": [
+      201,
+      705,
+      46
+    ],
+    "aw_steps_lag1": [
+      201,
+      705,
+      46
+    ],
+    "steps_oura_lag1": [
+      202,
+      710,
+      46
+    ]
+  },
+  "excluded": [
+    "readiness_score",
+    "sleep_score",
+    "hrv_balance",
+    "recovery_index",
+    "activity_score",
+    "aw_sleep_deep_hours",
+    "aw_sleep_rem_hours"
+  ],
+  "effect_size": "epsilon2 = H / (n - 1); Cliff's delta with within-class bootstrap CI",
+  "posthoc": "Dunn z, tie-corrected, two-sided normal p, Holm over 3 pairs (direct implementation)",
+  "caveat": "Caveat: consecutive days are autocorrelated; the Kruskal-Wallis and Dunn p-values treat the days as independent and are approximate (optimistic). Inference rests on the effect sizes (epsilon-squared, Cliff's delta with bootstrap CI).",
+  "agreement_summary": {
+    "A": {
+      "concordant": 2,
+      "discordant": 2,
+      "no_expectation": 2
+    },
+    "A_lag1": {
+      "concordant": 0,
+      "discordant": 2,
+      "no_expectation": 0
+    },
+    "B": {
+      "concordant": 3,
+      "discordant": 1,
+      "no_expectation": 0
+    },
+    "B_lag1": {
+      "concordant": 0,
+      "discordant": 1,
+      "no_expectation": 0
+    }
+  },
+  "versions": {
+    "python": "3.11.9",
+    "numpy": "2.4.3",
+    "pandas": "2.3.3",
+    "scipy": "1.17.1",
+    "matplotlib": "3.10.8",
+    "scikit_posthocs": null
+  },
+  "figure_axes": [
+    6,
+    8
+  ],
+  "sanity_checks_failed": []
+}
