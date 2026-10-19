@@ -62,6 +62,10 @@ V8_WORDING = [
     ("Figure 1. Overview of the five-stage system architecture", "Figure 1. End-to-end flow of the proposed system"),
     ("Table 9 compares models trained on the XML and JSON", "Table 9 compares models trained on the XML and JSON"),
 ]
+# T4.1-D item 13: GenAI declaration text supplied by the first author on 2026-10-19 (names the tool, as the v8 declaration did)
+GENAI_DECLARATION = ("During the preparation of this work the authors used Claude (Anthropic) in order to support language editing and "
+                     "the structuring of the manuscript. After using this tool, the authors reviewed and edited the content as needed "
+                     "and take full responsibility for the content of the published article.")
 V8_EXPECTED_CITATIONS = ("Breiman, 2001", "Chen & Guestrin, 2016", "Vapnik, 1995", "Chawla et al., 2002", "Lundberg & Lee, 2017",
                          "Shapley, 1953/2016", "Lundberg et al., 2020", "Zheng et al., 2024", "Thapa et al., 2026")
 OUT_FIGDIR = MAN / "figures"
@@ -122,6 +126,14 @@ BASE_XREFS = [
     ("Table 10. Positioning against representative", "Table 10.", "Table 14."),
     # T4.1-B: wording in the retained base paragraph of 4.3
     ("Because the Active class is represented by only 8 test samples", "for the best model", "for the reported model"),
+    # T4.1-D: editorial fixes in retained base text (items 5, 6, 7, 8, 14 of the read-through list)
+    ("Ring data were retrieved through a cloud REST API",
+     "After feature engineering and labeling (Sections 3.2 and 3.3), the unified dataset contained 958 usable days described by nineteen lag-1 features (eleven from the ring, eight from the watch), summarized in Table 1.",
+     "The nineteen lag-1 features (eleven from the ring, eight from the watch) are summarized in Table 1."),
+    ("This paper addresses that gap", "This paper addresses that gap", "This paper addresses the gap identified above"),
+    ("Table 2. Macronutrient distribution", "by predicted activity class", "by predicted physiological state"),
+    ("Table 7. Per-device ablation", "(Random Forest, T3 labels)", "(Random Forest, reported labels)"),  # after the renumbering above
+    ("SHAP (SHapley Additive exPlanations", "all three algorithms", "the three original algorithms"),
 ]
 # [t11] cells: persistence per-class F1 from results/persistence_baseline.csv (3 decimals)
 T11_SOURCE = RES / "persistence_baseline.csv"
@@ -537,7 +549,7 @@ def assemble_manuscript(blocks: dict, v8_path: Path | None = None) -> None:
     p = find_par(doc, "Personalized nutrition increasingly depends on individual physiological data")
     plan("ABSTRACT", p.text, "replace paragraph", "Abstract")
     set_text(p, abstract)
-    m = re.match(r"Keywords \(1-7, KBS\): (.*?)\s*\(decis", keywords_raw)
+    m = re.match(r"Keywords \(1-7, KBS\): (.*?)\s*\((?:fara punct final; )?decis", keywords_raw)
     if not m:
         raise SystemExit("STOP: keywords line not in the expected form")
     p = find_par(doc, "Keywords: Personalized nutrition; Wearable devices")
@@ -545,7 +557,7 @@ def assemble_manuscript(blocks: dict, v8_path: Path | None = None) -> None:
     if len(runs) < 2 or runs[0].text.strip() != "Keywords:":
         raise SystemExit("STOP: keywords paragraph not in the expected two-run form")
     lead_ws = re.match(r"\s*", runs[1].text).group(0)
-    runs[1].text = lead_ws + m.group(1)
+    runs[1].text = lead_ws + m.group(1).rstrip(". ")  # T4.1-D item 10: no final period
     for r in runs[2:]:
         r._r.getparent().remove(r._r)
     plan("Keywords", "Keywords: Personalized nutrition; Wearable devices; Explainable AI; SHAP", "replace keyword list", "Keywords")
@@ -583,16 +595,17 @@ def assemble_manuscript(blocks: dict, v8_path: Path | None = None) -> None:
     plan("3.1 Dataset", "The dataset comprises physiological data from a single participant", "replace phrase (sentence 1) + 2 new sentences", "3.1")
     DEVIATIONS.append("3.1: the base sentence 'Data span June 2023 to March 2026, totaling 1,009 days with valid data from both devices.' was dropped because the inserted F4 text restates the dates and the day count in the same paragraph.")
 
-    # ---- 3.2 Labeling --------------------------------------------------------------------------
+    # ---- 3.2 Labeling (T4.1-D: prescriptive block at the end of the paragraph) -----------------
     p = find_par(doc, "Each day is assigned to one of three nutritionally relevant classes")
     f4 = paras(block(blocks, "3.2 Labeling strategy"))[0]
-    key = "and Normal (all other days). "
+    if "(readiness >= 85 and sleep >= 75), in which" in f4:
+        raise SystemExit("STOP: the repeated threshold parenthesis is still in the F4 3.2 block (T4.1-D item 3)")
     dup = " The sensitivity of the results to the threshold choice is analyzed in Section 4.5."
     txt = p.text
-    assert key in txt and txt.endswith(dup.strip())
-    txt = txt.replace(dup, "").replace(key, key + f4 + " ")
+    assert txt.endswith(dup.strip())
+    txt = txt.replace(dup, "") + " " + f4
     set_text(p, txt)
-    plan("3.2 Labeling strategy", "Each day is assigned to one of three nutritionally relevant classes", "insert after sentence 1 (same paragraph)", "3.2")
+    plan("3.2 Labeling strategy", "Each day is assigned to one of three nutritionally relevant classes", "append at the end of the paragraph (T4.1-D order)", "3.2")
     DEVIATIONS.append("3.2: the base sentence 'The sensitivity of the results to the threshold choice is analyzed in Section 4.5.' was dropped because the inserted F4 text carries the same cross-reference (now Section 4.7).")
 
     # ---- 3.4 Classification models -------------------------------------------------------------
@@ -604,8 +617,10 @@ def assemble_manuscript(blocks: dict, v8_path: Path | None = None) -> None:
     f4 = renumber(paras(block(blocks, "3.4 Classification models"))[0])
     f4 = f4.replace("LightGBM and CatBoost (gradient-boosted trees)",
                     "LightGBM (Ke et al., 2017) and CatBoost (Prokhorenkova et al., 2018) (gradient-boosted trees)")
-    new_body(p, f4)
-    plan("3.4 Classification models", "Three supervised algorithms with distinct inductive biases", "delete last sentence; insert new paragraph after", "3.4")
+    # T4.1-D item 4: the base hyperparameter paragraph stays right after the first paragraph; the new paragraph follows it
+    p_hyper = find_par(doc, "Hyperparameters were as follows.")
+    new_body(p_hyper, f4)
+    plan("3.4 Classification models", "Hyperparameters were as follows.", "delete last sentence of paragraph 1; insert new paragraph after the hyperparameter paragraph", "3.4, paragraph 3")
     DEVIATIONS.append("3.4: citations '(Ke et al., 2017)' and '(Prokhorenkova et al., 2018)' were inserted after LightGBM and CatBoost so that the two new references are cited in the text (they were listed in F4 REFERINTE NOI but not cited).")
 
     # ---- 3.5 Baselines + hyperparameter search -------------------------------------------------
@@ -727,7 +742,9 @@ def assemble_manuscript(blocks: dict, v8_path: Path | None = None) -> None:
     assert rest2.startswith(lead2)
     pa = Paragraph(insert_after(note, clone_paragraph(disc_tmpl, rest2[len(lead2):], lead2)), doc)
     c10 = new_caption(pa, renumber(ps[4]))
-    new_table(c10, md_table_to_rows(tbs[1]), size_pt=9)
+    t10 = new_table(c10, md_table_to_rows(tbs[1]), size_pt=9)
+    if len(ps) > 5:  # T4.1-D item 9: note under Table 10 (n varies by indicator)
+        new_note(t10, renumber(ps[5]))
     plan("4.7 Label validation (threshold paragraph)", "Seven threshold sets were tested (Table 7).", "replace paragraph", "4.7; Table 7 -> Table 9")
     plan("4.7 Label validation (Table 7)", "Table 7. Labeling-threshold sensitivity.", "replace caption + table + note", "Table 9")
     plan("4.7 Label validation (agreement)", "* Sets T4 and T6 have only 3 Active samples (note, insert after)", "insert paragraph + Table 7b", "4.7; Table 7b -> Table 10")
@@ -821,6 +838,14 @@ def assemble_manuscript(blocks: dict, v8_path: Path | None = None) -> None:
     p2 = find_par(doc, "Future work should prioritize multi-subject validation")
     set_text(p2, renumber(ps[1]))
     plan("CONCLUSIONS", "This paper presented and evaluated an explainable AI system", "replace 2 paragraphs", "Section 6")
+
+    # ---- GenAI declaration (T4.1-D item 13) ----------------------------------------------------
+    p = find_par(doc, "During the preparation of this work the author(s) used")
+    set_text(p, GENAI_DECLARATION)
+    plan("GenAI declaration (T4.1-D)", "During the preparation of this work the author(s) used", "replace paragraph", "Declaration of generative AI")
+    DEVIATIONS.append("GenAI declaration (T4.1-D item 13): replaced by the text supplied by the first author on 2026-10-19, which names the declared assistant as the v8 "
+                      "declaration did and says 'published article'. The KBS Guide for Authors page could not be read by the assembly session (KBS_journal.pdf has no text layer "
+                      "and no PDF renderer was available); the decision to name the tool follows the author's instruction and v8.")
 
     # ---- Appendix A before References ----------------------------------------------------------
     refs_h = find_par(doc, "References")
@@ -1405,6 +1430,13 @@ def write_plan(fig_rows, highlights, base_sha, legacy_dir) -> None:
     L.append("- New references: six provisional APA 7 entries inserted alphabetically, each carrying the Word comment 'verify in Zotero'; details (volumes, pages, DOIs) are from memory and must be checked.")
     L.append("- T4.1-B: base paragraph of 4.3 'Table 5 reports bootstrap confidence intervals for the best model' -> 'for the reported model'; Abstract: first 'SHAP' expanded to 'SHAP (Shapley additive explanations)' in F4_manuscript_changes.md (248 words); heading 3.5 renamed; "
              "the two persistence per-class F1 cells of Table 4 now have a row in CIFRE_REVIZIE.md (T0.4).")
+    L.append("- T4.1-D (editorial fixes after the read-through, 2026-10-19): Discussion 'Temporal robustness' shortened in F4 (figures stay in 4.8, 'canonical' -> 'reported'); "
+             "3.2 reordered (thresholds, calibration, distribution, pseudo-labels, then the prescriptive block without the repeated threshold parenthesis); 3.4 hyperparameter paragraph "
+             "kept directly after the first paragraph; 3.1 second paragraph shortened to the Table 1 sentence; 'the gap identified above' in the Introduction; Table 2 caption "
+             "'by predicted physiological state'; Table 7 caption '(Random Forest, reported labels)'; Table 10 header 'Normal (n = 696 to 704)' with a note on missing values; "
+             "keywords without final period; 3.8 'the three original algorithms'. Items checked with no change needed: no paragraph containing 'Internal' exists in any docx "
+             "(0 found); the Table 9 footnote is a single italic run with one asterisk; Figure 1 (figures/Figure1_architecture.png, from the submitted figure set) shows the "
+             "confidence diamond and the Normal fallback, so the v8 legend matches the image (the repo copy under outputs/figures/ differs only by 'hydration' in the recommendation box and is not used).")
     L.append("- Marked copy `KBS_Manuscript_R1_marked.docx`: every run of text that is new or changed relative to BASE_MANUSCRIPT.docx is highlighted in yellow (word-level diff per paragraph; whole new tables and changed table cells highlighted); "
              "base paragraphs and sentences that no longer appear are listed at the end under 'Removed from the submitted version'. It is a reading aid, not Word track changes.\n")
     L.append("## Figures folder (revision/manuscript/figures/)\n")

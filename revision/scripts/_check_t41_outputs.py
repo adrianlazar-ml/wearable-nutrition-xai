@@ -93,6 +93,10 @@ def main() -> None:
         rec(f"{DOCS[k].name}: 0 em dash (U+2014)", "—" not in t, f"{t.count(chr(0x2014))} found")
         ph = PLACEHOLDER.findall(t)
         rec(f"{DOCS[k].name}: 0 placeholders", not ph, ", ".join(ph[:10]))
+        if k in ("manuscript", "marked"):
+            body_t = t.split("Removed from the submitted version")[0] if k == "marked" else t
+            rec(f"{DOCS[k].name}: 0 'canonical' in the text", len(re.findall(r"canonical", body_t, re.I)) == 0, f"{len(re.findall(r'canonical', body_t, re.I))} found")
+            rec(f"{DOCS[k].name}: 0 paragraphs containing 'Internal'", "Internal" not in t)
 
     # tables: captions in order, cited in text, first citation in order
     text_pars = [p.text for p in pars]
