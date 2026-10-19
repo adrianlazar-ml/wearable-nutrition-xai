@@ -872,6 +872,32 @@ def assemble_manuscript(blocks: dict, v8_path: Path | None = None) -> None:
                       "the changes are 'author(s)' -> 'authors' and the closing words 'content of the publication' -> 'content of the published article' (KBS template). "
                       "The KBS Guide for Authors page could not be read by the assembly session (KBS_journal.pdf has no text layer and no PDF renderer was available).")
 
+    # ---- T6.2 (F5): declaration sections before the GenAI declaration (DRAFT for the coauthor) ---------
+    genai_h = find_par(doc, "Declaration of generative AI")
+    decl = paras(block(blocks, "DECLARATIONS"))
+    if len(decl) != 6:
+        raise SystemExit(f"STOP: DECLARATIONS block must hold 6 paragraphs (3 headings + 3 texts), found {len(decl)}")
+    for i in range(0, 6, 2):
+        head, text = decl[i], decl[i + 1]
+        hp = Paragraph(insert_before(genai_h, clone_paragraph(unnumbered_h_tmpl, head)), doc)
+        bp = new_body(genai_h, text, before=True)
+        note = ""
+        if head.startswith("CRediT"):
+            doc.add_comment(runs=bp.runs, text="confirm roles with coauthor", author="T6.2 draft", initials="T62")
+            doc.add_comment(runs=hp.runs, text="remove if KBS requires anonymized main document; check Editorial Manager",
+                            author="T6.2 draft", initials="T62")
+            note = " + comments 'confirm roles with coauthor' (text), 'remove if KBS requires anonymized main document; check Editorial Manager' (heading)"
+        elif head.startswith("Funding"):
+            doc.add_comment(runs=bp.runs, text="confirm no funding with coauthor", author="T6.2 draft", initials="T62")
+            note = " + comment 'confirm no funding with coauthor'"
+        plan("DECLARATIONS", "Declaration of generative AI (heading, insert before)", "new unnumbered section (heading + paragraph)" + note, head)
+    DEVIATIONS.append("T6.2 (F5, 2026-10-20, KBS pp. 26-27): three declaration sections (CRediT authorship contribution statement, Declaration of "
+                      "competing interest, Funding) inserted after Conclusions and before the GenAI declaration as a DRAFT for the coauthor (text in "
+                      "F4_manuscript_changes.md, block DECLARATIONS), with Word comments 'confirm roles with coauthor', 'confirm no funding with "
+                      "coauthor' and, because the v8 base is anonymized (no authors on the title page), 'remove if KBS requires anonymized main "
+                      "document; check Editorial Manager' on the CRediT heading. Final order: CRediT, competing interest, Funding, GenAI declaration, "
+                      "Data availability, Appendix A, References. No Acknowledgements section (nobody to acknowledge; added only if the coauthor asks).")
+
     # ---- Appendix A before References ----------------------------------------------------------
     refs_h = find_par(doc, "References")
     items = block(blocks, "APPENDIX")
