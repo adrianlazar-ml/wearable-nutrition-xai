@@ -88,6 +88,7 @@ Ipoteză: nicio diferență semnificativă la 0.05. Se raportează ca atare; con
 **T2.2 Hyperparameter search (R1.4).** Random search, 20 configurații x 3 folduri TimeSeriesSplit pe train, metrica macro F1, pentru RF, XGB, SVM, LightGBM, CatBoost; pentru TabNet și FT-Transformer grilă mică fixată dinainte (3-5 configurații) cu early stopping pe fold, declarată ca atare în manuscris. Test set atins o singură dată cu configurația câștigătoare. Tabel în anexă: spațiu de căutare, cea mai bună configurație, F1 CV, F1 test.
 Regulă: dacă ierarhia pe test se schimbă față de default, raportezi ambele și discuți; nu alegi versiunea convenabilă.
 Notă: un tuning există deja ca robustness check (nu a schimbat ierarhia); T2.2 îl înlocuiește cu o procedură raportabilă.
+**Status T2.2: PASS, 19 oct 2026** (cifre în `revision/CIFRE_REVIZIE.md`, rândurile și notele T2.2; script `revision/scripts/hyperparameter_search.py --mode cv | test | seeds`, checker `_check_t22_outputs.py`). Design complet, fără ordinea de sacrificiu: 20 configurații x 3 fold-uri TimeSeriesSplit (validări 304-457 / 458-611 / 612-765) pentru cele 5 modele tabulare, grilă fixă de 5 pentru rețele, referințe neeligibile, CV 27.6 min. Rezultat pe test (o singură dată per model): LightGBM tuned 0.5739 > RF tuned 0.5683 > CatBoost tuned 0.5368 > XGB tuned 0.5043 > SVM tuned 0.4386 > FT-T 0.3698 > TabNet 0.3412. **Ierarhia se schimbă față de default** și se raportează ambele (regula de mai sus): RF tuned și LightGBM tuned sunt peste RF canonic cu CI paired a căror limită inferioară e la 0 (+0.062 [+0.003, +0.140], +0.068 [+0.000, +0.148]), nimic semnificativ McNemar după Holm, iar cele trei ansambluri tuned nu sunt distinse între ele (seed-urile se suprapun complet; LightGBM seed 42 e maximul din 5). Rețelele rămân ultimele și nedistinse de persistence. Decizie propusă pentru F4: RF canonic (100 / 10 / 5) rămâne modelul raportat, T2.2 intră în anexă ca analiză de sensibilitate; de confirmat cu Buiu.
 
 ### Faza 3: punctele grele (19 oct - 1 nov, ~16h)
 
@@ -122,7 +123,7 @@ Abstract: actualizat dacă intră persistence baseline sau o cifră nouă releva
 | 1 | 14-20 sept | F0 | Reproducere confirmată, praguri parametrizate, persistence baseline |
 | 2-3 | 21 sept - 4 oct | F1 | Metrici, teste statistice, calibrare, SHAP stabilitate, ablație grupuri |
 | 4-5 | 5-18 oct | F3 (mutată înaintea F2, §7) | Sensibilitate praguri, agreement indicatori, expanding-window (închisă 19 oct) |
-| 6-7 | 19 oct - 1 nov | F2 | LightGBM, CatBoost, TabNet, FT-Transformer, tuning raportat |
+| 6-7 | 19 oct - 1 nov | F2 | LightGBM, CatBoost, TabNet, FT-Transformer, tuning raportat (închisă 19 oct: T2.1 și T2.2 PASS; săptămânile 6-7 devin rezervă pentru F4) |
 | 8-9 | 2-15 nov | F4 | Manuscris revizuit, response letter, CIFRE actualizate; draft la Buiu pe 15 nov |
 | 10-11 | 16-28 nov | F5 | Verificare, review Buiu, submisie |
 
@@ -132,7 +133,7 @@ Puncte de control cu Buiu: după F0 (rezultat persistence, confirmare termen), d
 
 - **T0.1 nu reproduce.** Cel mai grav; se rezolvă înainte de orice.
 - **Persistence baseline apropiat de RF.** Contribuția se reformulează spre sistem + explicabilitate, nu spre performanță predictivă. Se decide cu Buiu la primul punct de control.
-- **Tuning-ul schimbă ierarhia.** Se raportează ambele; nu se ascunde.
+- **Tuning-ul schimbă ierarhia.** Se raportează ambele; nu se ascunde. S-a întâmplat (T2.2, 19 oct): LightGBM / RF / CatBoost tuned peste RF canonic la punct, nedistinse între ele; ambele ierarhii sunt în CIFRE_REVIZIE cu CI-urile paired, RF canonic rămâne modelul raportat (de confirmat cu Buiu la F4).
 - **F3 alunecă.** T3.3 se reduce la 2 folduri; T3.1 se reduce la grila 3x3 fără sleep.
 - **Termenul real e 21 de zile.** Pe 4 oct există pachetul F0+F1 (6 puncte acoperite) și se negociază extensie pentru rest. De aceea F1 e înaintea F2.
 - **Buget de ore depășit.** Ordinea de sacrificiu (actualizată 19 oct, după decizia Buiu de a rula toate cele 4 modele): T2.2 redus la 10 configurații x 3 folduri pentru modelele tabulare; grila rețelelor redusă la 3; grila sleep din T3.1 (deja sacrificată); T3.3 la 2 folduri (deja rulat cu 4, nu se mai aplică). NU se sacrifică: niciunul dintre cele 4 modele din T2.1, T1.4, T3.1-T3.3 (rulate). Permutation importance rămâne sacrificat (§8.11). F3 a avut prioritate peste F2 (închisă 19 oct).
