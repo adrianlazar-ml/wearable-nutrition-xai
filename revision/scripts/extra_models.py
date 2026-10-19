@@ -283,13 +283,16 @@ def make_tree(name: str, seed: int, **overrides):
 
 
 def tabnet_fit(X: np.ndarray, y: np.ndarray, seed: int, max_epochs: int, patience: int,
-               X_val: np.ndarray | None = None, y_val: np.ndarray | None = None, **overrides) -> TabNetClassifier:
+               X_val: np.ndarray | None = None, y_val: np.ndarray | None = None,
+               fit_overrides: dict | None = None, **overrides) -> TabNetClassifier:
     """TabNetClassifier(seed, cpu, verbose 0) with the package fit defaults (batch 1024, virtual batch
     128, drop_last True, weights 0); with a validation set: early stopping on macro F1 (custom
-    Metric, patience); without: exactly max_epochs epochs, last weights (the refit)."""
+    Metric, patience); without: exactly max_epochs epochs, last weights (the refit).
+    `overrides` go to the constructor, `fit_overrides` (T2.2: batch_size, virtual_batch_size,
+    drop_last) to fit(); both default to nothing, so T2.1 behaviour is unchanged."""
     seed_everything(seed)
     m = TabNetClassifier(seed=seed, device_name="cpu", verbose=0, **overrides)
-    kw = dict(max_epochs=max_epochs, patience=patience)
+    kw = dict(max_epochs=max_epochs, patience=patience, **(fit_overrides or {}))
     if X_val is not None:
         kw.update(eval_set=[(X_val.astype(np.float32), np.asarray(y_val, dtype=int))], eval_name=["val"],
                   eval_metric=[F1MacroMetric])
@@ -304,12 +307,28 @@ def tabnet_epochs_run(m: TabNetClassifier) -> int:
     return len(m.history["loss"])
 
 
-def ftt_build(n_features: int, seed: int) -> tuple[FTTransformer, torch.optim.AdamW]:
-    """Default FT-Transformer of the package and its default optimizer (seeded construction)."""
+FTT_DEFAULT_CONFIG = dict(n_blocks=3, d_block=192, lr=1e-4)   # == get_default_kwargs() + make_default_optimizer()
+FTT_WEIGHT_DECAY = 1e-5                                       # make_default_optimizer() value
+
+
+def ftt_build(n_features: int, seed: int, config: dict | None = None) -> tuple[FTTransformer, torch.optim.AdamW]:
+    """Default FT-Transformer of the package and its default optimizer (seeded construction).
+    T2.2: `config` = dict(n_blocks, d_block, lr) selects a non-default architecture: the package
+    defaults for that n_blocks (dropouts, ReGLU, 8 heads) with d_block overridden, and AdamW on
+    make_parameter_groups() with the given lr and the default weight decay 1e-5. config None or
+    equal to FTT_DEFAULT_CONFIG reproduces T2.1 exactly."""
     seed_everything(seed)
-    model = FTTransformer(n_cont_features=n_features, cat_cardinalities=[], d_out=N_CLASSES,
-                          **FTTransformer.get_default_kwargs())
-    return model, model.make_default_optimizer()
+    if config is None or dict(config) == FTT_DEFAULT_CONFIG:
+        model = FTTransformer(n_cont_features=n_features, cat_cardinalities=[], d_out=N_CLASSES,
+                              **FTTransformer.get_default_kwargs())
+        return model, model.make_default_optimizer()
+    kw = FTTransformer.get_default_kwargs(int(config["n_blocks"]))
+    kw.update(d_block=int(config["d_block"]), _is_default=False)
+    if kw["d_block"] % kw["attention_n_heads"] != 0:
+        raise ValueError(f"d_block {kw['d_block']} not divisible by attention_n_heads {kw['attention_n_heads']}")
+    model = FTTransformer(n_cont_features=n_features, cat_cardinalities=[], d_out=N_CLASSES, **kw)
+    opt = torch.optim.AdamW(model.make_parameter_groups(), lr=float(config["lr"]), weight_decay=FTT_WEIGHT_DECAY)
+    return model, opt
 
 
 def ftt_proba(model: FTTransformer, X: np.ndarray) -> np.ndarray:
@@ -496,11 +515,11 @@ def comparisons_md_lines(comp: pd.DataFrame) -> list[str]:
     return md_table(comp, {c: "%.4f" for c in COMP_FMT_COLS})
 
 
-def seeds_summary(df: pd.DataFrame) -> pd.DataFrame:
+def seeds_summary(df: pd.DataFrame, models: list[str] = NEW_MODELS) -> pd.DataFrame:
     """Per model x metric over the 5 seeds: seed-42 value, mean, min, max, p2.5, p97.5 (descriptive);
-    plus the best_epoch range of the networks."""
+    plus the best_epoch range of the networks. `models` fixes the row order (T2.2 passes all 7)."""
     rows = []
-    for name in [m for m in NEW_MODELS if m in set(df.model)]:
+    for name in [m for m in models if m in set(df.model)]:
         sub = df[df.model == name]
         for metric in SEED_METRICS:
             v = sub[metric].to_numpy(dtype=float)
