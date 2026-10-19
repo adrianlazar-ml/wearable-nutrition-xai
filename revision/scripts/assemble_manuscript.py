@@ -39,7 +39,8 @@ ROOT = Path(__file__).resolve().parents[2]
 MAN = ROOT / "revision" / "manuscript"
 RES = ROOT / "revision" / "results"
 FIGS = RES / "figures"
-BASE = MAN / "BASE_MANUSCRIPT.docx"
+BASE = MAN / "BASE_MANUSCRIPT_v8.docx"  # T4.1-E: v8 is the version submitted to KBS (title confirmed in Editorial Manager)
+BASE_V2 = MAN / "BASE_MANUSCRIPT.docx"  # v2, kept for the record (base of T4.1-A to T4.2-A)
 F4 = MAN / "F4_manuscript_changes.md"
 LETTER = MAN / "F4_response_letter.md"
 OUT_MAN = MAN / "KBS_Manuscript_R1.docx"
@@ -71,8 +72,8 @@ V8_EXPECTED_CITATIONS = ("Breiman, 2001", "Chen & Guestrin, 2016", "Vapnik, 1995
 OUT_FIGDIR = MAN / "figures"
 
 RUN_DATE = "2026-10-19"
-TITLE = ("Explainable AI for Personalized Nutrition from Commercial Wearable Devices: "
-         "A Feasibility Study Integrating Smart-Ring and Smartwatch Data")
+TITLE = ("Explainable Artificial Intelligence for Personalized Nutrition: "
+         "A Multimodal Framework Integrating Smart Ring and Smartwatch Data")  # v8 title, as submitted
 
 # ----------------------------------------------------------------------------------------------
 # Final numbering (order of appearance in the assembled manuscript)
@@ -475,29 +476,26 @@ def md_table_to_rows(tbl: list[list[str]], t11: dict[str, str] | None = None) ->
 
 
 def apply_v8_wording(doc, v8_path: Path) -> None:
-    """T4.1-C: replace the listed base (v2) paragraphs by their v8 wording, verbatim from the v8 file."""
+    """T4.1-C introduced the v8 wording of eight paragraphs; since T4.1-E the base IS v8, so this step only verifies
+    that those paragraphs are identical to the v8 file (no-op) and that the nine method citations are present."""
     v8 = docx.Document(str(v8_path))
-    v8_text = "\n".join(p.text for p in v8.paragraphs)
-    for base_prefix, v8_prefix in V8_WORDING:
+    for _base_prefix_v2, v8_prefix in V8_WORDING:
         hits = [p.text for p in v8.paragraphs if p.text.startswith(v8_prefix)]
         if len(hits) != 1:
-            raise SystemExit(f"STOP: v8 paragraph '{v8_prefix}' matched {len(hits)} paragraphs")
-        new_text = hits[0].strip()
-        if "—" in new_text:
-            raise SystemExit(f"STOP: em dash in v8 paragraph '{v8_prefix}'")
-        p = find_par(doc, base_prefix)
-        if p.text.strip() == new_text:
-            continue
-        set_text(p, new_text)
-        plan("(v8 wording)", base_prefix, "replace paragraph text by the v8 wording", "unchanged position")
+            raise SystemExit(f"STOP: v8 paragraph '{v8_prefix}' matched {len(hits)} paragraphs in the v8 file")
+        p = find_par(doc, v8_prefix)
+        if p.text.strip() != hits[0].strip():
+            raise SystemExit(f"STOP: base paragraph '{v8_prefix}' differs from the v8 file")
     body = "\n".join(p.text for p in doc.paragraphs)
     missing = [c for c in V8_EXPECTED_CITATIONS if c not in body]
     if missing:
-        raise SystemExit(f"STOP: expected v8 in-text citations missing after replacement: {missing}")
-    DEVIATIONS.append("base = v2 text with v8 citations, Figure 1 legend, 3.9 and 4.7 wording (T4.1-C): the paragraphs of Related Work (2 paragraphs), 3.4, 3.5, 3.7 (now 3.8), "
-                      "3.9 (now 3.13, 'staged flow' sentence), the legend of Figure 1 (mentions the safety layer, matches the diagram in use) and 4.7 (now 4.10, "
-                      "aligned subset of 953 days) take their wording verbatim from ESWA_Manuscript_Anonymized_v8.docx, which adds the in-text citations "
-                      + ", ".join(V8_EXPECTED_CITATIONS) + ". The v8 title and the v8 GenAI declaration are NOT taken.")
+        raise SystemExit(f"STOP: expected v8 in-text citations missing from the base: {missing}")
+    plan("(v8 wording, verified no-op)", "8 paragraphs listed in V8_WORDING", "verified identical to the v8 file", "unchanged")
+    DEVIATIONS.append("base = v8, confirmed in Editorial Manager (reported by the first author on 2026-10-19; T4.1-E): BASE_MANUSCRIPT_v8.docx is ESWA_Manuscript_Anonymized_v8.docx. "
+                      "The eight paragraphs that T4.1-C had taken from v8 (Related Work x2, 3.4, 3.5, 3.8, 3.13, Figure 1 legend, 4.10) are now base text and are verified identical to the v8 file; "
+                      "the nine method citations (" + ", ".join(V8_EXPECTED_CITATIONS) + ") are therefore in the submitted version, not additions of the revision. "
+                      "v8 embeds Figures 1-3 as images (kept in place; the new Figures 2-5 are separate files, legends in text), has the 3.6 equations as OMML objects (untouched) "
+                      "and already omits the four orphan references of v2 (De La Torre, Ferreira, Gu & Qian, Liang). BASE_MANUSCRIPT.docx (v2) is kept for the record only.")
 
 
 def assemble_manuscript(blocks: dict, v8_path: Path | None = None) -> None:
@@ -843,9 +841,9 @@ def assemble_manuscript(blocks: dict, v8_path: Path | None = None) -> None:
     p = find_par(doc, "During the preparation of this work the author(s) used")
     set_text(p, GENAI_DECLARATION)
     plan("GenAI declaration (T4.1-D)", "During the preparation of this work the author(s) used", "replace paragraph", "Declaration of generative AI")
-    DEVIATIONS.append("GenAI declaration (T4.1-D item 13): replaced by the text supplied by the first author on 2026-10-19, which names the declared assistant as the v8 "
-                      "declaration did and says 'published article'. The KBS Guide for Authors page could not be read by the assembly session (KBS_journal.pdf has no text layer "
-                      "and no PDF renderer was available); the decision to name the tool follows the author's instruction and v8.")
+    DEVIATIONS.append("GenAI declaration (T4.1-D item 13, T4.1-E): text supplied by the first author on 2026-10-19. Relative to the v8 base (which already names the declared assistant) "
+                      "the changes are 'author(s)' -> 'authors' and the closing words 'content of the publication' -> 'content of the published article' (KBS template). "
+                      "The KBS Guide for Authors page could not be read by the assembly session (KBS_journal.pdf has no text layer and no PDF renderer was available).")
 
     # ---- Appendix A before References ----------------------------------------------------------
     refs_h = find_par(doc, "References")
@@ -890,8 +888,8 @@ def assemble_manuscript(blocks: dict, v8_path: Path | None = None) -> None:
             rp._p.getparent().remove(rp._p)
         else:
             kept.append(rp.text[:60])
-    DEVIATIONS.append("References not cited anywhere in the assembled text (base list of v2): " + str(len(uncited)) + ". Removed (the four that v8 had already dropped): "
-                      + "; ".join(removed) + ". Kept although uncited: " + ("; ".join(kept) if kept else "none (the nine method references are cited through the v8 wording, T4.1-C)") + ".")
+    DEVIATIONS.append("References not cited anywhere in the assembled text (base list of v8): " + str(len(uncited)) + ". Removed: "
+                      + ("; ".join(removed) if removed else "none (the v8 base already omits the four orphan entries of v2)") + ". Kept although uncited: " + ("; ".join(kept) if kept else "none") + ".")
     for r in removed:
         plan("(uncited reference)", r, "delete reference entry", "References")
 
@@ -938,7 +936,7 @@ def find_uncited_references(doc) -> list[Paragraph]:
 class Templates:
     def __init__(self, doc):
         self.doc = doc
-        self.title = find_par(doc, "Explainable AI for Personalized Nutrition from Commercial")
+        self.title = find_par(doc, "Explainable Artificial Intelligence for Personalized Nutrition")
         self.h_unnum = find_par(doc, "References")
         self.h1 = find_par(doc, "1. Introduction")
         self.h2 = find_par(doc, "3.7. Explainability")
@@ -959,6 +957,10 @@ def empty_doc_from_base():
     for child in list(body.iterchildren()):
         if child.tag.split("}")[1] != "sectPr":
             body.remove(child)
+    # v8 embeds three images; drop their relationships so the media are not carried into the derived files
+    for rid, rel in list(doc.part.rels.items()):
+        if rel.reltype.endswith("/image"):
+            doc.part.drop_rel(rid)
     return doc, tm
 
 
@@ -1340,7 +1342,7 @@ def make_marked_copy() -> dict:
     tmpl_body = find_par(doc, "Ring data were retrieved through a cloud REST API")
     sect = doc.element.body.find(qn("w:sectPr"))
     sect.addprevious(clone_paragraph(tmpl_h, "Removed from the submitted version"))
-    sect.addprevious(clone_paragraph(tmpl_body, "Text of the submitted manuscript (BASE_MANUSCRIPT.docx) that does not appear in the revised version. "
+    sect.addprevious(clone_paragraph(tmpl_body, "Text of the submitted manuscript (BASE_MANUSCRIPT_v8.docx) that does not appear in the revised version. "
                                      "Yellow highlighting in the body marks text that is new or changed relative to the submitted version."))
     for item in removed:
         sect.addprevious(clone_paragraph(tmpl_body, item))
@@ -1383,8 +1385,9 @@ def make_figures(legacy_dir: Path) -> list[tuple[str, str, str]]:
 def write_plan(fig_rows, highlights, base_sha, legacy_dir) -> None:
     L = []
     L.append("# assembly_plan.md - T4.1-A, Revision 1 (KBS)\n")
-    L.append(f"Generated by `revision/scripts/assemble_manuscript.py` on {RUN_DATE}. Base: `revision/manuscript/BASE_MANUSCRIPT.docx` "
-             f"(copy of `ESWA_Manuscript_Anonymized_v2.docx`, the file submitted to KBS per KBS_Revision_Plan section 1; sha256 {base_sha}). "
+    L.append(f"Generated by `revision/scripts/assemble_manuscript.py` on {RUN_DATE}. Base: `revision/manuscript/BASE_MANUSCRIPT_v8.docx` "
+             f"(copy of `ESWA_Manuscript_Anonymized_v8.docx`, the file submitted to KBS, title confirmed in Editorial Manager; sha256 {base_sha}; "
+             f"T4.1-A to T4.2-A used v2, `BASE_MANUSCRIPT.docx`, kept for the record). "
              "Text source: `F4_manuscript_changes.md` (verbatim; only placeholders and numbers of sections, tables and figures are resolved). "
              "Output: `KBS_Manuscript_R1.docx`, `KBS_Highlights_R1.docx`, `KBS_Supplementary_R1.docx`, `KBS_Response_R1.docx`, `figures/`.\n")
     L.append("## Final numbering\n")

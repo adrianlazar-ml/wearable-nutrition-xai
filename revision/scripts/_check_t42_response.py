@@ -77,19 +77,14 @@ def main() -> None:
     rec(f"Response: all {len(fig_refs)} distinct Figure references exist as manuscript legends", not bad_fig, "missing: " + ", ".join(bad_fig))
     rec(f"Response: all {len(supp_refs)} distinct Supplementary references exist in the Supplementary file", not bad_sup, "missing: " + ", ".join(bad_sup))
 
-    # citation list and removed references vs assembly_plan.md
+    # T4.1-E: the base is v8, so the letter must not claim citations added or references removed by the revision
     plan = PLAN.read_text(encoding="utf-8")
-    dev = [l for l in plan.splitlines() if l.startswith("- base = v2 text with v8 citations")]
-    plan_cites = re.search(r"in-text citations (.*?)\. The v8 title", dev[0]).group(1) if dev else ""
-    n_in_plan = len(re.findall(r", \d{4}(?:/\d{4})?(?:,|$)", plan_cites + ","))
-    ok = all(c in plan_cites for c in EXPECTED_CITATIONS) and n_in_plan == len(EXPECTED_CITATIONS)
-    rec("Plan v8 citation list equals the expected nine", ok, f"{n_in_plan} citations in the plan line")
-    letter_bullet = [l for l in resp.splitlines() if l.startswith("In-text citations were added")]
-    ok = bool(letter_bullet) and all(c.replace(" & ", " and ") in letter_bullet[0] for c in EXPECTED_CITATIONS) and "four entries" in letter_bullet[0]
-    rec("Letter bullet lists the same nine citations (with 'and') and the four removed entries", ok)
+    rec("Plan records base = v8 (confirmed in Editorial Manager)", "- base = v8, confirmed in Editorial Manager" in plan)
+    rec("Letter does not claim added method citations or removed reference entries (already absent in v8)",
+        "In-text citations were added" not in resp and "cited nowhere in the text were removed" not in resp)
     removed_line = [l for l in plan.splitlines() if l.startswith("- References not cited anywhere")]
-    ok = bool(removed_line) and all(r.split(",")[0] in removed_line[0] for r in EXPECTED_REMOVED) and "Kept although uncited: none" in removed_line[0]
-    rec("Plan removed-reference list is De La Torre, Ferreira, Gu and Qian, Liang and nothing kept uncited", ok)
+    rec("Plan: no reference removed and none kept uncited", bool(removed_line) and "Removed: none" in removed_line[0] and "Kept although uncited: none" in removed_line[0])
+    rec("Letter header carries the v8 title", "Manuscript: Explainable Artificial Intelligence for Personalized Nutrition: A Multimodal Framework" in resp)
     rec("Letter Comment 4: 'Section 3.5 extended with the search procedure' present, 'New Section 3.5' absent",
         "Section 3.5 extended with the search procedure" in resp and "New Section 3.5" not in resp)
 

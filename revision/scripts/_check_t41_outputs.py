@@ -18,7 +18,8 @@ from docx.text.paragraph import Paragraph
 
 ROOT = Path(__file__).resolve().parents[2]
 MAN = ROOT / "revision" / "manuscript"
-BASE_SHA = "6cfe1763e7dca2b4a54d9d5cad02d07089fdf695a317bc8d68d721b5c36017f6"  # ESWA_Manuscript_Anonymized_v2.docx
+BASE_V2_SHA = "6cfe1763e7dca2b4a54d9d5cad02d07089fdf695a317bc8d68d721b5c36017f6"  # ESWA_Manuscript_Anonymized_v2.docx (record)
+BASE_SHA = "e7de5f0a5932576666273d9abc089cef005995b4f818e39926fd61870064c4ff"  # ESWA_Manuscript_Anonymized_v8.docx, the submitted file (T4.1-E)
 DOCS = {"manuscript": MAN / "KBS_Manuscript_R1.docx", "highlights": MAN / "KBS_Highlights_R1.docx",
         "supplementary": MAN / "KBS_Supplementary_R1.docx", "response": MAN / "KBS_Response_R1.docx",
         "marked": MAN / "KBS_Manuscript_R1_marked.docx"}
@@ -188,8 +189,11 @@ def main() -> None:
     rec("Response letter: 10 Reviewer 1 comments and 3 Reviewer 2 weaknesses", sum(t.startswith("Comment ") for t in rtext) == 10 and sum(t.startswith("Weakness ") for t in rtext) == 3)
 
     # base unchanged
-    sha = hashlib.sha256((MAN / "BASE_MANUSCRIPT.docx").read_bytes()).hexdigest()
-    rec("BASE_MANUSCRIPT.docx unchanged (sha256 of the submitted v2)", sha == BASE_SHA, sha[:16])
+    sha = hashlib.sha256((MAN / "BASE_MANUSCRIPT_v8.docx").read_bytes()).hexdigest()
+    rec("BASE_MANUSCRIPT_v8.docx unchanged (sha256 of the submitted v8)", sha == BASE_SHA, sha[:16])
+    sha2 = hashlib.sha256((MAN / "BASE_MANUSCRIPT.docx").read_bytes()).hexdigest()
+    rec("BASE_MANUSCRIPT.docx (v2, record) unchanged", sha2 == BASE_V2_SHA, sha2[:16])
+    rec("Manuscript title is the v8 title", docs["manuscript"].paragraphs[0].text.strip().startswith("Explainable Artificial Intelligence for Personalized Nutrition: A Multimodal Framework"))
 
     # git: tracked files in revision/ outside manuscript/ and scripts/ unchanged (requirements.txt pin excepted)
     st = subprocess.run(["git", "status", "--porcelain", "--", "revision/", "CIFRE_CANONICE.md"], cwd=ROOT, capture_output=True, text=True).stdout.splitlines()
