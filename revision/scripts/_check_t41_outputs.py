@@ -99,6 +99,20 @@ def main() -> None:
             rec(f"{DOCS[k].name}: 0 'canonical' in the text", len(re.findall(r"canonical", body_t, re.I)) == 0, f"{len(re.findall(r'canonical', body_t, re.I))} found")
             rec(f"{DOCS[k].name}: 0 paragraphs containing 'Internal'", "Internal" not in t)
 
+    # T6.4 (F5): American spelling in the body text of every docx, checked with the UK -> US pair list of
+    # f5_us_spelling.py (check only, no replacement). Explicit exceptions: titles of published works in References.
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from f5_us_spelling import PATTERN as UK_PATTERN
+    uk_exceptions = ["An explainable AI approach to survival modelling in residential aged care"]  # Susnjak & Griffin (2025), as published
+    uk_hits = []
+    for k, d in docs.items():
+        t = all_text(d)
+        for exc in uk_exceptions:
+            t = t.replace(exc, "")
+        for m in UK_PATTERN.finditer(t):
+            uk_hits.append(f"{DOCS[k].name}: '{m.group(0)}' (...{t[max(0, m.start() - 30):m.end() + 30]}...)")
+    rec("0 British spellings in the body text of all docx (f5_us_spelling pairs; exception: Susnjak & Griffin title)", not uk_hits, "; ".join(uk_hits[:10]))
+
     # tables: captions in order, cited in text, first citation in order
     text_pars = [p.text for p in pars]
     full = "\n".join(text_pars)
