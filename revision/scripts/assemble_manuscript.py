@@ -140,19 +140,28 @@ BASE_XREFS = [
 T11_SOURCE = RES / "persistence_baseline.csv"
 
 # New references (provisional APA 7 text, F4 section REFERINTE NOI; each gets a Word comment)
+# T4.1-F (2026-10-20): fields verified on the publishers' pages, see revision/references_new_verified.md and
+# revision/references_new.bib (NeurIPS / AAAI papers cited as proceedings, not arXiv; NeurIPS volumes carry no DOI).
 NEW_REFERENCES = [
-    "Arik, S. O., & Pfister, T. (2021). TabNet: Attentive interpretable tabular learning. Proceedings of the "
+    "Arik, S. Ö., & Pfister, T. (2021). TabNet: Attentive interpretable tabular learning. Proceedings of the "
     "AAAI Conference on Artificial Intelligence, 35(8), 6679-6687. https://doi.org/10.1609/aaai.v35i8.16826",
     "Gorishniy, Y., Rubachev, I., Khrulkov, V., & Babenko, A. (2021). Revisiting deep learning models for "
-    "tabular data. Advances in Neural Information Processing Systems, 34, 18932-18943.",
+    "tabular data. In M. Ranzato, A. Beygelzimer, Y. Dauphin, P. S. Liang, & J. Wortman Vaughan (Eds.), Advances "
+    "in Neural Information Processing Systems 34 (pp. 18932-18943). Curran Associates. "
+    "https://proceedings.neurips.cc/paper_files/paper/2021/hash/9d86d83f925f2149e9edb0ac3b49229c-Abstract.html",
     "Ke, G., Meng, Q., Finley, T., Wang, T., Chen, W., Ma, W., Ye, Q., & Liu, T.-Y. (2017). LightGBM: A highly "
-    "efficient gradient boosting decision tree. Advances in Neural Information Processing Systems, 30, 3146-3154.",
+    "efficient gradient boosting decision tree. In I. Guyon, U. Von Luxburg, S. Bengio, H. Wallach, R. Fergus, "
+    "S. Vishwanathan, & R. Garnett (Eds.), Advances in Neural Information Processing Systems 30 (pp. 3146-3154). "
+    "Curran Associates. https://proceedings.neurips.cc/paper/2017/hash/6449f44a102fde848669bdd9eb6b76fa-Abstract.html",
     "Prokhorenkova, L., Gusev, G., Vorobev, A., Dorogush, A. V., & Gulin, A. (2018). CatBoost: Unbiased boosting "
-    "with categorical features. Advances in Neural Information Processing Systems, 31, 6638-6648.",
+    "with categorical features. In S. Bengio, H. Wallach, H. Larochelle, K. Grauman, N. Cesa-Bianchi, & R. Garnett "
+    "(Eds.), Advances in Neural Information Processing Systems 31 (pp. 6638-6648). Curran Associates. "
+    "https://proceedings.neurips.cc/paper/2018/hash/14491b756b3a51daac41c24863285549-Abstract.html",
     "Shaffer, F., & Ginsberg, J. P. (2017). An overview of heart rate variability metrics and norms. Frontiers in "
-    "Public Health, 5, 258. https://doi.org/10.3389/fpubh.2017.00258",
+    "Public Health, 5, Article 258. https://doi.org/10.3389/fpubh.2017.00258",
     "Tomczak, M., & Tomczak, E. (2014). The need to report effect size estimates revisited. An overview of some "
-    "recommended measures of effect size. Trends in Sport Sciences, 21(1), 19-25.",
+    "recommended measures of effect size. Trends in Sport Sciences, 21(1), 19-25. "
+    "https://tss.awf.poznan.pl/The-need-to-report-effect-size-estimates-revisited-An-overview-of-some-recommended,188960,0,2.html",
 ]
 REF_COMMENT = "verify in Zotero (provisional APA 7 entry added at assembly, T4.1)"
 
@@ -1432,7 +1441,7 @@ def write_plan(fig_rows, highlights, base_sha, legacy_dir) -> None:
     L.append("- Response letter: the heading '(draft, ...)' was rendered as '(Revision 1, Knowledge-Based Systems)'; '[title as submitted]' -> the base title; reviewer comments are italic indented paragraphs; placeholders resolved with the same mapping as the manuscript.")
     L.append("- Discussion paragraphs 'Temporal robustness', 'Choice of classifier' and 'Generalization from a single subject' received a bold run-in lead (base convention); in 4.7 the run-in leads 'Threshold sensitivity.' and 'Agreement with label-independent indicators.' present in F4 were set in bold.")
     L.append("- Keywords: 'Keywords:' label kept from the base, list replaced by the F4 list (Random Forest -> Decision support systems).")
-    L.append("- New references: six provisional APA 7 entries inserted alphabetically, each carrying the Word comment 'verify in Zotero'; details (volumes, pages, DOIs) are from memory and must be checked.")
+    L.append("- New references: six APA 7 entries inserted alphabetically, each carrying the Word comment 'verify in Zotero' (kept until the Zotero import); T4.1-F (2026-10-20): authors, titles, volumes, pages, editors, DOIs / stable proceedings URLs verified on the publishers' pages (revision/references_new_verified.md, revision/references_new.bib); NeurIPS and AAAI papers cited as proceedings, not arXiv.")
     L.append("- T4.1-B: base paragraph of 4.3 'Table 5 reports bootstrap confidence intervals for the best model' -> 'for the reported model'; Abstract: first 'SHAP' expanded to 'SHAP (Shapley additive explanations)' in F4_manuscript_changes.md (248 words); heading 3.5 renamed; "
              "the two persistence per-class F1 cells of Table 4 now have a row in CIFRE_REVIZIE.md (T0.4).")
     L.append("- T4.1-D (editorial fixes after the read-through, 2026-10-19): Discussion 'Temporal robustness' shortened in F4 (figures stay in 4.8, 'canonical' -> 'reported'); "
