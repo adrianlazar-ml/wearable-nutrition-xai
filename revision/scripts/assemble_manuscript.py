@@ -135,6 +135,9 @@ BASE_XREFS = [
     ("This paper addresses that gap", "This paper addresses that gap", "This paper addresses the gap identified above"),
     ("Table 2. Macronutrient distribution", "by predicted activity class", "by predicted physiological state"),
     ("Table 7. Per-device ablation", "(Random Forest, T3 labels)", "(Random Forest, reported labels)"),  # after the renumbering above
+    # T5.3b (F5): American spelling in the retained base text of Related Work (the title of the Susnjak & Griffin
+    # reference keeps 'survival modelling', as published)
+    ("Explainability. Explainability is increasingly regarded", "survival modelling in aged care", "survival modeling in aged care"),
     ("SHAP (SHapley Additive exPlanations", "all three algorithms", "the three original algorithms"),
 ]
 # [t11] cells: persistence per-class F1 from results/persistence_baseline.csv (3 decimals)
@@ -1112,12 +1115,12 @@ def make_supplementary() -> None:
     append(doc, tm.h1, "S3. Agreement of the labels with ring signals and lag-1 indicators")
     tests = pd.read_csv(RES / "t32_tests.csv", keep_default_na=False)
     desc = pd.read_csv(RES / "t32_descriptives.csv", keep_default_na=False)
-    append(doc, tm.body, "Level B indicators are raw ring signals that do not enter the labelling rule but feed the "
+    append(doc, tm.body, "Level B indicators are raw ring signals that do not enter the labeling rule but feed the "
            "readiness score, so they show the internal consistency of that score rather than independent validation. "
            "The lag-1 rows compare the value of day t-1 with the class of day t. Expected directions were fixed before the "
            "analysis. p-values are approximate because consecutive days are autocorrelated; inference rests on the effect "
            "sizes.")
-    append(doc, tm.cap, "Table S3. Ring signals (level B) and lag-1 activity indicators by class on the 958 labelled days "
+    append(doc, tm.cap, "Table S3. Ring signals (level B) and lag-1 activity indicators by class on the 958 labeled days "
            "(median [IQR]), Kruskal-Wallis epsilon-squared, and Cliff's delta Active versus Rest with 95% bootstrap interval.")
     rows = [["Indicator", "Rest", "Normal", "Active", "eps2", "Cliff's delta Active vs Rest [95% CI]", "Expected", "Result"]]
     unit_nd = {"ms": 1, "bpm": 1, "deg C": 2, "steps": 0, "kcal": 0}
