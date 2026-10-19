@@ -1,12 +1,13 @@
 # Plan de revizie KBS (Knowledge-Based Systems)
 
-Versiune: 14 septembrie 2026, actualizat 19 oct 2026 (§3, §8). Autor: Adrian Lazar, cu the LLM assistant ca partener de planificare.
+Versiune: 14 septembrie 2026, actualizat 19 oct 2026 (§1, §3, §5 T2, §6, §7, §8; sync după răspunsul lui Buiu). Autor: Adrian Lazar, cu the LLM assistant ca partener de planificare.
 Scop: input pentru proiectul de lucru cu codul disertației. Se continuă discuția de acolo, fază cu fază.
 
 ## 1. Context
 
 - Manuscris: "AI System for Personalized Nutrition and Diet Recommendations Based on Wearable and mHealth Data" (Lazar & Buiu), trimis de prof. Buiu la Knowledge-Based Systems (Elsevier) după desk rejection la ESWA.
-- Decizie editor (13 sept 2026): **Revision** (KBS nu distinge minor/major). Termen afișat: **1 decembrie 2026**. Scrisoarea menționează și "21 days for first revision"; data din Editorial Manager e cea care contează, de confirmat de Buiu.
+- Decizie editor (13 sept 2026): **Revision** (KBS nu distinge minor/major). Termen: **1 decembrie 2026**, confirmat de Buiu în Editorial Manager (19 oct). Scrisoarea menționează și "21 days for first revision"; data din Editorial Manager e cea care contează.
+- Fișierul submis la KBS: manuscrisul ESWA (ESWA_Manuscript_Anonymized_v2.docx), confirmat 19 oct; F4 pornește de pe el.
 - Poziția lui Buiu pe Reviewer 2: validarea nutrițională nu se poate face cu datele existente, se declară obiectiv viitor. Mergem înainte cu revizia.
 - Buget de timp: ~8 ore/săptămână, 11 săptămâni, ~88 ore total. Planul e dimensionat pentru ~80 ore, cu ~8 ore rezervă.
 - Pipeline: set de scripturi, freeze din 31 martie 2026, reproduce rezultatele din disertație. Pragurile de etichetare sunt (probabil) parametri, de verificat.
@@ -79,12 +80,11 @@ Ipoteză: nicio diferență semnificativă la 0.05. Se raportează ca atare; con
 
 **T1.5 Ablație pe grupuri (R1.7).** Leave-one-group-out si keep-one-group-in cu RF, 6 grupuri definite pe mecanism fiziologic (composite scores, heart rate, HRV, sleep architecture, activity/energy, respiration/thermal/SpO2), aceeasi procedura ca ablatia pe dispozitive, paired bootstrap fata de modelul complet pe matricea seed 42. Permutation importance: sacrificat (§8.11); se adauga doar daca ramane timp dupa F3.
 
-### Faza 2: modele și tuning (5-18 oct, ~16h)
+### Faza 2: modele și tuning (19 oct - 1 nov, ~16h; rulată după F3, conform §7)
 
-**T2.1 Modele suplimentare (R1.2).** LightGBM și CatBoost în același pipeline (split, SMOTE k=3, seed 42), parametri default apoi tunați (T2.2). TabNet: o singură rulare cu parametri rezonabili, raportată cu caveat de scară (766 rânduri). FT-Transformer: nu se rulează; se argumentează în răspuns că arhitecturile transformer pe tabular nu sunt adecvate sub ~1,000 de rânduri, cu 1-2 citări (de verificat: Grinsztajn et al. 2022, "Why do tree-based models still outperform deep learning on tabular data", NeurIPS).
-Buget: dacă TabNet consumă peste 3 ore, se renunță și se argumentează ca FT-Transformer.
+**T2.1 Modele suplimentare (R1.2).** LightGBM, CatBoost, TabNet și FT-Transformer în același pipeline (split canonic 766 / 192, imputer, SMOTE k = 3 pe train, seed 42, 19 feature-uri), parametri default sau rezonabili, fiecare evaluat o singură dată pe test. Decizie Buiu 19 oct: toate patru se RULEAZĂ (nu se argumentează în locul rulării). Rețelele rulează pe CPU cu seed fix și algoritmi deterministi; dacă determinismul byte-identic nu se obține, se raportează dispersia pe 5 seed-uri în loc să se mascheze. Așteptare (ipoteză, de scris ca atare): sub 1,000 rânduri rețelele nu depășesc modelele pe arbori (Grinsztajn et al. 2022, de verificat la F4); rezultatul se raportează oricum. Librării: de stabilit și pinuit înainte de rulare (pytorch-tabnet, rtdl sau implementare minimală pentru FT-Transformer).
 
-**T2.2 Hyperparameter search (R1.4).** Random search (30-50 configurații per model) pentru RF, XGB, SVM, LightGBM, CatBoost, cu TimeSeriesSplit (3-4 folduri) pe train, metrica macro F1. Test set atins o singură dată cu configurația câștigătoare. Tabel în anexă: spațiu de căutare, cea mai bună configurație, F1 CV, F1 test.
+**T2.2 Hyperparameter search (R1.4).** Random search, 20 configurații x 3 folduri TimeSeriesSplit pe train, metrica macro F1, pentru RF, XGB, SVM, LightGBM, CatBoost; pentru TabNet și FT-Transformer grilă mică fixată dinainte (3-5 configurații) cu early stopping pe fold, declarată ca atare în manuscris. Test set atins o singură dată cu configurația câștigătoare. Tabel în anexă: spațiu de căutare, cea mai bună configurație, F1 CV, F1 test.
 Regulă: dacă ierarhia pe test se schimbă față de default, raportezi ambele și discuți; nu alegi versiunea convenabilă.
 Notă: un tuning există deja ca robustness check (nu a schimbat ierarhia); T2.2 îl înlocuiește cu o procedură raportabilă.
 
@@ -120,12 +120,12 @@ Abstract: actualizat dacă intră persistence baseline sau o cifră nouă releva
 |---|---|---|---|
 | 1 | 14-20 sept | F0 | Reproducere confirmată, praguri parametrizate, persistence baseline |
 | 2-3 | 21 sept - 4 oct | F1 | Metrici, teste statistice, calibrare, SHAP stabilitate, ablație grupuri |
-| 4-5 | 5-18 oct | F2 | LightGBM, CatBoost, (TabNet), tuning raportat |
-| 6-7 | 19 oct - 1 nov | F3 | Sensibilitate praguri, agreement indicatori, expanding-window |
-| 8-9 | 2-15 nov | F4 | Manuscris revizuit, response letter, CIFRE actualizate |
-| 10-11 | 16 nov - 1 dec | F5 | Verificare, review Buiu, submisie |
+| 4-5 | 5-18 oct | F3 (mutată înaintea F2, §7) | Sensibilitate praguri, agreement indicatori, expanding-window (închisă 19 oct) |
+| 6-7 | 19 oct - 1 nov | F2 | LightGBM, CatBoost, TabNet, FT-Transformer, tuning raportat |
+| 8-9 | 2-15 nov | F4 | Manuscris revizuit, response letter, CIFRE actualizate; draft la Buiu pe 15 nov |
+| 10-11 | 16-28 nov | F5 | Verificare, review Buiu, submisie |
 
-Puncte de control cu Buiu: după F0 (rezultat persistence, confirmare termen), după F3 (cifre complete, înainte de scriere), după F4 (draft complet).
+Puncte de control cu Buiu: după F0 (rezultat persistence, confirmare termen), după F3 (cifre complete, înainte de scriere; făcut 19 oct), după F4 (draft complet, 15 nov).
 
 ## 7. Riscuri
 
@@ -134,24 +134,24 @@ Puncte de control cu Buiu: după F0 (rezultat persistence, confirmare termen), d
 - **Tuning-ul schimbă ierarhia.** Se raportează ambele; nu se ascunde.
 - **F3 alunecă.** T3.3 se reduce la 2 folduri; T3.1 se reduce la grila 3x3 fără sleep.
 - **Termenul real e 21 de zile.** Pe 4 oct există pachetul F0+F1 (6 puncte acoperite) și se negociază extensie pentru rest. De aceea F1 e înaintea F2.
-- **Buget de ore depășit.** Ordinea de sacrificiu se aplica din start (§8.11): TabNet, permutation importance (T1.5), CatBoost, T2.2 redus la 20 configuratii si 3 folduri, grila sleep din T3.1, T3.3 la 2 folduri. Protejate: T1.4, T3.1 3x3, T3.2, T3.3 cu minimum 2 folduri, LightGBM default. F3 are prioritate peste F2.
+- **Buget de ore depășit.** Ordinea de sacrificiu (actualizată 19 oct, după decizia Buiu de a rula toate cele 4 modele): T2.2 redus la 10 configurații x 3 folduri pentru modelele tabulare; grila rețelelor redusă la 3; grila sleep din T3.1 (deja sacrificată); T3.3 la 2 folduri (deja rulat cu 4, nu se mai aplică). NU se sacrifică: niciunul dintre cele 4 modele din T2.1, T1.4, T3.1-T3.3 (rulate). Permutation importance rămâne sacrificat (§8.11). F3 a avut prioritate peste F2 (închisă 19 oct).
 
 ## 8. Întrebări deschise (actualizat 19 oct 2026)
 
 Rezolvate:
-- (fost 2) Calibrarea nu intră în safety layer: decizie T1.3, 19 oct (sub probabilități calibrate sistemul emite doar Normal; vezi CIFRE_REVIZIE, note T1.3). Se raportează ca rezultat și ca limită.
-- (fost 11) Decis 19 oct: ordinea de sacrificiu se aplica din start; lista in §7. De comunicat lui Buiu in update (§8.3).
+- (fost 2, numerotarea din 14 sept) Calibrarea nu intră în safety layer: decizie T1.3, 19 oct (sub probabilități calibrate sistemul emite doar Normal; vezi CIFRE_REVIZIE, note T1.3). Se raportează ca rezultat și ca limită.
+- (fost 11) Decis 19 oct: ordinea de sacrificiu se aplica din start; lista in §7 (actualizată după decizia Buiu).
+- (fost 1) Rezolvat 19 oct, Buiu: termenul este 1 decembrie 2026, confirmat în Editorial Manager.
+- (fost 2, numerotarea din 19 oct) Rezolvat 19 oct, Buiu: fișierul submis la KBS este manuscrisul ESWA (ESWA_Manuscript_Anonymized_v2.docx); F4 pornește de pe el.
+- (fost 3) Rezolvat 19 oct, Buiu: update trimis și răspuns primit; lista de modele R1.2: toate 4 se rulează (LightGBM, CatBoost, TabNet, FT-Transformer), nu se argumentează în locul rulării; raportare deschisă a T3.3 și a limitelor.
+- (fost 13) Rezolvat 19 oct, Buiu: numele claselor rămân Rest / Normal / Active, cu definiția prescriptivă explicită în Methods (decizia (a)); offsetul +200 / -200 kcal rămâne prescriptiv și nevalidat, intră la limite cu cifră (R2.a); detalii în revision/TEXT_DECISIONS.md, secțiunea T3.2.
 
-Deschise:
-1. Confirmarea datei de 1 decembrie în Editorial Manager (Buiu).
-2. Fișierul exact submis la KBS (ipoteză: ESWA_Manuscript_Anonymized_v2.docx); de cerut lui Buiu.
-3. Update Buiu netrimis; conținut: F0 + T1.1-T1.3 închid pe cifre R1.3, R1.8, R1.9, R2.b; corecția la 4.9 (punctul 5).
-4. Limita de cuvinte a abstractului la KBS (Guide for Authors KBS, nu ESWA).
-5. Errata CIFRE_CANONICE §7 la T4.3: tabelul provine din pipeline-ul XML 16 features (confidence_threshold.main(), commit f7cc4ca), nu din RF-ul canonic și nici din JSON 16f (care dă 0.4697). Cifre corecte pe canonic la 0.50: coverage 65.6% (66 overridden), eroare medie 58.3 kcal (71.9 la prag 0), max 200 kcal (se menține). Evidență: revision/scripts/_check_t13_safety_layer.py. Auditul de proveniență (19 oct): celelalte 15 secțiuni sunt pe modelul canonic.
-6. Manuscris 4.9 corectat la T4.1 (coverage, eroare medie; „76 la 69" devine „71.9 la 58.3"); frază de dezvăluire în response letter („during the revision the authors identified and corrected...").
-7. Eroarea calorică medie e minimizată de „mereu Normal" (54.2 kcal); nu se raportează singură, ci cu stările emise și F1 Active. Legătură directă cu R2.a (EE de referință).
-8. demo_end_to_end_v2.py șterge și reantrenează rf_model.joblib la fiecare rulare, fără hash check pe dataset; azi coincide cu modelul înghețat (sha256 b8113662). De rezolvat înainte de repo-ul public cu DOI (F5).
-9. Repo-ul public cu DOI (Zenodo): anonimizarea profilului din nutrition_recommender.py rămâne de făcut înainte.
-10. (corectat 19 oct, după T3.3) Durata dataset-ului: 10 iunie 2023 - 30 martie 2026, aproximativ 2 ani și 9 luni (1,009 zile colectate / 958 utile; min / max verificat pe coloana date a dataset-ului etichetat) (date brute: 9 iunie 2023 - 30 martie 2026, 1,009 zile; prima zi se pierde la lag-1); 18 septembrie 2025 este sfârșitul train-ului canonic, nu al dataset-ului (eroare din versiunea anterioară a acestui punct). „Three years" din manuscris se înlocuiește cu „approximately 33 months" sau „nearly three years" la F4.
-12. Working tree-ul repo-ului are fișiere nestaged care nu țin de revizie: _referinte_upb/, eswa_architecture.py, outputs/figures/eswa_architecture/ și ștergerea disertatie_audit.zip. Înainte de repo-ul public cu DOI (F5): de decis ce se comite, ce intră în .gitignore, ce se șterge definitiv. Nu se atinge în F1-F4.
-13. (adăugat 19 oct, după T3.2) Semantica claselor: T3.2 arată că Active (readiness >= 85, sleep >= 75) sunt zile de recuperare cu activitate REDUSĂ (Cliff's delta Active vs Rest -0.42 pe calorii active Watch), iar Rest sunt zile de strain; numele claselor sunt prescriptive. De decis cu Buiu la checkpoint-ul post-F3: păstrăm numele Rest / Normal / Active cu definiția prescriptivă explicită în Methods (recomandat; nimic nu se schimbă în cifre, figuri, cod) sau redenumim (ar atinge tabele, figuri, demo, Streamlit). Offsetul +200 / -200 kcal rămâne prescriptiv și nevalidat; intră la limite cu cifră (R2.a). Detalii în revision/TEXT_DECISIONS.md, secțiunea T3.2.
+Deschise (renumerotate 19 oct):
+1. Limita de cuvinte a abstractului la KBS (Guide for Authors KBS, nu ESWA).
+2. Errata CIFRE_CANONICE §7 la T4.3: tabelul provine din pipeline-ul XML 16 features (confidence_threshold.main(), commit f7cc4ca), nu din RF-ul canonic și nici din JSON 16f (care dă 0.4697). Cifre corecte pe canonic la 0.50: coverage 65.6% (66 overridden), eroare medie 58.3 kcal (71.9 la prag 0), max 200 kcal (se menține). Evidență: revision/scripts/_check_t13_safety_layer.py. Auditul de proveniență (19 oct): celelalte 15 secțiuni sunt pe modelul canonic.
+3. Manuscris 4.9 corectat la T4.1 (coverage, eroare medie; „76 la 69" devine „71.9 la 58.3"); frază de dezvăluire în response letter („during the revision the authors identified and corrected...").
+4. Eroarea calorică medie e minimizată de „mereu Normal" (54.2 kcal); nu se raportează singură, ci cu stările emise și F1 Active. Legătură directă cu R2.a (EE de referință).
+5. demo_end_to_end_v2.py șterge și reantrenează rf_model.joblib la fiecare rulare, fără hash check pe dataset; azi coincide cu modelul înghețat (sha256 b8113662). De rezolvat înainte de repo-ul public cu DOI (F5).
+6. Repo-ul public cu DOI (Zenodo): anonimizarea profilului din nutrition_recommender.py rămâne de făcut înainte.
+7. (corectat 19 oct, după T3.3) Durata dataset-ului: 10 iunie 2023 - 30 martie 2026, aproximativ 2 ani și 9 luni (1,009 zile colectate / 958 utile; min / max verificat pe coloana date a dataset-ului etichetat) (date brute: 9 iunie 2023 - 30 martie 2026, 1,009 zile; prima zi se pierde la lag-1); 18 septembrie 2025 este sfârșitul train-ului canonic, nu al dataset-ului (eroare din versiunea anterioară a acestui punct). „Three years" din manuscris se înlocuiește cu „approximately 33 months" sau „nearly three years" la F4.
+8. Working tree-ul repo-ului are fișiere nestaged care nu țin de revizie: _referinte_upb/, eswa_architecture.py, outputs/figures/eswa_architecture/ și ștergerea disertatie_audit.zip. Înainte de repo-ul public cu DOI (F5): de decis ce se comite, ce intră în .gitignore, ce se șterge definitiv. Nu se atinge în F1-F4.
