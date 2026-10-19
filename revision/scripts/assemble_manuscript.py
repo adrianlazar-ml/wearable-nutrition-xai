@@ -1457,7 +1457,13 @@ def main() -> None:
                     help="folder with Figure_1_architecture_EN, Figure2_shap_bar_rf, Figure3_confusion_matrices (.pdf + .png)")
     ap.add_argument("--v8-docx", default=r"C:\Users\Adrian\Downloads\ESWA_Manuscript_Anonymized_v8.docx",
                     help="v8 of the ESWA manuscript, source of the in-text citations and wording listed in V8_WORDING (T4.1-C)")
+    ap.add_argument("--only", choices=["response"], default=None,
+                    help="rebuild only one output (T4.2-A: 'response' rebuilds KBS_Response_R1.docx from F4_response_letter.md and touches nothing else)")
     args = ap.parse_args()
+    if args.only == "response":
+        make_response()
+        print(f"OK: {OUT_RESP.name} rebuilt from {LETTER.name}; no other file touched")
+        return
     base_sha = sha256(BASE)
     blocks = parse_md_blocks(F4)
     assemble_manuscript(blocks, Path(args.v8_docx))
