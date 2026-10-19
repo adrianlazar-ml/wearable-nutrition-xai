@@ -132,13 +132,16 @@ BASE_XREFS = [
     ("Ring data were retrieved through a cloud REST API",
      "After feature engineering and labeling (Sections 3.2 and 3.3), the unified dataset contained 958 usable days described by nineteen lag-1 features (eleven from the ring, eight from the watch), summarized in Table 1.",
      "The nineteen lag-1 features (eleven from the ring, eight from the watch) are summarized in Table 1."),
-    ("This paper addresses that gap", "This paper addresses that gap", "This paper addresses the gap identified above"),
     ("Table 2. Macronutrient distribution", "by predicted activity class", "by predicted physiological state"),
     ("Table 7. Per-device ablation", "(Random Forest, T3 labels)", "(Random Forest, reported labels)"),  # after the renumbering above
     # T5.3b (F5): American spelling in the retained base text of Related Work (the title of the Susnjak & Griffin
     # reference keeps 'survival modelling', as published)
     ("Explainability. Explainability is increasingly regarded", "survival modelling in aged care", "survival modeling in aged care"),
     ("SHAP (SHapley Additive exPlanations", "all three algorithms", "the three original algorithms"),
+    # T6.1 (F5, KBS p. 25): positional cross-references in retained base text replaced by section numbers;
+    # the T4.1-D tuple 'that gap' -> 'the gap identified above' was removed (the submitted wording 'that gap' stands).
+    ("All results below use the JSON data source", "All results below use", "All results in Section 4 use"),
+    ("Table 13 compares models trained on the XML and JSON", "reported above", "reported in Section 4.2"),  # after the Table 9 -> 13 renumbering above
 ]
 # [t11] cells: persistence per-class F1 from results/persistence_baseline.csv (3 decimals)
 T11_SOURCE = RES / "persistence_baseline.csv"
@@ -810,6 +813,13 @@ def assemble_manuscript(blocks: dict, v8_path: Path | None = None) -> None:
         if not done:
             set_text(p, txt.replace(old, new))
         plan("(cross-reference)", prefix, f"'{old}' -> '{new}'", new)
+    DEVIATIONS.append("T6.1 (F5, 2026-10-20, KBS p. 25): the seven positional cross-references ('above' / 'below' standing for a section, "
+                      "table or figure number) were replaced: in the base text 'All results below use' -> 'All results in Section 4 use' (4), "
+                      "'reported above' -> 'reported in Section 4.2' (4.10), and the T4.1-D wording 'the gap identified above' reverted to the "
+                      "submitted 'that gap' (Introduction, same section); in F4 text 'the three classifiers above' -> 'Random Forest, XGBoost and "
+                      "the SVM' (3.4), 'computed as above' -> 'computed as in Sections 3.5 and 3.6' (3.11), 'the two results above' -> 'the two "
+                      "results (Table 7 and Table 8)' (4.6), '(Temporal robustness, above)' -> '(Section 4.8)' (Discussion). The twelve numeric "
+                      "comparisons ('7.8 points above', 'below persistence', ...) are unchanged.")
 
     # ---- Discussion ----------------------------------------------------------------------------
     p = find_par(doc, "Principal findings. Within a single-subject design")

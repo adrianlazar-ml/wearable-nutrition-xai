@@ -60,7 +60,19 @@ Cautat in KBS_Manuscript_R1.docx (fara lista de referinte): "the text" 0, "as me
 | 6 | 4.10 Data Quality: XML versus JSON | "... differs from the 19-feature configuration reported above." |
 | 7 | 5. Discussion, Practical implications | "(Temporal robustness, above)" |
 
-Propunere (nemodificat): #1 "the gap identified in Section 2" (sau pastrat, fiind in acelasi capitol), #2 "the three classifiers of Section 3.4", #3 "as in Sections 3.5 and 3.6", #4 "All results in Section 4", #5 "the two results (Tables 7 and 8)", #6 "reported in Section 4.2", #7 "(Section 5, Temporal robustness)". De decis cu Adrian; #1 si #4 sunt in interiorul aceleiasi sectiuni si pot ramane.
+Rezolvat la T6.1 (2026-10-20). Inlocuirile s-au facut in surse (F4_manuscript_changes.md pentru #2, #3, #5, #7; tuplurile de inlocuire in textul de baza v8 din assemble_manuscript.py pentru #1, #4, #6) si docx-urile au fost regenerate. Tintele au fost verificate in docx-ul asamblat: 3.5 defineste baselines (persistence, majority), 3.6 bootstrap-ul si diferentele paired, Table 7 = ablatia per dispozitiv, Table 8 = leave-one-group-out, 4.2 = rezultatele pe 19 features (Table 4), 4.8 = Temporal Robustness.
+
+| # | Sectiune | Inainte | Dupa | Tinta |
+|---|---|---|---|---|
+| 1 | 1. Introduction, paragraful 5 | "the gap identified above" | "that gap" | referinta in aceeasi sectiune, fara numar: s-a revenit la formularea submisa (v8) prin eliminarea tuplului T4.1-D |
+| 2 | 3.4 Classification Models, paragraful 3 | "the three classifiers above" | "Random Forest, XGBoost and the SVM" | referinta in aceeasi sectiune: numele celor trei clasificatori din paragraful 1 al 3.4, in loc de o auto-referinta "Section 3.4" |
+| 3 | 3.11 Temporal Robustness | "computed as above" | "computed as in Sections 3.5 and 3.6" | 3.5 (baselines), 3.6 (bootstrap, paired differences) |
+| 4 | 4. Results, fraza introductiva | "All results below use" | "All results in Section 4 use" | Section 4 |
+| 5 | 4.6 Ablation by Device and by Feature Group | "the two results above are consistent" | "the two results (Table 7 and Table 8) are consistent" | Table 7, Table 8 (scris in F4 ca "Table 6 and Table 6b", renumerotat de script) |
+| 6 | 4.10 Data Quality: XML versus JSON | "reported above" | "reported in Section 4.2" | Section 4.2 (Table 4) |
+| 7 | 5. Discussion, Limitations (1) | "(Temporal robustness, above)" | "(Section 4.8)" | Section 4.8 |
+
+Dupa T6.1: 0 cross-referinte pozitionale; raman cele 12 comparatii numerice above / below. In F4_manuscript_changes.md a fost corectat la fel si blocul draft neutilizat "Limitation (1), rescrisa" ("the temporal evaluation above" -> "the temporal evaluation of Section 4.8"); blocul nu intra in docx.
 
 ### b) Supplementary (KBS p. 22)
 
