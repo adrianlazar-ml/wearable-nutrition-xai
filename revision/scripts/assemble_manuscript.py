@@ -797,8 +797,11 @@ def assemble_manuscript(blocks: dict, v8_path: Path | None = None) -> None:
     new_body(anchor, renumber(ps[0]), before=True)
     new_caption(anchor, renumber(ps[1]), before=True)
     new_table(anchor, md_table_to_rows(tb), size_pt=8, before=True)
+    if len(ps) != 3:  # T7.8b (2026-10-22): note under Table 11 (shared resampling matrix versus Table 5), same style as the Table 6 note
+        raise SystemExit(f"STOP: 4.8 block must hold 3 paragraphs (text, caption, note under Table 11), found {len(ps)}")
+    new_note(anchor, renumber(ps[2]), before=True)
     new_legend(anchor, LEGEND_FIG4, before=True)
-    plan("4.8 Temporal robustness", "4.9. Class-Imbalance Strategies (heading, insert before)", "new subsection (paragraph, Table 8, legend)", "4.8; Table 8 -> Table 11; Figure t33 -> Figure 4")
+    plan("4.8 Temporal robustness", "4.9. Class-Imbalance Strategies (heading, insert before)", "new subsection (paragraph, Table 8, note under the table, legend)", "4.8; Table 8 -> Table 11; Figure t33 -> Figure 4")
     DEVIATIONS.append("4.8: the legend of Figure 4 (expanding window) was written at assembly (F4 cites Figure [t33] but has no legend).")
 
     # ---- 4.11 SHAP -----------------------------------------------------------------------------
@@ -860,6 +863,15 @@ def assemble_manuscript(blocks: dict, v8_path: Path | None = None) -> None:
                       "(b) Figure 1 legend (base text): 'classified by a Random Forest model selected after comparison with XGBoost and an SVM' -> "
                       "'classified by a Random Forest model (the reported configuration; six further classifiers are compared in Section 4.4)' "
                       "(BASE_XREFS tuple).")
+    DEVIATIONS.append("T7.8 (2026-10-22, F4 text unless stated): (a) 4.2 'XGBoost on accuracy, MCC, Cohen's kappa and ROC-AUC' (Table 4: 0.146 "
+                      "against 0.142); (b) note under Table 11 (italic, same style as the note under Table 6): intervals of the reported block from "
+                      "the shared resampling matrix differ marginally from Table 5 (macro F1 [0.378, 0.613] against [0.373, 0.610]; F1 Active "
+                      "[0.118, 0.700] against [0.111, 0.700]), point estimates identical; (c) 3.2 closing sentences shortened to '...examined "
+                      "directly in Section 4.7 and is important for reading the results. The same section analyzes the sensitivity of the results "
+                      "to the thresholds.' (the 3.2 deviation above remains valid: the F4 text still carries the cross-reference to Section 4.7); "
+                      "(d) Discussion 'Three observations follow.'; (e) headings: no heading paragraph in the three docx starts with whitespace "
+                      "(checked programmatically in _check_t41_outputs.py; the cloned headings differ from the base headings only by "
+                      "xml:space='preserve' on the run, which renders no whitespace).")
 
     # ---- Discussion ----------------------------------------------------------------------------
     p = find_par(doc, "Principal findings. Within a single-subject design")

@@ -162,6 +162,11 @@ def main() -> None:
     exp_h2 = [f"3.{i}" for i in range(1, 14)] + [f"4.{i}" for i in range(1, 13)]
     got_h2 = [re.match(r"(\d+\.\d+)\.", p.text).group(1) for p in pars if p.style.name == "Heading 2" and re.match(r"\d+\.\d+\.", p.text)]
     rec("Subsection headings are 3.1-3.13 and 4.1-4.12 in order", got_h2 == exp_h2, " ".join(got_h2))
+    # T7.8e (2026-10-22): no heading paragraph starts with whitespace (tab, space, no-break space) in any of the three docx
+    for k in ("manuscript", "supplementary", "response"):
+        hs = [p for p in docs[k].paragraphs if p.style.name.startswith("Heading")]
+        ws = [repr(p.text[:40]) for p in hs if p.text != p.text.lstrip() or "<w:tab/>" in p._p.xml]
+        rec(f"{DOCS[k].name}: 0 headings with leading whitespace", not ws, f"{len(hs)} headings; " + ("; ".join(ws) if ws else "0 with leading whitespace"))
 
     # table style: no vertical borders, no shading
     for k, d in docs.items():
@@ -198,6 +203,12 @@ def main() -> None:
     # comments on new references
     cm = [c for c in man.comments if "verify in Zotero" in c.text]
     rec("6 Word comments 'verify in Zotero' on the new references", len(cm) == 6, f"{len(cm)} comments")
+    # T7.9 (2026-10-22): comment inventory: 9 in the manuscript (6 'verify in Zotero' + 3 'T6.2 draft' on the declaration
+    # sections) and 1 in the response letter ('T7 draft', on the Authors line); 0 in the other files
+    n_man = len(list(man.comments)); n_resp = len(list(docs["response"].comments))
+    n_other = len(list(docs["highlights"].comments)) + len(list(docs["supplementary"].comments))
+    resp_ok = n_resp == 1 and all(c.author == "T7 draft" for c in docs["response"].comments)
+    rec("Word comments: 9 in the manuscript, 1 in the response letter ('T7 draft'), 0 elsewhere", n_man == 9 and resp_ok and n_other == 0, f"manuscript {n_man}, response {n_resp}, others {n_other}")
 
     # response letter structure
     rtext = [p.text for p in docs["response"].paragraphs]
