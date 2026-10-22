@@ -142,6 +142,16 @@ BASE_XREFS = [
     # the T4.1-D tuple 'that gap' -> 'the gap identified above' was removed (the submitted wording 'that gap' stands).
     ("All results below use the JSON data source", "All results below use", "All results in Section 4 use"),
     ("Table 13 compares models trained on the XML and JSON", "reported above", "reported in Section 4.2"),  # after the Table 9 -> 13 renumbering above
+    # T7.2 (2026-10-22, internal review): the caloric offset per state is defined in Methods 3.12. Verified in the
+    # application code: nutrition_recommender.py lines 93-96 (Rest: base_cal - 200), 131 (Normal: base_cal), 163-164
+    # (Active: base_cal + 200) with base_cal = round(25 * weight_kg); confidence_threshold.py line 58
+    # CALORIC_MAP = {0: -200, 1: 0, 2: 200} (caloric error of Section 4.12). The 200 kcal figure is in CIFRE_CANONICE.md
+    # (safety layer, maximum caloric error).
+    ("The predicted physiological state is passed to a deterministic, rule-based module",
+     "adjusted by the declared goal (maintenance, deficit, or surplus).",
+     "adjusted by the declared goal (maintenance, deficit, or surplus). The predicted state then shifts this target by a fixed "
+     "offset of -200 kcal for Rest, 0 for Normal and +200 kcal for Active; these offsets are prescriptive rules, not measured "
+     "effects (Limitation 3, Section 5), and define the caloric error reported in Section 4.12."),
 ]
 # [t11] cells: persistence per-class F1 from results/persistence_baseline.csv (3 decimals)
 T11_SOURCE = RES / "persistence_baseline.csv"
@@ -820,6 +830,14 @@ def assemble_manuscript(blocks: dict, v8_path: Path | None = None) -> None:
                       "the SVM' (3.4), 'computed as above' -> 'computed as in Sections 3.5 and 3.6' (3.11), 'the two results above' -> 'the two "
                       "results (Table 7 and Table 8)' (4.6), '(Temporal robustness, above)' -> '(Section 4.8)' (Discussion). The twelve numeric "
                       "comparisons ('7.8 points above', 'below persistence', ...) are unchanged.")
+    DEVIATIONS.append("T7.2 (2026-10-22, internal review of 22 Oct): in the retained base paragraph of 3.12 the sentence 'The predicted state then "
+                      "shifts this target by a fixed offset of -200 kcal for Rest, 0 for Normal and +200 kcal for Active; these offsets are "
+                      "prescriptive rules, not measured effects (Limitation 3, Section 5), and define the caloric error reported in Section 4.12.' "
+                      "was inserted after '...adjusted by the declared goal (maintenance, deficit, or surplus).' (BASE_XREFS tuple). The offsets "
+                      "were verified in the application code before writing the sentence: nutrition_recommender.py lines 93-96, 131 and 163-164 "
+                      "(base_cal = round(25 * weight_kg); Rest base_cal - 200, Normal base_cal, Active base_cal + 200) and confidence_threshold.py "
+                      "line 58 (CALORIC_MAP = {0: -200, 1: 0, 2: 200}, the caloric error of Section 4.12); 200 kcal is the maximum caloric error of "
+                      "the safety layer in CIFRE_CANONICE.md.")
 
     # ---- Discussion ----------------------------------------------------------------------------
     p = find_par(doc, "Principal findings. Within a single-subject design")
