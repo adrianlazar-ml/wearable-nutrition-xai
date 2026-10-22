@@ -152,6 +152,9 @@ BASE_XREFS = [
      "adjusted by the declared goal (maintenance, deficit, or surplus). The predicted state then shifts this target by a fixed "
      "offset of -200 kcal for Rest, 0 for Normal and +200 kcal for Active; these offsets are prescriptive rules, not measured "
      "effects (Limitation 3, Section 5), and define the caloric error reported in Section 4.12."),
+    # T7.3 (2026-10-22): the closing sentence of the 'This paper addresses that gap' paragraph now closes the positioning
+    # paragraph inserted after it (F4 block 'Paragraf de pozitionare'), immediately before the contribution list.
+    ("This paper addresses that gap by investigating", " The specific contributions are the following.", ""),
 ]
 # [t11] cells: persistence per-class F1 from results/persistence_baseline.csv (3 decimals)
 T11_SOURCE = RES / "persistence_baseline.csv"
@@ -592,9 +595,12 @@ def assemble_manuscript(blocks: dict, v8_path: Path | None = None) -> None:
 
     # ---- Introduction --------------------------------------------------------------------------
     pos = paras(block(blocks, "Paragraf de pozitionare"))[0]
-    anchor = find_par(doc, "Despite this progress, a gap remains.")
+    # T7.3 (2026-10-22): inserted after 'This paper addresses that gap...' (so 'that gap' keeps its antecedent in the
+    # paragraph immediately before) and before the contribution list; the closing sentence 'The specific contributions
+    # are the following.' moves from the base paragraph (BASE_XREFS tuple) to the end of the positioning paragraph (F4 text).
+    anchor = find_par(doc, "This paper addresses that gap by investigating")
     new_body(anchor, renumber(pos))
-    plan("INTRODUCTION / Paragraf de pozitionare", anchor.text, "insert after", "Section 1, paragraph 4")
+    plan("INTRODUCTION / Paragraf de pozitionare", anchor.text, "insert after (T7.3; before the contribution list)", "Section 1, paragraph 5")
     contrib = bullets(block(blocks, "Contributiile"))
     old_bullets = [
         "A machine learning pipeline that, to the best of our knowledge",
@@ -838,6 +844,11 @@ def assemble_manuscript(blocks: dict, v8_path: Path | None = None) -> None:
                       "(base_cal = round(25 * weight_kg); Rest base_cal - 200, Normal base_cal, Active base_cal + 200) and confidence_threshold.py "
                       "line 58 (CALORIC_MAP = {0: -200, 1: 0, 2: 200}, the caloric error of Section 4.12); 200 kcal is the maximum caloric error of "
                       "the safety layer in CIFRE_CANONICE.md.")
+    DEVIATIONS.append("T7.3 (2026-10-22): Introduction order is now gap paragraph ('Despite this progress, a gap remains...'), 'This paper "
+                      "addresses that gap...' (so 'that gap' has its antecedent in the paragraph immediately before), the positioning paragraph "
+                      "(F4 block, R2.c), then the contribution list. The base sentence 'The specific contributions are the following.' was removed "
+                      "from the end of 'This paper addresses that gap...' (BASE_XREFS tuple) and now closes the positioning paragraph (F4 text), "
+                      "immediately before the bullets. Until T7.3 the positioning paragraph was inserted after the gap paragraph.")
 
     # ---- Discussion ----------------------------------------------------------------------------
     p = find_par(doc, "Principal findings. Within a single-subject design")
