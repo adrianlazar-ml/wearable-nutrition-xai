@@ -155,6 +155,10 @@ BASE_XREFS = [
     # T7.3 (2026-10-22): the closing sentence of the 'This paper addresses that gap' paragraph now closes the positioning
     # paragraph inserted after it (F4 block 'Paragraf de pozitionare'), immediately before the contribution list.
     ("This paper addresses that gap by investigating", " The specific contributions are the following.", ""),
+    # T7.4b (2026-10-22): Figure 1 legend (v8 base) no longer presents the random forest as selected among three models
+    ("Figure 1. End-to-end flow of the proposed system",
+     "classified by a Random Forest model selected after comparison with XGBoost and an SVM",
+     "classified by a Random Forest model (the reported configuration; six further classifiers are compared in Section 4.4)"),
 ]
 # [t11] cells: persistence per-class F1 from results/persistence_baseline.csv (3 decimals)
 T11_SOURCE = RES / "persistence_baseline.csv"
@@ -849,6 +853,11 @@ def assemble_manuscript(blocks: dict, v8_path: Path | None = None) -> None:
                       "(F4 block, R2.c), then the contribution list. The base sentence 'The specific contributions are the following.' was removed "
                       "from the end of 'This paper addresses that gap...' (BASE_XREFS tuple) and now closes the positioning paragraph (F4 text), "
                       "immediately before the bullets. Until T7.3 the positioning paragraph was inserted after the gap paragraph.")
+    DEVIATIONS.append("T7.4 (2026-10-22): (a) the T6.1 wording 'the two results (Table 7 and Table 8)' in 4.6 (F4 text) was wrong: the two results "
+                      "compared are the SHAP attribution and the group ablation, so it now reads 'the two results (Section 4.11 and Table 8)'. "
+                      "(b) Figure 1 legend (base text): 'classified by a Random Forest model selected after comparison with XGBoost and an SVM' -> "
+                      "'classified by a Random Forest model (the reported configuration; six further classifiers are compared in Section 4.4)' "
+                      "(BASE_XREFS tuple).")
 
     # ---- Discussion ----------------------------------------------------------------------------
     p = find_par(doc, "Principal findings. Within a single-subject design")
