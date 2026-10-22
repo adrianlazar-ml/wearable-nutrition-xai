@@ -188,6 +188,8 @@ NEW_REFERENCES = [
     "https://tss.awf.poznan.pl/The-need-to-report-effect-size-estimates-revisited-An-overview-of-some-recommended,188960,0,2.html",
 ]
 REF_COMMENT = "verify in Zotero (provisional APA 7 entry added at assembly, T4.1)"
+# T7.6g (2026-10-22): Word comment on the 'Authors: ...' run of the response letter (line kept; anonymization pending coauthor)
+RESPONSE_AUTHORS_COMMENT = "T7 draft: remove if KBS review is double-anonymized; pending coauthor (title page question)"
 
 # Figure legends written at assembly for figures without a legend in F4 (flagged in assembly_plan.md)
 LEGEND_FIG3 = (
@@ -1249,7 +1251,18 @@ def make_response() -> None:
         elif text.startswith("Changes. "):
             append(doc, tm.lead, text[len("Changes. "):], lead="Changes. ")
         else:
-            append(doc, tm.body, text)
+            p = append(doc, tm.body, text)
+            if text.startswith("Manuscript: ") and " Authors: " in text:
+                # T7.6g (2026-10-22): the authors line stays; Word comment for the coauthor on the 'Authors: ...' run only
+                from docx.text.run import Run
+                head, authors = text.split(" Authors: ", 1)
+                r1 = p.runs[0]
+                r1.text = head + " "
+                el = copy.deepcopy(r1._r)
+                r1._r.addnext(el)
+                r2 = Run(el, p)
+                r2.text = "Authors: " + authors
+                doc.add_comment(runs=[r2], text=RESPONSE_AUTHORS_COMMENT, author="T7 draft", initials="T7")
         para_buf = []
 
     quote_buf: list[str] = []
@@ -1518,7 +1531,9 @@ def write_plan(fig_rows, highlights, base_sha, legacy_dir) -> None:
     for d in DEVIATIONS:
         L.append(f"- {d}")
     L.append("- Supplementary: captions of Tables S1-S3, the introductory sentences of the Supplementary file and the legends of Figures S1-S3 were written at assembly (not in F4). Table values are formatted from the results csv files (4 decimals for S1 and S2, as in the source tables; medians and Cliff's delta in S3 as in main Table 10).")
-    L.append("- Response letter: the heading '(draft, ...)' was rendered as '(Revision 1, Knowledge-Based Systems)'; '[title as submitted]' -> the base title; reviewer comments are italic indented paragraphs; placeholders resolved with the same mapping as the manuscript.")
+    L.append("- Response letter: the heading '(draft, ...)' was rendered as '(Revision 1, Knowledge-Based Systems)'; '[title as submitted]' -> the base title; reviewer comments are italic indented paragraphs; placeholders resolved with the same mapping as the manuscript. "
+             "T7.6 (2026-10-22): corrections a-f of the internal review made in F4_response_letter.md ('eight analyses'; Reviewer 2, Weakness 1: 'placed second among the items of future work, immediately after multi-subject validation' and 'The abstract and the Introduction describe'; R1.5 'Figure S1'; R1.2 'which the search only partly corrects (tuned TabNet 0.341)'; R1.7 sentence on the per-variable ablation not run); "
+             "the line 'Authors: Adrian Lazar, Catalin Buiu' is kept and carries the Word comment '" + RESPONSE_AUTHORS_COMMENT + "' (author 'T7 draft'), placed by make_response on the 'Authors: ...' run only.")
     L.append("- Discussion paragraphs 'Temporal robustness', 'Choice of classifier' and 'Generalization from a single subject' received a bold run-in lead (base convention); in 4.7 the run-in leads 'Threshold sensitivity.' and 'Agreement with label-independent indicators.' present in F4 were set in bold.")
     L.append("- Keywords: 'Keywords:' label kept from the base, list replaced by the F4 list (Random Forest -> Decision support systems).")
     L.append("- New references: six APA 7 entries inserted alphabetically, each carrying the Word comment 'verify in Zotero' (kept until the Zotero import); T4.1-F (2026-10-20): authors, titles, volumes, pages, editors, DOIs / stable proceedings URLs verified on the publishers' pages (revision/references_new_verified.md, revision/references_new.bib); NeurIPS and AAAI papers cited as proceedings, not arXiv.")
