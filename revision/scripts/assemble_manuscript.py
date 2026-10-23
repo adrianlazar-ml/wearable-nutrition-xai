@@ -71,7 +71,7 @@ V8_EXPECTED_CITATIONS = ("Breiman, 2001", "Chen & Guestrin, 2016", "Vapnik, 1995
                          "Shapley, 1953/2016", "Lundberg et al., 2020", "Zheng et al., 2024", "Thapa et al., 2026")
 OUT_FIGDIR = MAN / "figures"
 
-RUN_DATE = "2026-10-19"
+RUN_DATE = "2026-10-22"  # T7.9 (last full regeneration after the internal-review corrections T7.1-T7.8)
 TITLE = ("Explainable Artificial Intelligence for Personalized Nutrition: "
          "A Multimodal Framework Integrating Smart Ring and Smartwatch Data")  # v8 title, as submitted
 
