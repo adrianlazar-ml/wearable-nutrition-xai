@@ -1,0 +1,47 @@
+t3_labels module file: C:\Users\Adrian\disertatie_v2\revision\t3_labels.py
+oura rows 1009 unique dates 1009
+raw rows 1009 2023-06-09 -> 2026-03-30 | duplicate dates: 0 | sorted: True
+raw first 3 rows readiness/sleep: [{'date': Timestamp('2023-06-09 00:00:00'), 'readiness_score': nan, 'sleep_score': nan}, {'date': Timestamp('2023-06-10 00:00:00'), 'readiness_score': 66.0, 'sleep_score': 84.0}, {'date': Timestamp('2023-06-11 00:00:00'), 'readiness_score': 67.0, 'sleep_score': 75.0}]
+label NaN: 51 | readiness NaN: 51 | sleep NaN: 51 | either NaN: 51
+built n: 958 dist: {0: 202, 1: 710, 2: 46} 2023-06-10 -> 2026-03-30 | sorted: True
+dropped rows whose 19 lag features are all NaN: 0
+dropped rows, dates: ['2023-06-09', '2023-09-24', '2023-09-26', '2023-10-08', '2023-10-09', '2023-11-10', '2023-11-27', '2024-01-08', '2024-01-21', '2024-02-05', '2024-02-19', '2024-03-10', '2024-03-15', '2024-03-17', '2024-03-23', '2024-03-25', '2024-04-05', '2024-04-23', '2024-05-02', '2024-05-31', '2024-06-23', '2024-08-23', '2024-09-30', '2024-10-02', '2024-10-06', '2024-10-16', '2024-10-24', '2024-10-28', '2024-10-29', '2024-10-30', '2024-10-31', '2024-11-01', '2024-11-23', '2024-11-24', '2024-12-01', '2024-12-09', '2024-12-31', '2025-01-01', '2025-01-11', '2025-01-18', '2025-01-25', '2025-01-27', '2025-02-07', '2025-02-19', '2025-03-06', '2025-03-08', '2025-03-10', '2025-03-22', '2025-03-26', '2025-04-07', '2025-04-12']
+Q1 2024-01-15: readiness_score_lag1=59.0 | prev raw row date=2024-01-14 readiness=59.0 | same-day readiness=52.0 label=0.0
+Q1 2025-09-19: readiness_score_lag1=70.0 | prev raw row date=2025-09-18 readiness=70.0 | same-day readiness=64.0 label=1.0
+Q1 2026-03-30: readiness_score_lag1=68.0 | prev raw row date=2026-03-29 readiness=68.0 | same-day readiness=71.0 label=1.0
+Q1 identity lag1(row t) == raw(row t-1) for all 19 over all raw rows; mismatching features: []
+Q1 built-frame 2024-01-15: X.readiness_score_lag1=59.0 ; raw-frame lag1 at same date=59.0
+Q1 built-frame 2025-09-19: X.readiness_score_lag1=70.0 ; raw-frame lag1 at same date=70.0
+Q1 built-frame 2026-03-30: X.readiness_score_lag1=68.0 ; raw-frame lag1 at same date=68.0
+Q3 raw consecutive-row gaps >1 day: 12 | max gap: 5.0
+Q3 958-frame consecutive-row gaps >1 day: 42 | gap sizes: {2.0: 31, 3.0: 5, 4.0: 4, 6.0: 1, 10.0: 1}
+Q3 958-frame gap positions (date of row after gap): ['2023-09-27', '2023-10-10', '2023-11-11', '2023-11-28', '2024-01-09', '2024-01-22', '2024-02-06', '2024-02-20', '2024-03-11', '2024-03-16', '2024-03-18', '2024-03-26', '2024-04-06', '2024-04-24', '2024-05-03', '2024-06-01', '2024-06-24', '2024-08-24', '2024-10-03', '2024-10-07', '2024-10-17', '2024-11-02', '2024-11-25', '2024-12-02', '2024-12-10', '2025-01-02', '2025-01-12', '2025-01-19', '2025-01-28', '2025-02-08', '2025-02-20', '2025-03-07', '2025-03-09', '2025-03-11', '2025-03-23', '2025-03-27', '2025-04-08', '2025-04-13', '2025-07-06', '2025-08-02', '2025-09-01', '2025-10-29']
+Q3 lag1 vs calendar-previous-day readiness: mismatches 0 | rows whose calendar prev day absent from raw: 4
+Q5 split idx 766 | train end 2025-09-18 | test start 2025-09-19 | test end 2026-03-30
+Q5 train dist {0: 158, 1: 570, 2: 38} | test dist {0: 44, 1: 140, 2: 8} | n_test 192
+Q3 test rows whose previous row is >1 day back: 1 ['2025-10-29']
+Q3 train rows whose previous row is >1 day back: 41
+Q3 gap between train end and test start (days): 1
+Q6 imputer.statistics_ == median(train 766): True | == median(all 958): False
+Q6 NaN cells: train 461 | test 49
+Q6 imputer_revision == recomputed: True | imputer_frozen == recomputed: True
+Q8 scaler.mean_ == mean(imputed train 766): True | scaler.n_samples_seen_: 766.0
+Q8 scaler_revision == recomputed: True
+Q7 rows after SMOTE (trees): 1710 {0: 570, 1: 570, 2: 570} | rows after SMOTE (scaled, SVM): 1710 | X_test rows: 192 | X_test_scaled rows: 192
+Q7 first 766 rows of SMOTE output == imputed train (SMOTE appends synthetic rows): True
+Q15 rf_revision params: {'n_estimators': 100, 'max_depth': 10, 'min_samples_leaf': 5, 'random_state': 42, 'class_weight': None, 'max_features': 'sqrt', 'criterion': 'gini', 'bootstrap': True} | n_features_in_ 19 | classes_ [0, 1, 2]
+Q15 rf_frozen params same: True
+Q15 rf_revision.predict(recomputed X_test) == csv y_pred: True | y_true == csv: True | dates == csv: True
+Q14 snapshot rows 958 | labels == rebuilt: True | dates == rebuilt: True | features == rebuilt (nan-aware): True
+Q14 hash(snapshot normalised, as sanity_check_frozen.py:46-48): 63bc3a2915bae864
+Q14 hash(snapshot raw file bytes): 176649b59fef3adb
+Q14 hash(rebuilt frame from raw csvs, same normalisation): 63bc3a2915bae864
+Q13 regenerated == npy: True | dtypes int64 int64 | bytes equal: True | shape (1000, 192)
+Q13 sequential per-resample draws (persistence_baseline.bootstrap_ci:94-98) == matrix: True
+Q13 resamples with a class absent from y_true: 0 | min Active count in a resample: 1
+Q10 persistence csv y_pred == [last_train_label] + y_true[:-1]: True | last train label ( 2025-09-18 ) = 1 | first 5 y_pred [1, 1, 1, 1, 0] | first 5 y_true [1, 1, 1, 0, 2]
+Q10 persistence == shift(1) over the 958-labelled series (row-based): True
+Q11 majority csv unique y_pred: [1] | train mode: 1 | all-958 mode: 1 | test mode: 1
+Q9 vectorised assign_labels == row rule from cap5 (lines 110-117): True
+Q9 boundary counts in raw: readiness==60: 28 | sleep==60: 13 | readiness==85: 19 | sleep==75: 45
+Q9 rows meeting both the Rest and the Active condition: 0

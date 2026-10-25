@@ -1,0 +1,24 @@
+rows: 192 | test support Rest/Normal/Active: [44, 140, 8]
+test dates: 2025-09-19 -> 2026-03-30
+RF  F1 macro 0.506324 | acc 0.640625 | MCC 0.141560
+snapshot labelled rows: 958 | split: 766 | train end: 2025-09-18 | test start: 2025-09-19
+PERS F1 macro 0.303896 | F1 Active 0.000000 | MCC -0.056604 | acc 0.562500 | last train label 1
+MAJ  class 1 | train dist {0: 158, 1: 570, 2: 38} | F1 macro 0.281124 | acc 0.729167
+bootstrap matrix identical to npy: True
+RF   F1 CI (labels fixed) [0.378446, 0.613000] | (labels not fixed) [0.378446, 0.613000]
+PERS F1 CI (labels fixed) [0.261179, 0.350085] | (labels not fixed) [0.261179, 0.350085]
+resamples with a class absent from y_true: 0
+
+key | claimed | recomputed | verdict
+rf_f1 | 0.5063 | 0.5063 | PASS
+rf_acc | 0.6406 | 0.6406 | PASS
+rf_mcc | 0.1416 | 0.1416 | PASS
+pers_f1 | 0.3039 | 0.3039 | PASS
+pers_f1_active | 0.0000 | 0.0000 | PASS
+pers_mcc | -0.0566 | -0.0566 | PASS
+pers_acc | 0.5625 | 0.5625 | PASS
+maj_f1 | 0.2811 | 0.2811 | PASS
+maj_acc | 0.7292 | 0.7292 | PASS
+pers_ci | [0.2612, 0.3501] | [0.2612, 0.3501] | PASS
+rf_ci | [0.3784, 0.6130] | [0.3784, 0.6130] | PASS
+T3 overall: PASS (all identical at 4 decimals)
