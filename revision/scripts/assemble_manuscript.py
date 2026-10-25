@@ -71,7 +71,7 @@ V8_EXPECTED_CITATIONS = ("Breiman, 2001", "Chen & Guestrin, 2016", "Vapnik, 1995
                          "Shapley, 1953/2016", "Lundberg et al., 2020", "Zheng et al., 2024", "Thapa et al., 2026")
 OUT_FIGDIR = MAN / "figures"
 
-RUN_DATE = "2026-10-25"  # T8.2-T8.4 (full regeneration after the F8 style alignment); T7.9 was 2026-10-22
+RUN_DATE = "2026-10-26"  # audit-apply (AUDIT_DECISIONS #1-#27, GOAL_FIX); T8.2-T8.4 was 2026-10-25, T7.9 2026-10-22
 TITLE = ("Explainable Artificial Intelligence for Personalized Nutrition: "
          "A Multimodal Framework Integrating Smart Ring and Smartwatch Data")  # v8 title, as submitted
 
@@ -148,8 +148,9 @@ BASE_XREFS = [
     # CALORIC_MAP = {0: -200, 1: 0, 2: 200} (caloric error of Section 4.12). The 200 kcal figure is in CIFRE_CANONICE.md
     # (safety layer, maximum caloric error).
     ("The predicted physiological state is passed to a deterministic, rule-based module",
-     "adjusted by the declared goal (maintenance, deficit, or surplus).",
-     "adjusted by the declared goal (maintenance, deficit, or surplus). The predicted state then shifts this target by a fixed "
+     ", adjusted by the declared goal (maintenance, deficit, or surplus).",
+     ". The declared goal (fat loss, maintenance or muscle gain) is recorded in the user profile and does not modify this "
+     "target. The predicted state then shifts this target by a fixed "
      "offset of -200 kcal for Rest, 0 for Normal and +200 kcal for Active; these offsets are prescriptive rules, not measured "
      "effects (Limitation 3, Section 5), and define the caloric error reported in Section 4.12."),
     # T7.3 (2026-10-22): the closing sentence of the 'This paper addresses that gap' paragraph now closes the positioning
@@ -867,6 +868,14 @@ def assemble_manuscript(blocks: dict, v8_path: Path | None = None) -> None:
                       "(base_cal = round(25 * weight_kg); Rest base_cal - 200, Normal base_cal, Active base_cal + 200) and confidence_threshold.py "
                       "line 58 (CALORIC_MAP = {0: -200, 1: 0, 2: 200}, the caloric error of Section 4.12); 200 kcal is the maximum caloric error of "
                       "the safety layer in CIFRE_CANONICE.md.")
+    DEVIATIONS.append("GOAL_FIX (audit-apply, 2026-10-26, decision of the first author, P2 = DA): in the retained v8 paragraph of 3.12 the words "
+                      "', adjusted by the declared goal (maintenance, deficit, or surplus).' became '. The declared goal (fat loss, maintenance or "
+                      "muscle gain) is recorded in the user profile and does not modify this target.' (BASE_XREFS tuple, which also carries the T7.2 "
+                      "sentence on the offsets). Verified in the application code before writing: nutrition_recommender.py computes base_cal = "
+                      "round(25 * weight_kg) and the per-state offset only; 'goal' is a profile field (USER_PROFILE, values fat_loss / maintenance / "
+                      "muscle_gain) that is printed and, in streamlit_app_v2.py lines 217-219, selected in the interface; calculate_tdee() uses "
+                      "activity_level, not goal. The v8 claim that the target is adjusted by the goal had no counterpart in the code (recorded as open "
+                      "at T7, TEXT_DECISIONS section T7).")
     DEVIATIONS.append("T7.3 (2026-10-22): Introduction order is now gap paragraph ('Despite this progress, a gap remains...'), 'This paper "
                       "addresses that gap...' (so 'that gap' has its antecedent in the paragraph immediately before), the positioning paragraph "
                       "(F4 block, R2.c), then the contribution list. The base sentence 'The specific contributions are the following.' was removed "
