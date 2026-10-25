@@ -155,6 +155,11 @@ BASE_XREFS = [
     # T7.3 (2026-10-22): the closing sentence of the 'This paper addresses that gap' paragraph now closes the positioning
     # paragraph inserted after it (F4 block 'Paragraf de pozitionare'), immediately before the contribution list.
     ("This paper addresses that gap by investigating", " The specific contributions are the following.", ""),
+    # T8.8a (2026-10-25, decision of the first author): the only v8 sentence edited for style; 'characterizing honestly' is
+    # the same editorializing that T8 removed from the revision text ('honestly' is a forbidden term of STYLE_GUIDE.md).
+    ("This paper addresses that gap by investigating",
+     "and by characterizing honestly what such a system can and cannot achieve.",
+     "and by stating what such a system can and cannot achieve."),
     # T7.4b (2026-10-22): Figure 1 legend (v8 base) no longer presents the random forest as selected among three models
     ("Figure 1. End-to-end flow of the proposed system",
      "classified by a Random Forest model selected after comparison with XGBoost and an SVM",
@@ -886,6 +891,10 @@ def assemble_manuscript(blocks: dict, v8_path: Path | None = None) -> None:
                       "legends and captions written in revision (Table 4, Table 8, Table 11, Figure 2, Figure 3, Figure 4, Figure 5; plural 'Random Forests' "
                       "in Figure 5). 3.12 (GOAL_FIX pending), the paragraphs identical to v8 ('We emphasize' in 3.2 included), tables, references, comments, "
                       "Appendix A and the declarations are untouched. Style profile: revision/STYLE_GUIDE.md, measured by revision/scripts/style_check.py.")
+    DEVIATIONS.append("T8.8a (2026-10-25, decision of the first author): in the retained v8 Introduction paragraph 'This paper addresses that gap...' "
+                      "the words 'and by characterizing honestly what such a system can and cannot achieve.' became 'and by stating what such a system "
+                      "can and cannot achieve.' (BASE_XREFS tuple). This is the only v8 sentence edited for style: 'honestly' is the editorializing "
+                      "that T8 removed from the revision text and is a forbidden term of STYLE_GUIDE.md; no figure or claim is affected.")
     DEVIATIONS.append("T7.8 (2026-10-22, F4 text unless stated): (a) 4.2 'XGBoost on accuracy, MCC, Cohen's kappa and ROC-AUC' (Table 4: 0.146 "
                       "against 0.142); (b) note under Table 11 (italic, same style as the note under Table 6): intervals of the reported block from "
                       "the shared resampling matrix differ marginally from Table 5 (macro F1 [0.378, 0.613] against [0.373, 0.610]; F1 Active "
