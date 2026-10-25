@@ -1,0 +1,51 @@
+# apply baseline, master @ eea3c68, 2026-10-26
+
+## _check_t41_numbers.py R1
+KBS_Manuscript_R1.docx: 1531 numbers, FOUND 1068, NEGASIT 0, SKIPPED 453 -> revision/manuscript/t41_number_check_R1.md
+
+## _check_t41_numbers.py S1
+KBS_Supplementary_R1.docx: 372 numbers, FOUND 308, NEGASIT 0, SKIPPED 64 -> revision/manuscript/t41_number_check_S1.md
+
+## _check_t41_outputs.py
+[PASS] LF line endings: t41_number_check_F4.md
+[PASS] LF line endings: t41_number_check_R1.md
+[PASS] LF line endings: t41_number_check_S1.md
+[PASS] LF line endings: t41_outputs_check.md
+[PASS] LF line endings: assemble_manuscript.py
+[PASS] LF line endings: _check_t41_numbers.py
+[PASS] LF line endings: _check_t41_outputs.py
+73 checks, 1 FAIL -> revision/manuscript/t41_outputs_check.md
+
+## style_check manuscript
+   'we' 1 (0.2/1k words); 'Random Forest' 22 vs 'random forest' 0; 'distinguish' 0; forbidden 0 
+   4-decimal 1 vs 3-decimal 83; 'percentage points' 0, 'pp' 0; 'therefore' 8; semicolons 49
+   LONGEST (72 words): Complementing the per-device ablation (Section 4.6), the nineteen features were partitioned, before any result was seen, into six groups by physiological mechan...
+   LONGEST (57 words): The stability of the SHAP ranking was assessed in two ways, separating data variability from training variability: 100 forests retrained on bootstrap samples of...
+   LONGEST (52 words): In addition to Random Forest, XGBoost and the SVM, four further models were evaluated in the same pipeline during revision: LightGBM (Ke et al., 2017) and CatBo...
+## thresholds
+[PASS] different-from-v8: mean words/sentence <= 27: 25.1
+[PASS] different-from-v8: p90 <= 45: 40
+[PASS] different-from-v8: sentences > 60 words <= 1: 1
+[PASS] different-from-v8: 'random forest' (lower case) = 0: 0
+[PASS] different-from-v8: 'distinguish' = 0: 0
+[PASS] different-from-v8: forbidden terms = 0: {}
+[PASS] whole prose: 'we' <= 6: 3
+[PASS] whole prose: 'random forest' (lower case) = 0: 0
+8/8 thresholds met
+
+## style_check response
+   'we' 43 (14.4/1k words); 'Random Forest' 12 vs 'random forest' 0; 'distinguish' 0; forbidden 0 
+   4-decimal 1 vs 3-decimal 45; 'percentage points' 0, 'pp' 0; 'therefore' 5; semicolons 17
+   LONGEST (62 words): We added three complementary comparisons, all on the same 192 test days: McNemar tests on per-day correctness (continuity-corrected, with the exact binomial var...
+   LONGEST (59 words): We replaced the robustness check mentioned in the original Discussion with a reportable procedure: 3-fold temporal cross-validation on the training period (vali...
+   LONGEST (47 words): We assessed the calibration of the Random Forest probabilities with out-of-fold probabilities from a temporal cross-validation on the training period, fitted Pl...
+## thresholds
+[PASS] response prose: mean words/sentence <= 27: 26.9
+[PASS] response prose: sentences > 60 words <= 1: 1
+[PASS] response prose: 'random forest' (lower case) = 0: 0
+[PASS] response prose: 'distinguish' = 0: 0
+[PASS] response prose: forbidden terms = 0: {}
+5/5 thresholds met
+
+## _check_t41_outputs.py, rerun after staging AUDIT_DECISIONS.md and this file
+73 checks, 0 FAIL (the single FAIL of the first run was the git-cleanliness check tripped by the two untracked audit files)
