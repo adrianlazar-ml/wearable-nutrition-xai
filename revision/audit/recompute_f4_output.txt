@@ -1,0 +1,44 @@
+=== 1. SHAP reference (rf_revision.joblib on the imputed test set) ===
+  test rows 192; NaN after imputation 0; predict_proba vs test_predictions_rf.csv max diff 9.80e-17; y_true == csv True
+  shap 0.51.0; shap_values shape (192, 19, 3)
+  top-5: aw_hr_mean 0.0611; hrv_balance 0.0273; aw_active_calories 0.0205; readiness_score 0.0192; activity_score 0.0191
+  PASS rank 1 is aw_hr_mean (got aw_hr_mean)
+  PASS mean|SHAP| aw_hr_mean: recomputed 0.061087 vs target 0.0611 (4 dp)
+  PASS rank 2 is hrv_balance (got hrv_balance)
+  PASS mean|SHAP| hrv_balance: recomputed 0.027305 vs target 0.0273 (4 dp)
+  PASS rank 3 is aw_active_calories (got aw_active_calories)
+  PASS mean|SHAP| aw_active_calories: recomputed 0.020501 vs target 0.0205 (4 dp)
+  PASS rank 4 is readiness_score (got readiness_score)
+  PASS mean|SHAP| readiness_score: recomputed 0.019161 vs target 0.0192 (4 dp)
+  PASS rank 5 is activity_score (got activity_score)
+  PASS mean|SHAP| activity_score: recomputed 0.019134 vs target 0.0191 (4 dp)
+  PASS additivity: max |sum_f SHAP + expected_value - predict_proba| = 8.327e-16 (< 1e-12)
+
+=== 2. LOGO G5 from the stored prediction files ===
+  PASS F1 macro full: recomputed 0.506324 vs target 0.5063 (4 dp)
+  PASS F1 macro LOGO G5: recomputed 0.377973 vs target 0.3780 (4 dp)
+  PASS delta full - G5: recomputed 0.128351 vs target 0.1284 (4 dp)
+  regenerated matrix == stored npy: True
+  resamples used 1000, skipped 0
+  PASS delta CI low: recomputed 0.016355 vs target 0.0164 (4 dp)
+  PASS delta CI high: recomputed 0.238835 vs target 0.2388 (4 dp)
+
+=== 3. T3.2 from the daily frame (day-t values on the 958 labelled dates) ===
+  daily frame rows 1009; labelled 958; label distribution [202, 710, 46]
+  aw_hr_mean: n 202/704/45; medians R/N/A 91.95 / 86.02 / 81.32; H scipy 182.9865 (manual tie-corrected 182.9865), p 1.84e-40, eps2 0.1926; Cliff A-R -0.8404 [-0.9124, -0.7492]
+  PASS median Rest: recomputed 91.950000 vs target 91.9500 (2 dp)
+  PASS median Normal: recomputed 86.020000 vs target 86.0200 (2 dp)
+  PASS median Active: recomputed 81.320000 vs target 81.3200 (2 dp)
+  PASS H: recomputed 182.986507 vs target 182.9900 (2 dp)
+  PASS epsilon2: recomputed 0.192617 vs target 0.1926 (4 dp)
+  PASS Cliff A-R: recomputed -0.840374 vs target -0.8400 (3 dp)
+  PASS Cliff CI low: recomputed -0.912437 vs target -0.9120 (3 dp)
+  PASS Cliff CI high: recomputed -0.749244 vs target -0.7490 (3 dp)
+  aw_active_calories: n 202/704/45; medians R/N/A 883.60 / 809.40 / 579.30; H scipy 19.0793 (manual tie-corrected 19.0793), p 7.19e-05, eps2 0.0201; Cliff A-R -0.4205 [-0.5740, -0.2462]
+  PASS Cliff A-R (aw_active_calories): recomputed -0.420462 vs target -0.4200 (3 dp)
+  PASS Cliff CI low (aw_active_calories): recomputed -0.573991 vs target -0.5740 (3 dp)
+  PASS Cliff CI high (aw_active_calories): recomputed -0.246183 vs target -0.2460 (3 dp)
+  aw_hr_mean Cliff A-R CI with an independent rng (seed 20261025): [-0.914, -0.750]
+  aw_hr_mean Dunn-Holm p Active-Rest 1.959e-26 (stored 1.959e-26); Active-Normal 6.448e-08 (stored 6.448e-08); Normal-Rest 4.246e-31 (stored 4.246e-31)
+
+PASS: 27 / 27 checks

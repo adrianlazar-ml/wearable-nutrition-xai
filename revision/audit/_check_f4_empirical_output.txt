@@ -1,0 +1,240 @@
+[P0.1] folder: C:\Users\Adrian\disertatie_v2\data\apple_health\New Automation
+[P0.1] files: 1079; all .json: True
+[P0.1] filename date range: 2023-04-11 .. 2026-03-30
+[P0.1] study window 2023-06-09..2026-03-30: 1026 days; files present: 1020; missing filename dates: 6 -> ['2025-05-29', '2025-07-18', '2025-07-19', '2025-07-22', '2025-07-26', '2025-09-03']
+[P0.1] files outside the study window: 59 (2023-04-11..2023-06-08)
+[P0.2] parse time 6.5 s; unreadable files: []
+[P0.2] per-file coverage: entries (8 metrics) per file min/median/max = 1 / 2237 / 3170; files with 0 entries: 0 -> []
+[P0.2] entries whose date differs from the file name date: 47 (files affected: 47) -> each file holds only its own day: NO
+[P0.2] distinct entry dates: 1079; == distinct file dates with entries: True
+[P0.2] distinct source strings per metric (count of records):
+    heart_rate: 'Apple\xa0Watch - Adrian|Oura': 755694; 'Apple\xa0Watch - Adrian': 29898; 'Oura': 13014; 'Apple\xa0Watch - Adrian|Apple\xa0Watch - Adrian|Oura': 261
+    active_energy: 'Apple\xa0Watch - Adrian|Oura': 979782; 'Apple\xa0Watch - Adrian': 120866; 'Apple\xa0Watch - Adrian|Zepp Life|Oura': 3018; 'Oura': 629; 'Apple\xa0Watch - Adrian|Apple\xa0Watch - Adrian|Oura': 296; 'Apple\xa0Watch - Adrian|iPhone - Adrian': 115; 'iPhone - Adrian': 10
+    step_count: 'Apple\xa0Watch - Adrian|iPhone - Adrian|Oura': 320832; 'Apple\xa0Watch - Adrian|Oura': 34506; 'Apple\xa0Watch - Adrian|iPhone - Adrian': 27438; 'Apple\xa0Watch - Adrian': 4131; 'Oura': 1507; 'Apple\xa0Watch - Adrian|iPhone - Adrian|Zepp Life|Oura': 993; 'iPhone - Adrian|Oura': 937; 'Apple\xa0Watch - Adrian|Apple\xa0Watch - Adrian|iPhone - Adrian|Oura': 131; 'iPhone - Adrian': 49; 'Apple\xa0Watch - Adrian|Zepp Life|Oura': 20
+    sleep_analysis: 'Apple\xa0Watch - Adrian': 887; 'Oura': 218; 'iPhone - Adrian': 19
+    respiratory_rate: 'Apple\xa0Watch - Adrian': 46578; 'Oura': 840; 'Oura | Apple\xa0Watch - Adrian': 88
+    heart_rate_variability: 'Apple\xa0Watch - Adrian': 6228
+    resting_heart_rate: 'Apple\xa0Watch - Adrian': 1064
+    blood_oxygen_saturation: 'Apple\xa0Watch - Adrian': 15346; 'Oxigen în sânge': 6
+[P0.2] written revision\audit\p0_source_mix.csv: 8557 rows (date x metric), sha256[:16] 85aeb3598be365d0
+[P0.2] labelled dates from snapshot (date): 958; range 2023-06-10..2026-03-30; with a raw export file: 952; without: ['2025-05-29', '2025-07-18', '2025-07-19', '2025-07-22', '2025-07-26', '2025-09-03']
+[P0.2] first calendar date with a record whose source contains 'Oura', per metric:
+    heart_rate: 2023-06-09
+    active_energy: 2023-06-09
+    step_count: 2023-07-19
+    sleep_analysis: 2023-07-05
+    respiratory_rate: 2023-06-10
+    heart_rate_variability: never
+    resting_heart_rate: never
+    blood_oxygen_saturation: never
+[P0.2] fraction of days with >= 1 Oura record, per metric and year (denominator = days having >= 1 record of that metric; 'lab' = restricted to the 958 labelled dates):
+    heart_rate: 2023: 0.791 (204/258), lab 1.000 (198/198) | 2024: 0.948 (346/365), lab 0.991 (322/325) | 2025: 0.997 (358/359), lab 1.000 (340/340) | 2026: 1.000 (89/89), lab 1.000 (89/89) | ALL lab: 0.997 (949/952)
+    active_energy: 2023: 0.785 (204/260), lab 1.000 (198/198) | 2024: 0.959 (351/366), lab 0.994 (323/325) | 2025: 0.994 (357/359), lab 0.997 (339/340) | 2026: 0.966 (86/89), lab 0.966 (86/89) | ALL lab: 0.994 (946/952)
+    step_count: 2023: 0.638 (166/260), lab 0.803 (159/198) | 2024: 0.975 (357/366), lab 1.000 (325/325) | 2025: 0.997 (358/359), lab 1.000 (340/340) | 2026: 0.966 (86/89), lab 0.966 (86/89) | ALL lab: 0.956 (910/952)
+    sleep_analysis: 2023: 0.068 (18/264), lab 0.091 (18/198) | 2024: 0.189 (69/366), lab 0.212 (69/325) | 2025: 0.263 (94/358), lab 0.274 (93/340) | 2026: 0.360 (32/89), lab 0.360 (32/89) | ALL lab: 0.223 (212/952)
+    respiratory_rate: 2023: 0.760 (196/258), lab 0.990 (196/198) | 2024: 0.822 (300/365), lab 0.917 (298/325) | 2025: 0.947 (338/357), lab 0.991 (337/340) | 2026: 0.966 (86/89), lab 0.966 (86/89) | ALL lab: 0.963 (917/952)
+    heart_rate_variability: 2023: 0.000 (0/254), lab 0.000 (0/194) | 2024: 0.000 (0/363), lab 0.000 (0/323) | 2025: 0.000 (0/359), lab 0.000 (0/340) | 2026: 0.000 (0/89), lab 0.000 (0/89) | ALL lab: 0.000 (0/946)
+    resting_heart_rate: 2023: 0.000 (0/253), lab 0.000 (0/193) | 2024: 0.000 (0/363), lab 0.000 (0/323) | 2025: 0.000 (0/359), lab 0.000 (0/340) | 2026: 0.000 (0/89), lab 0.000 (0/89) | ALL lab: 0.000 (0/945)
+    blood_oxygen_saturation: 2023: 0.000 (0/253), lab 0.000 (0/193) | 2024: 0.000 (0/362), lab 0.000 (0/322) | 2025: 0.000 (0/359), lab 0.000 (0/340) | 2026: 0.000 (0/89), lab 0.000 (0/89) | ALL lab: 0.000 (0/944)
+[P0.2] share of RECORDS whose source contains 'Oura', per metric, labelled dates, per year:
+    heart_rate: 2023: 0.998 | 2024: 0.993 | 2025: 0.999 | 2026: 1.000 | ALL: 0.997; pure-Oura records 12893
+    active_energy: 2023: 0.970 | 2024: 0.959 | 2025: 0.959 | 2026: 0.926 | ALL: 0.958; pure-Oura records 625
+    step_count: 2023: 0.798 | 2024: 0.994 | 2025: 0.995 | 2026: 0.975 | ALL: 0.961; pure-Oura records 1491
+    sleep_analysis: 2023: 0.091 | 2024: 0.215 | 2025: 0.256 | 2026: 0.340 | ALL: 0.218; pure-Oura records 217
+    respiratory_rate: 2023: 0.022 | 2024: 0.021 | 2025: 0.023 | 2026: 0.020 | ALL: 0.022; pure-Oura records 837
+    heart_rate_variability: 2023: 0.000 | 2024: 0.000 | 2025: 0.000 | 2026: 0.000 | ALL: 0.000; pure-Oura records 0
+    resting_heart_rate: 2023: 0.000 | 2024: 0.000 | 2025: 0.000 | 2026: 0.000 | ALL: 0.000; pure-Oura records 0
+    blood_oxygen_saturation: 2023: 0.000 | 2024: 0.000 | 2025: 0.000 | 2026: 0.000 | ALL: 0.000; pure-Oura records 0
+[P0.2] days (labelled) where ALL records of the metric contain 'Oura' (no Watch-only record):
+    heart_rate: 632 / 952
+    active_energy: 214 / 952
+    step_count: 415 / 952
+    sleep_analysis: 204 / 952
+    respiratory_rate: 12 / 952
+    heart_rate_variability: 0 / 946
+    resting_heart_rate: 0 / 945
+    blood_oxygen_saturation: 0 / 944
+[P0.2] sleep_analysis: entries 1124; days 1077; days with >1 entry: 47; days with >1 entry AND mixed sources: 8; days with an Oura entry: 213; days Oura-only: 205
+    source strings: {'Apple\xa0Watch - Adrian': 887, 'Oura': 218, 'iPhone - Adrian': 19}
+    multiplicity distribution: {1: 1030, 2: 47}
+    on labelled dates: days 952, >1 entry 44, with Oura 212, Oura-only 204
+    date convention: entry date == sleepEnd date on 1078/1124 entries; == sleepStart date on 662/1124 (previous-evening start: 462)
+    Watch entries: date==sleepEnd 865/906; Oura entries: date==sleepEnd 213/218
+    first days with >1 entry:
+            n  n_oura                       srcs
+date                                            
+2024-03-01  2       2                       Oura
+2024-03-02  2       2                       Oura
+2024-03-16  2       1  Apple Watch - Adrian|Oura
+2024-06-24  2       1  Apple Watch - Adrian|Oura
+2024-07-13  2       1       Oura|iPhone - Adrian
+2024-12-08  2       0       Apple Watch - Adrian
+2024-12-23  2       0       Apple Watch - Adrian
+2025-01-31  2       0       Apple Watch - Adrian
+[P0.4-ext] written revision\audit\p0_parser_vs_watch_only.csv: 9634 rows, sha256[:16] 26476d299951007b
+[P0.4-ext] parser aggregate (all sources) minus Watch-only aggregate, labelled dates:
+    active_energy: days 952, watch_only undefined (no non-Oura record) 214, diff != 0 on 732; diff mean 3361.703, median 3494.505, p5 1579.175, p95 5127.493, max|diff| 9138.150; median |rel| 0.9907, p95 |rel| 0.9995
+    blood_oxygen_saturation: days 944, watch_only undefined (no non-Oura record) 0, diff != 0 on 0; diff mean 0.000, median 0.000, p5 0.000, p95 0.000, max|diff| 0.000; median |rel| 0.0000, p95 |rel| 0.0000
+    heart_rate: days 952, watch_only undefined (no non-Oura record) 632, diff != 0 on 317; diff mean 0.572, median 1.230, p5 -10.623, p95 9.985, max|diff| 27.360; median |rel| 0.0576, p95 |rel| 0.1411
+    heart_rate_variability: days 946, watch_only undefined (no non-Oura record) 0, diff != 0 on 0; diff mean 0.000, median 0.000, p5 0.000, p95 0.000, max|diff| 0.000; median |rel| 0.0000, p95 |rel| 0.0000
+    respiratory_rate: days 952, watch_only undefined (no non-Oura record) 12, diff != 0 on 765; diff mean -0.026, median -0.010, p5 -0.050, p95 0.010, max|diff| 2.610; median |rel| 0.0012, p95 |rel| 0.0031
+    resting_heart_rate: days 945, watch_only undefined (no non-Oura record) 0, diff != 0 on 0; diff mean 0.000, median 0.000, p5 0.000, p95 0.000, max|diff| 0.000; median |rel| 0.0000, p95 |rel| 0.0000
+    sleep_deep_sum: days 952, watch_only undefined (no non-Oura record) 204, diff != 0 on 5; diff mean 0.010, median 0.000, p5 0.000, p95 0.000, max|diff| 2.810; median |rel| 0.0000, p95 |rel| 0.0000
+    sleep_rem_sum: days 952, watch_only undefined (no non-Oura record) 204, diff != 0 on 5; diff mean 0.008, median 0.000, p5 0.000, p95 0.000, max|diff| 1.970; median |rel| 0.0000, p95 |rel| 0.0000
+    step_count: days 952, watch_only undefined (no non-Oura record) 415, diff != 0 on 495; diff mean 6791.851, median 7245.090, p5 0.000, p95 12679.872, max|diff| 18817.080; median |rel| 0.9955, p95 |rel| 0.9993
+    Spearman(parser_all, watch_only) heart_rate: 0.6768 on 320 days
+    Spearman(parser_all, watch_only) step_count: 0.0085 on 537 days
+    Spearman(parser_all, watch_only) active_energy: 0.0256 on 738 days
+[P0.3] apple_health_daily.csv: 1083 rows, 2023-04-11..2026-03-29, sha256[:16] 4692a651003b6696
+    aw_hr_mean: common dates 1070, both non-null 1070, re-implemented parser == csv (|d|<=0.011) on 1069 (max |d| 0.820); first mismatches: [['2026-03-29', 86.48, 85.66]]
+    aw_steps: common dates 1073, both non-null 1073, re-implemented parser == csv (|d|<=0.011) on 1072 (max |d| 611.000); first mismatches: [['2026-03-29', 2425.21, 1814.21]]
+    aw_active_energy_kj: common dates 1073, both non-null 1073, re-implemented parser == csv (|d|<=0.011) on 1072 (max |d| 50.880); first mismatches: [['2026-03-29', 1466.48, 1415.6]]
+    aw_sleep_deep_hours: common dates 1076, both non-null 1076, re-implemented parser == csv (|d|<=0.011) on 1076 (max |d| 0.010); first mismatches: []
+    aw_sleep_rem_hours: common dates 1076, both non-null 1076, re-implemented parser == csv (|d|<=0.011) on 1076 (max |d| 0.010); first mismatches: []
+    aw_resp_rate: common dates 1068, both non-null 1068, re-implemented parser == csv (|d|<=0.011) on 1068 (max |d| 0.010); first mismatches: []
+    aw_hrv_mean: common dates 1064, both non-null 1064, re-implemented parser == csv (|d|<=0.011) on 1064 (max |d| 0.000); first mismatches: []
+    aw_spo2: common dates 1062, both non-null 1062, re-implemented parser == csv (|d|<=0.011) on 1062 (max |d| 0.000); first mismatches: []
+    aw_rhr: common dates 1063, both non-null 1063, re-implemented parser == csv (|d|<=0.011) on 1063 (max |d| 0.000); first mismatches: []
+[P0.4] three days through the repository parser (load_json_file + aggregate_daily), all records vs. records whose source does not contain 'Oura':
+    2023-06-09 aw_hr_mean: parser(all)=92.92 csv=92.92 match=True | excl-Oura=80.85 diff=12.070000000000007 (13.0%)
+    2023-06-09 aw_steps: parser(all)=5250.0 csv=5250.0 match=True | excl-Oura=5250.0 diff=0.0 (0.0%)
+    2023-06-09 aw_active_energy_kj: parser(all)=3906.35 csv=3906.35 match=True | excl-Oura=782.69 diff=3123.66 (80.0%)
+    2023-06-09 aw_sleep_deep_hours: parser(all)=0.6 csv=0.6 match=True | excl-Oura=0.6 diff=0.0 (0.0%)
+    2023-06-09 aw_resp_rate: parser(all)=16.18 csv=16.18 match=True | excl-Oura=16.18 diff=0.0 (0.0%)
+    2024-09-15 aw_hr_mean: parser(all)=92.77 csv=92.77 match=True | excl-Oura=nan diff=n/a (nan%)
+    2024-09-15 aw_steps: parser(all)=1794.65 csv=1794.65 match=True | excl-Oura=4.8 diff=1789.8500000000001 (99.7%)
+    2024-09-15 aw_active_energy_kj: parser(all)=2035.76 csv=2035.76 match=True | excl-Oura=nan diff=n/a (nan%)
+    2024-09-15 aw_sleep_deep_hours: parser(all)=0.87 csv=0.87 match=True | excl-Oura=0.87 diff=0.0 (0.0%)
+    2024-09-15 aw_resp_rate: parser(all)=14.71 csv=14.71 match=True | excl-Oura=14.72 diff=-0.009999999999999787 (-0.1%)
+    2026-03-15 aw_hr_mean: parser(all)=89.56 csv=89.56 match=True | excl-Oura=nan diff=n/a (nan%)
+    2026-03-15 aw_steps: parser(all)=4664.44 csv=4664.44 match=True | excl-Oura=9.0 diff=4655.44 (99.8%)
+    2026-03-15 aw_active_energy_kj: parser(all)=2727.63 csv=2727.63 match=True | excl-Oura=185.49 diff=2542.1400000000003 (93.2%)
+    2026-03-15 aw_sleep_deep_hours: parser(all)=0.84 csv=0.84 match=True | excl-Oura=0.84 diff=0.0 (0.0%)
+    2026-03-15 aw_resp_rate: parser(all)=16.37 csv=16.37 match=True | excl-Oura=16.39 diff=-0.019999999999999574 (-0.1%)
+[P0] total time 7.9 s
+
+########## t2 ##########
+[T2] versions: shap 0.51.0; scripts imported in memory, no main() called
+
+[Q1] reference SHAP: which matrix reproduces t14_shap_reference.csv
+  raw X_test (rows 766..957) NaN count = 49 -> imputation needed
+  canon.X_test == imputer_revision.joblib.transform(raw X_test): max diff 0.0e+00
+  shap_values(X_test) type ndarray, shape (192, 19, 3); expected_value [0.333006, 0.333585, 0.333409]
+  mean|SHAP| on imputed test, unscaled (192)  : max |diff vs reference| = 4.95e-12; top-5 ['aw_hr_mean', 'hrv_balance', 'aw_active_calories', 'readiness_score', 'activity_score']
+  mean|SHAP| on imputed test, SCALED (192)    : max |diff vs reference| = 3.61e-02; top-5 ['aw_hr_mean', 'activity_score', 'hrv_balance', 'aw_sleep_deep_hours', 'aw_active_calories']
+  mean|SHAP| on imputed train (766)           : max |diff vs reference| = 4.60e-03; top-5 ['aw_hr_mean', 'hrv_balance', 'activity_score', 'temp_deviation', 'rhr_lowest']
+  rf_revision.joblib used as loaded (no refit): rf.random_state=42, n_estimators=100
+
+[Q2] aggregation on the (192, 19, 3) array
+  mean over samples and classes   : aw_hr_mean 0.0611; max|diff vs ref| 4.95e-12; top-5 ['aw_hr_mean', 'hrv_balance', 'aw_active_calories', 'readiness_score', 'activity_score']
+  SUM over classes                : aw_hr_mean 0.1833; max|diff vs ref| 1.22e-01; top-5 ['aw_hr_mean', 'hrv_balance', 'aw_active_calories', 'readiness_score', 'activity_score']
+  Active class only               : aw_hr_mean 0.0816; max|diff vs ref| 2.05e-02; top-5 ['aw_hr_mean', 'hrv_balance', 'aw_active_calories', 'readiness_score', 'rhr_lowest']
+  aggregate_multiclass(array) vs aggregate_multiclass(list of 3 (192,19)): max |diff| 6.2e-17 (np.asarray(list) shape (3, 192, 19) -> branch (classes, samples, features))
+  ambiguity guard: n_samples 192 != n_classes 3, so the shape[0] dispatch cannot misfire here
+
+[Q3] additivity
+  max |sum_f SHAP + expected_value - predict_proba| = 8.327e-16  (< 1e-12: True; < 1e-9: True)
+  max |predict_proba - test_predictions_rf.csv| = 9.80e-17
+
+[Q4] bootstrap mode
+  npy shape (100, 766) dtype int64; == default_rng(42).integers(0, 766, (100, 766)): True; min 0 max 765; mean unique rows 485.2
+  raw train (rows 0..765) NaN count = 461 -> rows are bootstrapped BEFORE imputation
+  source bootstrap_split:
+    def bootstrap_split(X: pd.DataFrame, y: pd.Series, dates: pd.Series, idx: np.ndarray) -> Split:
+        """Bootstrap the raw 766 train rows (duplicates allowed), test unchanged; preprocessing refit."""
+        X_tr, y_tr = X.iloc[:N_TRAIN].iloc[idx], y.iloc[:N_TRAIN].iloc[idx]
+        return preprocess_split(X_tr, X.iloc[N_TRAIN:], y_tr, y.iloc[N_TRAIN:], dates.iloc[N_TRAIN:],
+                                k_neighbors=3, seed=SEED)
+    
+  run 0: train rows 766 (unique 485), SMOTE rows 1764, test = the 192 original days: True; re-run mean|SHAP| vs csv max diff 4.92e-12; ranks equal: True
+  run 1: train rows 766 (unique 491), SMOTE rows 1665, test = the 192 original days: True; re-run mean|SHAP| vs csv max diff 4.80e-12; ranks equal: True
+  imputer of run 0 differs from the canonical imputer (medians): max |diff| 56.620
+
+[Q5] seeds mode
+  source fit_rf:
+    def fit_rf(split: Split, rf_seed: int):
+        rf = build_models()["rf"]
+        rf.set_params(random_state=rf_seed)
+        rf.fit(split.X_train_sm, split.y_train_sm)
+        return rf
+    
+  csv run 42 vs reference csv: max diff 0.00e+00; ranks equal True
+  re-run run 42 (canonical split, RF seed 42) vs reference (computed): max diff 0.00e+00; F1 macro 0.5063
+  re-run run 7 vs csv: max diff 4.63e-12
+  SMOTE train identical across seed runs (canon reused): rows 1710; only rf.random_state varies
+
+[Q6] ranks / Jaccard / Kendall
+  rank_desc source: return rankdata(-np.asarray(values, dtype=float), method="min").astype(int)
+  kendall source:   return float(kendalltau(np.asarray(ranks_a), np.asarray(ranks_b)).statistic)
+  bootstrap: mean Jaccard top-5 0.4904 (claim 0.4904), mean Kendall tau-b 0.3909 (claim 0.3909); runs 100; ties in ranks: 0 runs
+  seeds: mean Jaccard top-5 0.5276 (claim 0.5276), mean Kendall tau-b 0.7506 (claim 0.7506); runs 100; ties in ranks: 0 runs
+
+[Q7] partition of the 19 features
+  n features 19, unique 19, set == FEATURES True, sizes [2, 4, 3, 2, 4, 4]
+  groups as sets == brief/CIFRE_REVIZIE listing: True
+  t15_run_meta.json groups == build_groups('G1'): True; SLEEP_SCORE_GROUP G1
+
+[Q8] fit_eval
+  fit_eval keeps canonical order via subset_in_canonical_order: True; imputer refit: True; SMOTE refit: True; RF from build_models: True
+  full 19: y_pred == test_predictions_rf.csv True; max |proba diff| 9.8e-17; F1 macro 0.506324
+  oura_only (11): F1 macro 0.428134, F1 Active 0.285714
+  watch_only (8): F1 macro 0.324330, F1 Active 0.100000
+  LOGO G5 (15 kept): y_pred == t15_predictions_logo_G5 csv True; max |proba diff| 9.9e-17; F1 macro 0.377973
+  imputer medians in reduced space == full-space medians on the same columns (column-wise median): True
+
+[Q9] paired bootstrap of the delta
+  paired_bootstrap applies one row to y_true, pred_a, pred_b: True
+  G5: diff_point +0.128351 = F1(full) - F1(LOGO) = +0.128351; CI [0.0164, 0.2388]; n_used 1000, n_skipped 0; call in group_ablation.py:350 is paired_bootstrap(y_true, p_full, p, ...) -> A = full, B = LOGO -> positive = removal hurts
+  t15_logo.csv G5: delta +0.128351 [0.0164, 0.2388]
+
+[Q11] T3.2 frame
+  raw daily frame rows 1009; frame rows 958; labelled dates == snapshot dates: True
+  NaN per variable in the frame (no imputation): {'aw_hr_mean': 7, 'aw_hrv_mean': 13, 'aw_active_calories': 7, 'aw_steps': 7, 'aw_resp_rate': 7, 'aw_spo2': 15, 'hrv_mean': 2, 'rhr_lowest': 2, 'temp_deviation': 2, 'steps_oura': 1}; == inventory n_missing: True
+  independent identity: daily[v].shift(1) on the 1009-row frame, taken at the 958 dates, == canonical lag-1 feature: 10/10
+  script's ident flags all True: True; NOTE lag_identity(df[v], df[v].shift(1)) (label_agreement.py:216-219) compares a series with its own shift -> tautological; the effective test is the second clause (vs build_dataset X)
+  n per class in t32_tests == frame notna per class: True
+
+[Q12] expected directions
+  VARIABLES constant (label_agreement.py:87-108), expected per variable: {'aw_hr_mean': '-', 'aw_hrv_mean': '+', 'aw_active_calories': '+', 'aw_steps': '+', 'aw_resp_rate': '0', 'aw_spo2': '0', 'hrv_mean': '+', 'rhr_lowest': '-', 'temp_deviation': '-', 'steps_oura': '+', 'aw_active_calories_lag1': '+', 'aw_steps_lag1': '+', 'steps_oura_lag1': '+'}
+  t32_run_meta.json expected == code: True
+  unit test test_fixed_design asserts the same dict (test_label_agreement.py:113-120); git: single commit 8b09bd4 adds script, test and results together
+
+[Q13/Q14] sources
+  def cliffs_delta(x, y) -> float:
+      """delta(X, Y) = P(x > y) - P(x < y), in [-1, 1]; +1 = every x above every y."""
+      x = np.sort(np.asarray(x, dtype=float))
+      y = np.sort(np.asarray(y, dtype=float))
+      if len(x) == 0 or len(y) == 0:
+          raise ValueError("empty sample")
+      gt = np.searchsorted(y, x, side="left").sum()      # number of y strictly below each x
+      lt = (len(y) - np.searchsorted(y, x, side="right")).sum()   # number of y strictly above each x
+      return float((gt - lt) / (len(x) * len(y)))
+  
+  def cliffs_delta_ci(x, y, rng: np.random.Generator, n_boot: int = N_BOOT) -> tuple[float, float]:
+      """Percentile 95 percent CI: resample the days within each group independently."""
+      x = np.asarray(x, dtype=float)
+      y = np.asarray(y, dtype=float)
+      vals = np.empty(n_boot)
+      for b in range(n_boot):
+          vals[b] = cliffs_delta(x[rng.integers(0, len(x), len(x))], y[rng.integers(0, len(y), len(y))])
+      lo, hi = np.percentile(vals, [2.5, 97.5])
+      return float(lo), float(hi)
+  
+  def epsilon_squared(h: float, n: int) -> float:
+      """Kruskal-Wallis effect size eps2 = H / (n - 1) = H / ((n^2 - 1) / (n + 1))."""
+      if n < 2:
+          raise ValueError("n must be >= 2")
+      return float(h / (n - 1))
+  
+  kruskal call: h, p = stats.kruskal(*groups)
+  Dunn tie term: tie = float(np.sum(counts.astype(float) ** 3 - counts)) / (12.0 * (n - 1))
+  rng: one default_rng(42) created at label_agreement.py:306, consumed sequentially over variables x pairs
+
+[Q15] level-A variables by source (p0_source_mix.csv, 952 labelled dates with a raw export file)
+  aw_hr_mean           <- heart_rate              : days 952, days with >=1 Oura record 949 (0.997), days with NO non-Oura record 632, Oura share of records 0.997
+  aw_hrv_mean          <- heart_rate_variability  : days 946, days with >=1 Oura record 0 (0.000), days with NO non-Oura record 0, Oura share of records 0.000
+  aw_active_calories   <- active_energy           : days 952, days with >=1 Oura record 946 (0.994), days with NO non-Oura record 214, Oura share of records 0.958
+  aw_steps             <- step_count              : days 952, days with >=1 Oura record 910 (0.956), days with NO non-Oura record 415, Oura share of records 0.961
+  aw_resp_rate         <- respiratory_rate        : days 952, days with >=1 Oura record 917 (0.963), days with NO non-Oura record 12, Oura share of records 0.022
+  aw_spo2              <- blood_oxygen_saturation : days 944, days with >=1 Oura record 0 (0.000), days with NO non-Oura record 0, Oura share of records 0.000
+[T2] elapsed 9.4 s
