@@ -1,0 +1,219 @@
+--- E0. inventory ---
+git HEAD: f3b9e6a
+  649ebad9f59ff337  revision/scripts/expanding_window.py
+  7b4e9d631a52611a  revision/scripts/test_expanding_window.py
+  fb73b00eb9a650d3  revision/scripts/common.py
+  74a8c5d02354b479  revision/scripts/threshold_sensitivity.py
+  c77ec25813d6dd6e  revision/scripts/persistence_baseline.py
+  c8506d2cdc5e21fa  revision/scripts/statistical_tests.py
+  4ca77cc4e3827e78  revision/scripts/shap_stability.py
+  654d864dd88c8a1f  revision/scripts/group_ablation.py
+  24c7c7d9cf976360  revision/scripts/save_test_predictions.py
+  5e8b726fc629c665  revision/t3_labels.py
+  22f997ef679cf1c6  revision/results/t33_expanding_window.csv
+  776aead3ee6e3040  revision/results/t33_shap_top3.csv
+  2b642dce394290ed  revision/results/t33_run_meta.json
+  56ae01513e4217af  revision/results/t33_predictions_rf_fold1.csv
+  e3aa6c26585bab4b  revision/results/t33_predictions_rf_fold2.csv
+  02d9e0dc3f377c77  revision/results/t33_predictions_rf_fold3.csv
+  85136044365d3984  revision/results/t33_predictions_rf_fold4.csv
+  aea39c6dd2989e24  revision/results/test_predictions_rf.csv
+  ab228a11e65bfe17  revision/results/test_predictions_persistence.csv
+  fff3b2834c061962  revision/results/bootstrap_indices_1000x192_seed42.npy
+  176649b59fef3adb  models/dataset_snapshot_20260331.csv
+  11d6d4de0eac31f9  data/oura_combined.csv
+  4692a651003b6696  apple_watch_api/apple_health_daily.csv
+  cdd4b55303bb61f5  revision/manuscript/KBS_Manuscript_R1.docx
+  b8c65ba7c559c9d7  revision/manuscript/KBS_Response_R1.docx
+PASS expanding_window.paired_bootstrap is statistical_tests.paired_bootstrap (same object, F2 rule)
+PASS expanding_window.t04_evaluate is persistence_baseline.evaluate (unmodified T0.4)
+PASS expanding_window.preprocess_split is common.preprocess_split (F1-audited)
+PASS expanding_window.build_models is save_test_predictions.build_models
+PASS SHAP helpers are shap_stability.mean_abs_shap / rank_desc (T1.4)
+PASS persistence_predictions / smote_k / is_comparable are the threshold_sensitivity (T3.1) objects
+RF params: {'class_weight': None, 'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 5, 'n_estimators': 100, 'n_jobs': None, 'random_state': 42}
+
+--- E1. fold bounds (Q1) ---
+constants: {'N_TOTAL': 958, 'BLOCK': 192, 'N_FOLDS': 4, 'N_BOOT': 1000, 'SEED': 42}
+all_fold_bounds(): [(766, 766, 958), (574, 574, 766), (382, 382, 574), (190, 190, 382)]
+PASS bounds == 766/574/382/190 starts, 192 rows each
+PASS test_start(k) == N_TOTAL - BLOCK * k (computed, not hard-coded)
+PASS fold 1 start == int(958 * 0.8) == 766
+PASS test blocks pairwise disjoint
+PASS union of blocks == rows 190..957 (no gap, no overlap)
+PASS train = rows [0, test_start) for every fold (no gap between train and block)
+PASS fold 5 raises ValueError (fold 5 is not cuttable from 958 rows with blocks of 192)
+
+--- data ---
+raw rows 1009 labelled rows 958 dist (202, 710, 46) dates monotonic True
+PASS 958 labelled days, 202/710/46
+
+--- E2. imputer / SMOTE per fold (Q2, Q3) ---
+fold 1: train 0..765 dist (158, 570, 38) min 38 smote_k 3; imputer == median(train) True, == median(0..957) False, == median(958) False; SMOTE rows 1710 = (570, 570, 570) (3 x 570 = 1710); imputer n_features_in_ 19; test rows 192; NaN cells train 461 test 49
+PASS fold 1: imputer statistics == median of rows 0..765 only
+PASS fold 1: smote_k == 3 (min train class 38)
+PASS fold 1: SMOTE rows == 3 x majority (1710)
+PASS fold 1: first 766 SMOTE rows == imputed train (synthetic rows appended)
+fold 2: train 0..573 dist (129, 423, 22) min 22 smote_k 3; imputer == median(train) True, == median(0..765) False, == median(958) False; SMOTE rows 1269 = (423, 423, 423) (3 x 423 = 1269); imputer n_features_in_ 19; test rows 192; NaN cells train 331 test 130
+PASS fold 2: imputer statistics == median of rows 0..573 only
+PASS fold 2: smote_k == 3 (min train class 22)
+PASS fold 2: SMOTE rows == 3 x majority (1269)
+PASS fold 2: first 574 SMOTE rows == imputed train (synthetic rows appended)
+fold 3: train 0..381 dist (96, 272, 14) min 14 smote_k 3; imputer == median(train) True, == median(0..573) False, == median(958) False; SMOTE rows 816 = (272, 272, 272) (3 x 272 = 816); imputer n_features_in_ 19; test rows 192; NaN cells train 194 test 137
+PASS fold 3: imputer statistics == median of rows 0..381 only
+PASS fold 3: smote_k == 3 (min train class 14)
+PASS fold 3: SMOTE rows == 3 x majority (816)
+PASS fold 3: first 382 SMOTE rows == imputed train (synthetic rows appended)
+fold 4: train 0..189 dist (36, 145, 9) min 9 smote_k 3; imputer == median(train) True, == median(0..381) False, == median(958) False; SMOTE rows 435 = (145, 145, 145) (3 x 145 = 435); imputer n_features_in_ 19; test rows 192; NaN cells train 67 test 127
+PASS fold 4: imputer statistics == median of rows 0..189 only
+PASS fold 4: smote_k == 3 (min train class 9)
+PASS fold 4: SMOTE rows == 3 x majority (435)
+PASS fold 4: first 190 SMOTE rows == imputed train (synthetic rows appended)
+fold 3 imputer.statistics_ : [69.5, 70.0, 17.0, 80.0, 65.0, 74.0, 81.57, 78.0, 7591.5, 15.25, 0.01, 87.695, 24.545, 7242.77, 793.3, 94.75, 0.94, 1.38, 16.215]
+fold 3 median rows 0..381  : [69.5, 70.0, 17.0, 80.0, 65.0, 74.0, 81.57, 78.0, 7591.5, 15.25, 0.01, 87.695, 24.545, 7242.77, 793.3, 94.75, 0.94, 1.38, 16.215]
+fold 3 median rows 0..573  : [71.0, 71.0, 17.0, 83.0, 64.5, 74.0, 81.07, 78.0, 7630.0, 15.125, 0.0, 87.25, 24.61, 7294.345, 803.75, 94.79, 0.96, 1.35, 16.03]
+fold 3 median rows 382..573: [72.0, 71.0, 17.0, 87.0, 64.0, 74.0, 80.26, 78.5, 7683.5, 14.875, -0.025, 86.725, 24.84, 7497.09, 817.45, 94.94, 0.97, 1.32, 15.64]
+features whose imputer median differs fold1/2, fold2/3, fold3/4: [15, 16, 17]
+
+--- E3. persistence first rows (Q4) ---
+fold 1: first 3 persistence preds [1, 1, 1] vs y[765..767] = [1, 1, 1] (dates 2025-09-18 -> 2025-09-19, 2025-09-20, 2025-09-21); len 192; all rows == y shifted by one row: True
+PASS fold 1: persistence == label of previous row of the 958 series, first block day uses row 765 (last train day)
+fold 2: first 3 persistence preds [1, 1, 1] vs y[573..575] = [1, 1, 1] (dates 2025-02-28 -> 2025-03-01, 2025-03-02, 2025-03-03); len 192; all rows == y shifted by one row: True
+PASS fold 2: persistence == label of previous row of the 958 series, first block day uses row 573 (last train day)
+fold 3: first 3 persistence preds [1, 1, 1] vs y[381..383] = [1, 1, 1] (dates 2024-07-22 -> 2024-07-23, 2024-07-24, 2024-07-25); len 192; all rows == y shifted by one row: True
+PASS fold 3: persistence == label of previous row of the 958 series, first block day uses row 381 (last train day)
+fold 4: first 3 persistence preds [2, 0, 1] vs y[189..191] = [2, 0, 1] (dates 2023-12-23 -> 2023-12-24, 2023-12-25, 2023-12-26); len 192; all rows == y shifted by one row: True
+PASS fold 4: persistence == label of previous row of the 958 series, first block day uses row 189 (last train day)
+PASS fold 1 persistence == test_predictions_persistence.csv
+
+--- E4. fold 1 file vs canonical file (Q5) ---
+fold1 columns ['fold', 'date', 'y_true', 'y_pred', 'p_rest', 'p_normal', 'p_active'] | canonical columns ['date', 'y_true', 'y_pred', 'p_rest', 'p_normal', 'p_active']
+PASS fold 1 file: date, y_true, y_pred, p_rest, p_normal, p_active identical as text to test_predictions_rf.csv (plus fold column)
+CR bytes: fold 1 file 0, test_predictions_rf.csv 193 (the canonical T0.2 file is CRLF, the T3.3 file LF)
+PASS fold 1 file with the leading 'fold,' field removed == test_predictions_rf.csv byte for byte after CRLF -> LF
+PASS fold 1 file LF only
+
+--- E5. bootstrap matrix and skip counts (Q6) ---
+PASS bootstrap_indices_1000x192_seed42.npy == default_rng(42).integers(0, 192, (1000, 192)); range 0..191
+fold 1: resamples with a class absent 0 (classes ever absent: []); Active in block 8
+PASS fold 1: skipped == 0 with the statistical_tests rule
+fold 2: resamples with a class absent 0 (classes ever absent: []); Active in block 16
+PASS fold 2: skipped == 0 with the statistical_tests rule
+fold 3: resamples with a class absent 1 (classes ever absent: [2]); Active in block 8
+PASS fold 3: skipped == 1 with the statistical_tests rule
+fold 4: resamples with a class absent 8 (classes ever absent: [2]); Active in block 5
+PASS fold 4: skipped == 8 with the statistical_tests rule
+fold 4 paired_bootstrap: {'diff_point': 0.044427, 'ci_low': -0.031696, 'ci_high': 0.116763, 'prop_diff_gt_0': 0.885081, 'n_used': 992, 'n_skipped': 8, 'ci_A_low': 0.309485, 'ci_A_high': 0.406867, 'ci_B_low': 0.273482, 'ci_B_high': 0.362749}
+PASS fold 4 paired_bootstrap n_skipped 8 / n_used 992
+
+--- E6. pooled order (Q7) ---
+main() concatenates pooled_true/pooled_pred in the loop order k = 1..4 (expanding_window.py:325-326, :361);
+concatenated dates monotonic increasing: False | first/last: 2025-09-19 2024-07-22 | block order by first date: ['2025-09-19', '2025-03-01', '2024-07-23', '2023-12-24']
+pooled CI fold order (1..4):      f1_macro [0.352261, 0.434882] f1_active [0.052174, 0.231593] acc [0.571582, 0.635417] mcc [0.028088, 0.147407] skipped 0
+pooled CI chronological (4..1):   f1_macro [0.351330, 0.431973] f1_active [0.048780, 0.228626] acc [0.566406, 0.636719] mcc [0.022367, 0.150817] skipped 0  (diagnostic only)
+csv pooled row:                   f1_macro [0.352261, 0.434882] f1_active [0.052174, 0.231593]
+PASS pooled CI in fold order == csv (so the csv CI corresponds to the fold-1-first concatenation)
+pooled point metrics order-invariant: True
+PASS pooled: 0 resamples skipped
+
+--- E7. run_fold(k) for k = 1..4 vs t33_expanding_window.csv / t33_shap_top3.csv (Q2, Q9, T3) ---
+fold 1: columns differing from csv (>1e-9): [] | y_pred == file True | max |dproba| 9.8e-17 | SHAP top-3 == file True ([('aw_hr_mean', 0.0611), ('oura_hrv_balance', 0.0273), ('aw_active_calories', 0.0205)]) | elapsed 4.1s
+PASS fold 1: run_fold row == t33_expanding_window.csv on every shared column
+PASS fold 1: run_fold predictions == t33_predictions_rf_fold1.csv
+PASS fold 1: run_fold SHAP top-3 == t33_shap_top3.csv
+fold 2: columns differing from csv (>1e-9): [] | y_pred == file True | max |dproba| 9.8e-17 | SHAP top-3 == file True ([('oura_readiness_score', 0.0601), ('aw_hr_mean', 0.0551), ('oura_sleep_score', 0.0325)]) | elapsed 7.9s
+PASS fold 2: run_fold row == t33_expanding_window.csv on every shared column
+PASS fold 2: run_fold predictions == t33_predictions_rf_fold2.csv
+PASS fold 2: run_fold SHAP top-3 == t33_shap_top3.csv
+fold 3: columns differing from csv (>1e-9): [] | y_pred == file True | max |dproba| 9.7e-17 | SHAP top-3 == file True ([('oura_readiness_score', 0.0663), ('aw_hr_mean', 0.0572), ('oura_respiratory_rate', 0.0358)]) | elapsed 11.7s
+PASS fold 3: run_fold row == t33_expanding_window.csv on every shared column
+PASS fold 3: run_fold predictions == t33_predictions_rf_fold3.csv
+PASS fold 3: run_fold SHAP top-3 == t33_shap_top3.csv
+fold 4: columns differing from csv (>1e-9): [] | y_pred == file True | max |dproba| 9.9e-17 | SHAP top-3 == file True ([('aw_hr_mean', 0.0685), ('oura_respiratory_rate', 0.0411), ('oura_readiness_score', 0.0349)]) | elapsed 15.3s
+PASS fold 4: run_fold row == t33_expanding_window.csv on every shared column
+PASS fold 4: run_fold predictions == t33_predictions_rf_fold4.csv
+PASS fold 4: run_fold SHAP top-3 == t33_shap_top3.csv
+
+--- E8. SHAP aggregation (Q9) ---
+shap_stability.aggregate_multiclass axis rule: True | expanding_window SHAP input: split.X_test (imputed block), lines 201-202
+PASS SHAP = mean |SHAP| over block days x 3 classes through the T1.4 function
+
+--- E9. Question 12: gap rows and the two 'previous day' conventions per block / T3.1 cell ---
+raw frame rows: 1009 | raw consecutive-row gaps > 1 day: 12
+fold 1 (rows 766-957, 2025-09-19..2026-03-30): rows whose previous labelled row is > 1 day back: 1; of which feature source day (previous raw row) != persistence source day (previous labelled row): 0
+    day 2025-10-29: persistence uses 2025-10-27, features use 2025-10-27 -> same
+fold 2 (rows 574-765, 2025-03-01..2025-09-18): rows whose previous labelled row is > 1 day back: 10; of which feature source day (previous raw row) != persistence source day (previous labelled row): 7
+    day 2025-03-07: persistence uses 2025-03-05, features use 2025-03-06 -> DIFFER
+    day 2025-03-09: persistence uses 2025-03-07, features use 2025-03-08 -> DIFFER
+    day 2025-03-11: persistence uses 2025-03-09, features use 2025-03-10 -> DIFFER
+    day 2025-03-23: persistence uses 2025-03-21, features use 2025-03-22 -> DIFFER
+    day 2025-03-27: persistence uses 2025-03-25, features use 2025-03-26 -> DIFFER
+    day 2025-04-08: persistence uses 2025-04-06, features use 2025-04-07 -> DIFFER
+    day 2025-04-13: persistence uses 2025-04-11, features use 2025-04-12 -> DIFFER
+    day 2025-07-06: persistence uses 2025-07-04, features use 2025-07-04 -> same
+    day 2025-08-02: persistence uses 2025-07-31, features use 2025-07-31 -> same
+    day 2025-09-01: persistence uses 2025-08-30, features use 2025-08-30 -> same
+fold 3 (rows 382-573, 2024-07-23..2025-02-28): rows whose previous labelled row is > 1 day back: 14; of which feature source day (previous raw row) != persistence source day (previous labelled row): 14
+    day 2024-08-24: persistence uses 2024-08-22, features use 2024-08-23 -> DIFFER
+    day 2024-10-03: persistence uses 2024-09-29, features use 2024-10-02 -> DIFFER
+    day 2024-10-07: persistence uses 2024-10-05, features use 2024-10-06 -> DIFFER
+    day 2024-10-17: persistence uses 2024-10-15, features use 2024-10-16 -> DIFFER
+    day 2024-11-02: persistence uses 2024-10-23, features use 2024-11-01 -> DIFFER
+    day 2024-11-25: persistence uses 2024-11-22, features use 2024-11-24 -> DIFFER
+    day 2024-12-02: persistence uses 2024-11-30, features use 2024-12-01 -> DIFFER
+    day 2024-12-10: persistence uses 2024-12-07, features use 2024-12-09 -> DIFFER
+    day 2025-01-02: persistence uses 2024-12-30, features use 2025-01-01 -> DIFFER
+    day 2025-01-12: persistence uses 2025-01-10, features use 2025-01-11 -> DIFFER
+    day 2025-01-19: persistence uses 2025-01-17, features use 2025-01-18 -> DIFFER
+    day 2025-01-28: persistence uses 2025-01-24, features use 2025-01-27 -> DIFFER
+    day 2025-02-08: persistence uses 2025-02-06, features use 2025-02-07 -> DIFFER
+    day 2025-02-20: persistence uses 2025-02-18, features use 2025-02-19 -> DIFFER
+fold 4 (rows 190-381, 2023-12-24..2024-07-22): rows whose previous labelled row is > 1 day back: 13; of which feature source day (previous raw row) != persistence source day (previous labelled row): 13
+    day 2024-01-09: persistence uses 2024-01-07, features use 2024-01-08 -> DIFFER
+    day 2024-01-22: persistence uses 2024-01-19, features use 2024-01-21 -> DIFFER
+    day 2024-02-06: persistence uses 2024-02-04, features use 2024-02-05 -> DIFFER
+    day 2024-02-20: persistence uses 2024-02-14, features use 2024-02-19 -> DIFFER
+    day 2024-03-11: persistence uses 2024-03-09, features use 2024-03-10 -> DIFFER
+    day 2024-03-16: persistence uses 2024-03-14, features use 2024-03-15 -> DIFFER
+    day 2024-03-18: persistence uses 2024-03-16, features use 2024-03-17 -> DIFFER
+    day 2024-03-26: persistence uses 2024-03-22, features use 2024-03-25 -> DIFFER
+    day 2024-04-06: persistence uses 2024-04-04, features use 2024-04-05 -> DIFFER
+    day 2024-04-24: persistence uses 2024-04-22, features use 2024-04-23 -> DIFFER
+    day 2024-05-03: persistence uses 2024-05-01, features use 2024-05-02 -> DIFFER
+    day 2024-06-01: persistence uses 2024-05-30, features use 2024-05-31 -> DIFFER
+    day 2024-06-24: persistence uses 2024-06-22, features use 2024-06-23 -> DIFFER
+rows where readiness_score_lag1 != raw previous-row readiness_score: 0
+PASS feature lag-1 == previous raw row (confirms the feature convention used above)
+fold 1: train rows (1..765) whose previous row is > 1 day back: 41
+fold 2: train rows (1..573) whose previous row is > 1 day back: 31
+fold 3: train rows (1..381) whose previous row is > 1 day back: 17
+fold 4: train rows (1..189) whose previous row is > 1 day back: 4
+cell R55_A80: 958 labelled days identical to canonical True; test dates of t31_predictions == canonical test dates True; y_true in file == regenerated labels True
+PASS cell R55_A80: same 958-day series as fold 1 (gap count 1, differing 0)
+cell R55_A85: 958 labelled days identical to canonical True; test dates of t31_predictions == canonical test dates True; y_true in file == regenerated labels True
+PASS cell R55_A85: same 958-day series as fold 1 (gap count 1, differing 0)
+cell R60_A80: 958 labelled days identical to canonical True; test dates of t31_predictions == canonical test dates True; y_true in file == regenerated labels True
+PASS cell R60_A80: same 958-day series as fold 1 (gap count 1, differing 0)
+cell R60_A85: 958 labelled days identical to canonical True; test dates of t31_predictions == canonical test dates True; y_true in file == regenerated labels True
+PASS cell R60_A85: same 958-day series as fold 1 (gap count 1, differing 0)
+cell R65_A80: 958 labelled days identical to canonical True; test dates of t31_predictions == canonical test dates True; y_true in file == regenerated labels True
+PASS cell R65_A80: same 958-day series as fold 1 (gap count 1, differing 0)
+cell R65_A85: 958 labelled days identical to canonical True; test dates of t31_predictions == canonical test dates True; y_true in file == regenerated labels True
+PASS cell R65_A85: same 958-day series as fold 1 (gap count 1, differing 0)
+gap table: [{'fold': 1, 'rows': '766-957', 'n_gap': 1, 'n_differ': 0}, {'fold': 2, 'rows': '574-765', 'n_gap': 10, 'n_differ': 7}, {'fold': 3, 'rows': '382-573', 'n_gap': 14, 'n_differ': 14}, {'fold': 4, 'rows': '190-381', 'n_gap': 13, 'n_differ': 13}]
+fold 1: label rule on the lag-1 readiness / sleep features vs persistence: equal 192, different 0, lag features NaN (not computable) 0 of 192
+fold 2: label rule on the lag-1 readiness / sleep features vs persistence: equal 185, different 0, lag features NaN (not computable) 7 of 192
+fold 3: label rule on the lag-1 readiness / sleep features vs persistence: equal 178, different 0, lag features NaN (not computable) 14 of 192
+fold 4: label rule on the lag-1 readiness / sleep features vs persistence: equal 179, different 0, lag features NaN (not computable) 13 of 192
+
+--- E10. Discussion claims (Q10) ---
+Active days on or after 2024-07-01: 33 of 46 | on or after fold-3 block start 2024-07-23: 32
+PASS '33 of the 46 Active days fall on or after July 2024' (calendar July 1)
+Rest prevalence per block (fold 1..4): [22.9, 15.1, 17.2, 31.2] %
+PASS Rest prevalence 15% to 31%
+Active in train per fold (1..4): [38, 22, 14, 9]
+PASS 'few Active days (9 to 22)' in the earlier training sets
+
+====================================================================================================
+elapsed 25.9s
+ALL PASS

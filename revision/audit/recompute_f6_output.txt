@@ -1,0 +1,210 @@
+--- inputs ---
+  56ae01513e4217af  revision/results/t33_predictions_rf_fold1.csv
+  e3aa6c26585bab4b  revision/results/t33_predictions_rf_fold2.csv
+  02d9e0dc3f377c77  revision/results/t33_predictions_rf_fold3.csv
+  85136044365d3984  revision/results/t33_predictions_rf_fold4.csv
+  22f997ef679cf1c6  revision/results/t33_expanding_window.csv
+  776aead3ee6e3040  revision/results/t33_shap_top3.csv
+  2b642dce394290ed  revision/results/t33_run_meta.json
+  aea39c6dd2989e24  revision/results/test_predictions_rf.csv
+  fff3b2834c061962  revision/results/bootstrap_indices_1000x192_seed42.npy
+  176649b59fef3adb  models/dataset_snapshot_20260331.csv
+  cdd4b55303bb61f5  revision/manuscript/KBS_Manuscript_R1.docx
+PASS snapshot: 958 rows, 19 lag-1 feature columns, dates increasing
+PASS snapshot labels 202 / 710 / 46
+
+--- R1. block bounds from N = 958 and 192; fold files vs snapshot ---
+bounds (start, end-exclusive): {1: (766, 958), 2: (574, 766), 3: (382, 574), 4: (190, 382)}
+PASS block starts 766 / 574 / 382 / 190 from N - 192 k
+PASS t33_run_meta.json fold_bounds == recomputed
+PASS blocks disjoint and cover rows 190..957
+PASS fold 1: 192 rows, dates == snapshot rows 766..957, y_true == snapshot labels
+PASS fold 1: probabilities sum to 1, argmax == y_pred
+PASS fold 1: train (158, 570, 38) / test (44, 140, 8) == claim (158, 570, 38) / (44, 140, 8)
+PASS fold 2: 192 rows, dates == snapshot rows 574..765, y_true == snapshot labels
+PASS fold 2: probabilities sum to 1, argmax == y_pred
+PASS fold 2: train (129, 423, 22) / test (29, 147, 16) == claim (129, 423, 22) / (29, 147, 16)
+PASS fold 3: 192 rows, dates == snapshot rows 382..573, y_true == snapshot labels
+PASS fold 3: probabilities sum to 1, argmax == y_pred
+PASS fold 3: train (96, 272, 14) / test (33, 151, 8) == claim (96, 272, 14) / (33, 151, 8)
+PASS fold 4: 192 rows, dates == snapshot rows 190..381, y_true == snapshot labels
+PASS fold 4: probabilities sum to 1, argmax == y_pred
+PASS fold 4: train (36, 145, 9) / test (60, 127, 5) == claim (36, 145, 9) / (60, 127, 5)
+PASS fold 1 file == test_predictions_rf.csv (dates, y_pred, probabilities exact)
+
+--- R2. per-fold point metrics (from the prediction files) ---
+fold 1: F1 macro 0.506324 F1 Active 0.444444 acc 0.640625 MCC 0.141560 bal acc 0.5227 F1 Rest 0.3218 F1 Normal 0.7527; cm rows=true r/n/a: [[14, 30, 0], [29, 105, 6], [0, 4, 4]]
+PASS fold 1: f1_macro 0.506324 == claim 0.5063
+PASS fold 1: f1_active 0.444444 == claim 0.4444
+PASS fold 1: accuracy 0.640625 == claim 0.6406
+PASS fold 1: mcc 0.141560 == claim 0.1416
+PASS fold 1: csv row (f1_macro, mcc, balanced_accuracy, f1_rest, f1_normal) == recomputed at 1e-9
+        Active predicted 10, correct 4 of 8
+fold 2: F1 macro 0.312389 F1 Active 0.102564 acc 0.598958 MCC -0.029114 bal acc 0.3164 F1 Rest 0.0769 F1 Normal 0.7577; cm rows=true r/n/a: [[2, 22, 5], [20, 111, 16], [1, 13, 2]]
+PASS fold 2: f1_macro 0.312389 == claim 0.3124
+PASS fold 2: f1_active 0.102564 == claim 0.1026
+PASS fold 2: accuracy 0.598958 == claim 0.599
+PASS fold 2: mcc -0.029114 == claim -0.0291
+PASS fold 2: csv row (f1_macro, mcc, balanced_accuracy, f1_rest, f1_normal) == recomputed at 1e-9
+PASS fold 2: confusion matrix {'rr': 2, 'rn': 22, 'ra': 5, 'nr': 20, 'nn': 111, 'na': 16, 'ar': 1, 'an': 13, 'aa': 2} == claim
+PASS fold 2: csv cm_* columns == recomputed
+        Active predicted 23, correct 2 of 16
+fold 3: F1 macro 0.377142 F1 Active 0.074074 acc 0.593750 MCC 0.111212 bal acc 0.4016 F1 Rest 0.3294 F1 Normal 0.7279; cm rows=true r/n/a: [[14, 17, 2], [36, 99, 16], [2, 5, 1]]
+PASS fold 3: f1_macro 0.377142 == claim 0.3771
+PASS fold 3: f1_active 0.074074 == claim 0.0741
+PASS fold 3: accuracy 0.593750 == claim 0.5938
+PASS fold 3: mcc 0.111212 == claim 0.1112
+PASS fold 3: csv row (f1_macro, mcc, balanced_accuracy, f1_rest, f1_normal) == recomputed at 1e-9
+PASS fold 3: confusion matrix {'rr': 14, 'rn': 17, 'ra': 2, 'nr': 36, 'nn': 99, 'na': 16, 'ar': 2, 'an': 5, 'aa': 1} == claim
+PASS fold 3: csv cm_* columns == recomputed
+        Active predicted 19, correct 1 of 8
+fold 4: F1 macro 0.360501 F1 Active 0.000000 acc 0.578125 MCC 0.104609 bal acc 0.3529 F1 Rest 0.3784 F1 Normal 0.7031; cm rows=true r/n/a: [[21, 34, 5], [30, 90, 7], [0, 5, 0]]
+PASS fold 4: f1_macro 0.360501 == claim 0.3605
+PASS fold 4: f1_active 0.000000 == claim 0.0
+PASS fold 4: accuracy 0.578125 == claim 0.5781
+PASS fold 4: mcc 0.104609 == claim 0.1046
+PASS fold 4: csv row (f1_macro, mcc, balanced_accuracy, f1_rest, f1_normal) == recomputed at 1e-9
+PASS fold 4: confusion matrix {'rr': 21, 'rn': 34, 'ra': 5, 'nr': 30, 'nn': 90, 'na': 7, 'ar': 0, 'an': 5, 'aa': 0} == claim
+PASS fold 4: csv cm_* columns == recomputed
+        Active predicted 12, correct 0 of 5
+
+--- R3. persistence and majority per block from the snapshot ---
+fold 1: first 3 persistence preds [1, 1, 1] (rows 765..767 labels [1, 1, 1]); F1 macro 0.303896 F1 Active 0.000000 acc 0.562500 MCC -0.056604
+PASS fold 1: persistence F1 macro 0.303896 == claim 0.3039
+PASS fold 1: csv pers_* columns == recomputed
+PASS fold 1: majority class 1 (Normal), F1 macro 0.281124 == claim 0.2811
+PASS fold 1: csv maj_accuracy == recomputed
+fold 2: first 3 persistence preds [1, 1, 1] (rows 573..575 labels [1, 1, 1]); F1 macro 0.307017 F1 Active 0.062500 acc 0.598958 MCC -0.044215
+PASS fold 2: persistence F1 macro 0.307017 == claim 0.307
+PASS fold 2: csv pers_* columns == recomputed
+PASS fold 2: majority class 1 (Normal), F1 macro 0.289086 == claim 0.2891
+PASS fold 2: csv maj_accuracy == recomputed
+fold 3: first 3 persistence preds [1, 1, 1] (rows 381..383 labels [1, 1, 1]); F1 macro 0.411992 F1 Active 0.125000 acc 0.692708 MCC 0.122541
+PASS fold 3: persistence F1 macro 0.411992 == claim 0.412
+PASS fold 3: csv pers_* columns == recomputed
+PASS fold 3: majority class 1 (Normal), F1 macro 0.293489 == claim 0.2935
+PASS fold 3: csv maj_accuracy == recomputed
+fold 4: first 3 persistence preds [2, 0, 1] (rows 189..191 labels [2, 0, 1]); F1 macro 0.316074 F1 Active 0.000000 acc 0.520833 MCC -0.025072
+PASS fold 4: persistence F1 macro 0.316074 == claim 0.3161
+PASS fold 4: csv pers_* columns == recomputed
+PASS fold 4: majority class 1 (Normal), F1 macro 0.265413 == claim 0.2654
+PASS fold 4: csv maj_accuracy == recomputed
+PASS fold 1 persistence == test_predictions_persistence.csv
+
+--- R4. per-fold CIs and paired delta on the regenerated 1000 x 192 matrix (absent-class skip rule) ---
+PASS regenerated matrix == bootstrap_indices_1000x192_seed42.npy
+fold 1: RF F1 macro CI [0.378446, 0.613000] F1 Active CI [0.117647, 0.700000] persistence CI [0.261179, 0.350085] delta +0.202428 [+0.064213, +0.317328] prop>0 0.9970 skipped 0 used 1000
+PASS fold 1: RF F1 macro CI == claim (0.3784, 0.613)
+PASS fold 1: RF F1 Active CI == claim (0.1176, 0.7)
+PASS fold 1: persistence F1 macro CI == claim (0.2612, 0.3501)
+PASS fold 1: delta +0.2024 [+0.0642, +0.3173] == claim +0.2024 (0.0642, 0.3173)
+PASS fold 1: skipped 0 == claim 0
+PASS fold 1: csv prop_gt_0 0.997000 and n_used 1000 == recomputed
+PASS fold 1: include_zero flag False consistent
+fold 2: RF F1 macro CI [0.256070, 0.374943] F1 Active CI [0.000000, 0.242424] persistence CI [0.255913, 0.368204] delta +0.005372 [-0.076757, +0.092976] prop>0 0.5270 skipped 0 used 1000
+PASS fold 2: RF F1 macro CI == claim (0.2561, 0.3749)
+PASS fold 2: RF F1 Active CI == claim (0.0, 0.2424)
+PASS fold 2: persistence F1 macro CI == claim (0.2559, 0.3682)
+PASS fold 2: delta +0.0054 [-0.0768, +0.0930] == claim +0.0054 (-0.0768, 0.093)
+PASS fold 2: skipped 0 == claim 0
+PASS fold 2: csv prop_gt_0 0.527000 and n_used 1000 == recomputed
+PASS fold 2: include_zero flag True consistent
+fold 3: RF F1 macro CI [0.312698, 0.445589] F1 Active CI [0.000000, 0.222222] persistence CI [0.325296, 0.513588] delta -0.034850 [-0.160023, +0.084135] prop>0 0.3123 skipped 1 used 999
+PASS fold 3: RF F1 macro CI == claim (0.3127, 0.4456)
+PASS fold 3: RF F1 Active CI == claim (0.0, 0.2222)
+PASS fold 3: persistence F1 macro CI == claim (0.3253, 0.5136)
+PASS fold 3: delta -0.0349 [-0.1600, +0.0841] == claim -0.0349 (-0.16, 0.0841)
+PASS fold 3: skipped 1 == claim 1
+PASS fold 3: csv prop_gt_0 0.312312 and n_used 999 == recomputed
+PASS fold 3: include_zero flag True consistent
+fold 4: RF F1 macro CI [0.309485, 0.406867] F1 Active CI [0.000000, 0.000000] persistence CI [0.273482, 0.362749] delta +0.044427 [-0.031696, +0.116763] prop>0 0.8851 skipped 8 used 992
+PASS fold 4: RF F1 macro CI == claim (0.3095, 0.4069)
+PASS fold 4: RF F1 Active CI == claim (0.0, 0.0)
+PASS fold 4: persistence F1 macro CI == claim (0.2735, 0.3627)
+PASS fold 4: delta +0.0444 [-0.0317, +0.1168] == claim +0.0444 (-0.0317, 0.1168)
+PASS fold 4: skipped 8 == claim 8
+PASS fold 4: csv prop_gt_0 0.885081 and n_used 992 == recomputed
+PASS fold 4: include_zero flag True consistent
+
+--- R5. pooled (fold order 1..4 as in the script) ---
+pooled n 768 dist (166, 565, 37): F1 macro 0.393152 F1 Active 0.138614 acc 0.602865 MCC 0.089441 bal acc 0.4044 F1 Rest 0.3045 F1 Normal 0.7364
+PASS pooled 768 days, 166 / 565 / 37
+PASS pooled f1_macro 0.393152 == claim 0.3932
+PASS pooled f1_active 0.138614 == claim 0.1386
+PASS pooled accuracy 0.602865 == claim 0.6029
+PASS pooled mcc 0.089441 == claim 0.0894
+pooled CI: {'f1_macro': (0.352261, 0.434882), 'f1_active': (0.052174, 0.231593), 'accuracy': (0.571582, 0.635417), 'mcc': (0.028088, 0.147407)} skipped 0
+PASS pooled F1 macro CI == claim (0.3523, 0.4349)
+PASS pooled F1 Active CI == claim (0.0522, 0.2316)
+PASS pooled accuracy CI == claim (0.5716, 0.6354)
+PASS pooled MCC CI == claim (0.0281, 0.1474)
+PASS pooled: 0 resamples skipped
+PASS pooled csv CI columns == recomputed at 1e-9
+
+--- R6. independent refits from the snapshot: folds 4, 3, 2 (imputer median, SMOTE(42, k 3), RF 100 / 10 / 5 / 42) ---
+PASS fold 4: imputer statistics == nan-median of snapshot rows 0..189
+PASS fold 4: SMOTE 435 rows == 3 x 145
+PASS fold 4: rf.classes_ == [0, 1, 2]
+PASS fold 4: refit y_pred identical to t33_predictions_rf_fold4.csv (0 days differ)
+PASS fold 4: refit probabilities == file (max abs diff 9.9e-17)
+PASS fold 4: refit F1 macro 0.360501 == claim 0.3605
+PASS fold 3: imputer statistics == nan-median of snapshot rows 0..381
+PASS fold 3: SMOTE 816 rows == 3 x 272
+PASS fold 3: rf.classes_ == [0, 1, 2]
+PASS fold 3: refit y_pred identical to t33_predictions_rf_fold3.csv (0 days differ)
+PASS fold 3: refit probabilities == file (max abs diff 9.7e-17)
+PASS fold 3: refit F1 macro 0.377142 == claim 0.3771
+PASS fold 2: imputer statistics == nan-median of snapshot rows 0..573
+PASS fold 2: SMOTE 1269 rows == 3 x 423
+PASS fold 2: rf.classes_ == [0, 1, 2]
+PASS fold 2: refit y_pred identical to t33_predictions_rf_fold2.csv (0 days differ)
+PASS fold 2: refit probabilities == file (max abs diff 9.8e-17)
+PASS fold 2: refit F1 macro 0.312389 == claim 0.3124
+
+--- R7. Table 11 and the Section 4.8 / Discussion numbers (KBS_Manuscript_R1.docx) ---
+Table 11 cells: ['190 (9)', '60/127/5', '0.361 [0.310, 0.407]', '0.000 [0.000, 0.000]', '0.316 [0.274, 0.363]', '+0.044 [-0.032, +0.117]', 'mean heart rate', 'Jul 2024 to Feb 2025', '382 (14)', '33/151/8', '0.377 [0.313, 0.446]', '0.074 [0.000, 0.222]', '0.412 [0.325, 0.514]', '-0.035 [-0.160, +0.084]', 'readiness score', 'Mar 2025 to Sep 2025', '574 (22)', '29/147/16', '0.312 [0.256, 0.375]', '0.103 [0.000, 0.242]', '0.307 [0.256, 0.368]', '+0.005 [-0.077, +0.093]', 'readiness score', 'Sep 2025 to Mar 2026 (reported)', '766 (38)', '44/140/8', '0.506 [0.378, 0.613]', '0.444 [0.118, 0.700]', '0.304 [0.261, 0.350]', '+0.202 [+0.064, +0.317]', 'mean heart rate', 'Pooled (768 days)', '166/565/37', '0.393 [0.352, 0.435]', '0.139 [0.052, 0.232]', 'Intervals for the reported block come from the shared 1,000-resample matrix and differ marginally from Table 5, which used an independent set of resamples; point estimates are identical.']
+PASS Table 11 fold 1: cell '0.506 [0.378, 0.613]' present (values rounded once from the full-precision csv)
+PASS Table 11 fold 1: cell '0.444 [0.118, 0.700]' present (values rounded once from the full-precision csv)
+PASS Table 11 fold 1: cell '0.304 [0.261, 0.350]' present (values rounded once from the full-precision csv)
+PASS Table 11 fold 1: cell '+0.202 [+0.064, +0.317]' present (values rounded once from the full-precision csv)
+PASS Table 11 fold 2: cell '0.312 [0.256, 0.375]' present (values rounded once from the full-precision csv)
+PASS Table 11 fold 2: cell '0.103 [0.000, 0.242]' present (values rounded once from the full-precision csv)
+PASS Table 11 fold 2: cell '0.307 [0.256, 0.368]' present (values rounded once from the full-precision csv)
+PASS Table 11 fold 2: cell '+0.005 [-0.077, +0.093]' present (values rounded once from the full-precision csv)
+PASS Table 11 fold 3: cell '0.377 [0.313, 0.446]' present (values rounded once from the full-precision csv)
+PASS Table 11 fold 3: cell '0.074 [0.000, 0.222]' present (values rounded once from the full-precision csv)
+PASS Table 11 fold 3: cell '0.412 [0.325, 0.514]' present (values rounded once from the full-precision csv)
+PASS Table 11 fold 3: cell '-0.035 [-0.160, +0.084]' present (values rounded once from the full-precision csv)
+  Table 11 fold 4: expected cell '0.361 [0.309, 0.407]' NOT found; nearest printed cell(s): ['0.361 [0.310, 0.407]']
+FAIL Table 11 fold 4: cell '0.361 [0.309, 0.407]' present (values rounded once from the full-precision csv)
+PASS Table 11 fold 4: cell '0.000 [0.000, 0.000]' present (values rounded once from the full-precision csv)
+  Table 11 fold 4: expected cell '0.316 [0.273, 0.363]' NOT found; nearest printed cell(s): ['0.316 [0.274, 0.363]']
+FAIL Table 11 fold 4: cell '0.316 [0.273, 0.363]' present (values rounded once from the full-precision csv)
+PASS Table 11 fold 4: cell '+0.044 [-0.032, +0.117]' present (values rounded once from the full-precision csv)
+PASS Table 11 fold pooled: cell '0.393 [0.352, 0.435]' present (values rounded once from the full-precision csv)
+PASS Table 11 fold pooled: cell '0.139 [0.052, 0.232]' present (values rounded once from the full-precision csv)
+rounding 0.3095 -> 0.309 (python, binary half-up effect) ; 0.2735 -> 0.274
+csv fold 4 f1_macro_ci_low 0.309485 -> 0.309 ; pers_f1_macro_ci_low 0.273482 -> 0.273
+PASS Table 11 fold 1: train '766 (38)' and test R/N/A cells present
+PASS Table 11 fold 2: train '574 (22)' and test R/N/A cells present
+PASS Table 11 fold 3: train '382 (14)' and test R/N/A cells present
+PASS Table 11 fold 4: train '190 (9)' and test R/N/A cells present
+PASS Table 11 pooled: 166/565/37 present
+PASS SHAP rank 1 per fold {1: 'aw_hr_mean', 2: 'oura_readiness_score', 3: 'oura_readiness_score', 4: 'aw_hr_mean'} (Table 11: mean heart rate / readiness / readiness / mean heart rate)
+4.8 numbers from recomputation (macro F1 folds 4,3,2,1; F1 Active folds 4,3,2,1): ['0.361', '0.377', '0.312', '0.506', '0.000', '0.074', '0.103', '0.444']
+PASS 4.8: 'Macro F1 is 0.361, 0.377 and 0.312 ... against 0.506' and 'F1 Active is 0.000, 0.074 and 0.103 against 0.444'
+PASS 4.8: 'below persistence (0.377 against 0.412)' on the Jul 2024 to Feb 2025 block (fold 3)
+PASS 4.8 / Discussion / Response: delta CI excludes zero only on fold [1]; RF below persistence on fold [3] (one block)
+PASS Discussion / Response: 'the leading SHAP feature changes on two blocks' (folds 2 and 3)
+PASS Discussion: 'macro F1 is 0.31 to 0.38 and F1 Active 0.00 to 0.10' on the earlier blocks (0.3124-0.3771, 0.0000-0.1026)
+PASS Response: 'F1 for the Active class 0.000 to 0.103'
+PASS 4.8: pooled 'macro F1 is 0.393 [0.352, 0.435] and F1 Active 0.139 [0.052, 0.232]'
+PASS 4.8: 'the final block is the most favorable of the four' (fold 1 highest on macro F1 and F1 Active)
+PASS Discussion: Rest prevalence 15% to 31% ([22.9, 15.1, 17.2, 31.2])
+PASS Discussion: '33 of the 46 Active days fall on or after July 2024' (33)
+PASS 4.8: 'does not increase monotonically with training size' (train 190 -> 766: [0.3605, 0.3771, 0.3124, 0.5063])
+
+====================================================================================================
+154 checks; 2 FAIL
+  FAIL Table 11 fold 4: cell '0.361 [0.309, 0.407]' present (values rounded once from the full-precision csv)
+  FAIL Table 11 fold 4: cell '0.316 [0.273, 0.363]' present (values rounded once from the full-precision csv)
