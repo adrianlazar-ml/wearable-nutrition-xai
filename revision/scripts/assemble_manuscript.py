@@ -71,7 +71,7 @@ V8_EXPECTED_CITATIONS = ("Breiman, 2001", "Chen & Guestrin, 2016", "Vapnik, 1995
                          "Shapley, 1953/2016", "Lundberg et al., 2020", "Zheng et al., 2024", "Thapa et al., 2026")
 OUT_FIGDIR = MAN / "figures"
 
-RUN_DATE = "2026-10-22"  # T7.9 (last full regeneration after the internal-review corrections T7.1-T7.8)
+RUN_DATE = "2026-10-25"  # T8.2-T8.4 (full regeneration after the F8 style alignment); T7.9 was 2026-10-22
 TITLE = ("Explainable Artificial Intelligence for Personalized Nutrition: "
          "A Multimodal Framework Integrating Smart Ring and Smartwatch Data")  # v8 title, as submitted
 
@@ -193,14 +193,14 @@ RESPONSE_AUTHORS_COMMENT = "T7 draft: remove if KBS review is double-anonymized;
 
 # Figure legends written at assembly for figures without a legend in F4 (flagged in assembly_plan.md)
 LEGEND_FIG3 = (
-    "Figure 3. Feature-group ablation of the random forest (reported hyperparameters, 192-day test set). "
+    "Figure 3. Feature-group ablation of the Random Forest (reported hyperparameters, 192-day test set). "
     "(a) Leave-one-group-out: paired bootstrap difference (full model minus ablated model) in macro F1 (circles) "
     "and F1 Active (squares) with 95% intervals on the shared resampling matrix; a positive value means that "
     "removing the group lowers the score. (b) Keep-one-group-in: macro F1 of a forest trained on each group alone, "
     "with F1 Active in parentheses; the dashed line is the full 19-feature model (0.506) and the dotted line the "
     "majority baseline (0.281). Values are in Table 8.")
 LEGEND_FIG4 = (
-    "Figure 4. Expanding-window evaluation of the random forest (reported hyperparameters) on four disjoint "
+    "Figure 4. Expanding-window evaluation of the Random Forest (reported hyperparameters) on four disjoint "
     "192-day test blocks, each preceded by all earlier days as training data (190, 382, 574 and 766 days). "
     "Circles: macro F1 with 95% bootstrap interval; squares: F1 Active with interval; diamonds: persistence "
     "baseline macro F1 with interval; crosses: majority baseline macro F1. The rightmost block is the reported "
@@ -655,8 +655,11 @@ def assemble_manuscript(blocks: dict, v8_path: Path | None = None) -> None:
     assert cut in txt
     set_text(p, txt[: txt.index(cut)])
     f4 = renumber(paras(block(blocks, "3.4 Classification models"))[0])
-    f4 = f4.replace("LightGBM and CatBoost (gradient-boosted trees)",
-                    "LightGBM (Ke et al., 2017) and CatBoost (Prokhorenkova et al., 2018) (gradient-boosted trees)")
+    # T8.2 (2026-10-25): the F8 wording reads 'LightGBM and CatBoost, both gradient-boosted trees,' (was '(gradient-boosted trees)')
+    cit_old = "LightGBM and CatBoost, both gradient-boosted trees,"
+    if f4.count(cit_old) != 1:
+        raise SystemExit("STOP: 3.4 citation anchor 'LightGBM and CatBoost, both gradient-boosted trees,' not found exactly once")
+    f4 = f4.replace(cit_old, "LightGBM (Ke et al., 2017) and CatBoost (Prokhorenkova et al., 2018), both gradient-boosted trees,")
     # T4.1-D item 4: the base hyperparameter paragraph stays right after the first paragraph; the new paragraph follows it
     p_hyper = find_par(doc, "Hyperparameters were as follows.")
     new_body(p_hyper, f4)
@@ -692,14 +695,20 @@ def assemble_manuscript(blocks: dict, v8_path: Path | None = None) -> None:
         h = new_h2(anchor, NEW_HEADINGS[num], before=True)
         txt = renumber(paras(block(blocks, key))[0])
         if num == "3.10":
-            txt = txt.replace("Kruskal-Wallis tests with epsilon-squared,",
-                              "Kruskal-Wallis tests with epsilon-squared (Tomczak & Tomczak, 2014),")
+            # T8.2 (2026-10-25): F8 wording 'with Kruskal-Wallis tests and epsilon-squared,' (was 'tests with epsilon-squared,')
+            cit_old = "Kruskal-Wallis tests and epsilon-squared,"
+            if txt.count(cit_old) != 1:
+                raise SystemExit("STOP: 3.10 citation anchor 'Kruskal-Wallis tests and epsilon-squared,' not found exactly once")
+            txt = txt.replace(cit_old, "Kruskal-Wallis tests and epsilon-squared (Tomczak & Tomczak, 2014),")
         if num == "3.9":
             old = "(identity with Table 7 verified)"
-            if old not in txt:
-                raise SystemExit("STOP: expected cross-reference to the device-ablation table not found in 3.9")
-            txt = txt.replace(old, "(identity with the per-device ablation verified)")
-            DEVIATIONS.append("3.9: '(identity with Table 6 verified)' became '(identity with the per-device ablation verified)': citing the device-ablation table (final Table 7) in Methods would place its first citation before Tables 2 to 6 and break the order-of-appearance rule; the same paragraph already points to Section 4.6.")
+            new_wording = "The procedure is the same as for the per-device ablation, and identity with that ablation was verified."
+            if old in txt:
+                txt = txt.replace(old, "(identity with the per-device ablation verified)")
+            elif new_wording not in txt:
+                raise SystemExit("STOP: 3.9 must either cite the device-ablation table (replaced at assembly) or carry the F8 wording on the verified identity")
+            DEVIATIONS.append("3.9: '(identity with Table 6 verified)' became '(identity with the per-device ablation verified)': citing the device-ablation table (final Table 7) in Methods would place its first citation before Tables 2 to 6 and break the order-of-appearance rule; the same paragraph already points to Section 4.6. "
+                              "T8.2 (2026-10-25): the F8 text of 3.9 carries this wording directly ('The procedure is the same as for the per-device ablation, and identity with that ablation was verified.'), so the replacement is no longer applied.")
         new_body(anchor, txt, before=True)
         plan(key, "3.8. Nutritional Recommendation Module (heading, insert before)", "new subsection", num)
     DEVIATIONS.append("3.10: citation '(Tomczak & Tomczak, 2014)' inserted after 'epsilon-squared' so that the new reference is cited in the text.")
@@ -863,6 +872,20 @@ def assemble_manuscript(blocks: dict, v8_path: Path | None = None) -> None:
                       "(b) Figure 1 legend (base text): 'classified by a Random Forest model selected after comparison with XGBoost and an SVM' -> "
                       "'classified by a Random Forest model (the reported configuration; six further classifiers are compared in Section 4.4)' "
                       "(BASE_XREFS tuple).")
+    DEVIATIONS.append("T8.2 (2026-10-25, F8 style alignment, decision of the first author of 25 Oct 2026): the 35 paragraphs listed in "
+                      "revision/f8/T8_prompt_llm_assistant.md (Abstract; Introduction positioning paragraph and four contributions; 3.2 appended block; "
+                      "3.4 paragraph 3; 3.5 paragraphs 2 and 3; 3.6 last paragraph; 3.7; 3.8 paragraph 2; 3.9; 3.10; 3.11; 4.2 paragraph 1; 4.3 paragraph 2; "
+                      "4.4 both paragraphs; 4.5; 4.6 paragraph 2; 4.7 both run-in paragraphs; 4.8 paragraph 1; 4.11; 4.12; Discussion 'Principal findings', "
+                      "'Temporal robustness', 'Choice of classifier', 'Generalization from a single subject', 'Limitations', 'Practical implications'; "
+                      "Conclusions both paragraphs) come from revision/f8/f8_front_methods_new.txt, f8_results_new.txt and f8_discussion_new.txt and replace "
+                      "the F4 / T7 versions one to one (same figures, same claims and qualifications, sentences shortened, impersonal subject, 'Random Forest' "
+                      "capitalized, 'separated from zero' / 'includes zero' instead of 'distinguished from zero'); applied to F4_manuscript_changes.md by "
+                      "revision/scripts/_t82_apply_f8.py, number parity per paragraph checked by revision/scripts/_check_t8_parity.py (one documented "
+                      "exception: the Generalization paragraph adds the citation years 2024 and 2025 of Zignoli et al. and Kim et al., both already in "
+                      "References). Three 'therefore' introduced by sentence splitting were cut (4.4, 4.5, 4.6). 'random forest' -> 'Random Forest' in the "
+                      "legends and captions written in revision (Table 4, Table 8, Table 11, Figure 2, Figure 3, Figure 4, Figure 5; plural 'Random Forests' "
+                      "in Figure 5). 3.12 (GOAL_FIX pending), the paragraphs identical to v8 ('We emphasize' in 3.2 included), tables, references, comments, "
+                      "Appendix A and the declarations are untouched. Style profile: revision/STYLE_GUIDE.md, measured by revision/scripts/style_check.py.")
     DEVIATIONS.append("T7.8 (2026-10-22, F4 text unless stated): (a) 4.2 'XGBoost on accuracy, MCC, Cohen's kappa and ROC-AUC' (Table 4: 0.146 "
                       "against 0.142); (b) note under Table 11 (italic, same style as the note under Table 6): intervals of the reported block from "
                       "the shared resampling matrix differ marginally from Table 5 (macro F1 [0.378, 0.613] against [0.373, 0.610]; F1 Active "
@@ -1580,6 +1603,9 @@ def main() -> None:
                     help="v8 of the ESWA manuscript, source of the in-text citations and wording listed in V8_WORDING (T4.1-C)")
     ap.add_argument("--only", choices=["response"], default=None,
                     help="rebuild only one output (T4.2-A: 'response' rebuilds KBS_Response_R1.docx from F4_response_letter.md and touches nothing else)")
+    ap.add_argument("--skip-response", action="store_true",
+                    help="T8.2 (2026-10-25): rebuild everything except KBS_Response_R1.docx (used when the letter is open in Word and locked); "
+                         "run --only response afterwards")
     args = ap.parse_args()
     if args.only == "response":
         make_response()
@@ -1590,7 +1616,10 @@ def main() -> None:
     assemble_manuscript(blocks, Path(args.v8_docx))
     highlights = make_highlights(blocks)
     make_supplementary()
-    make_response()
+    if args.skip_response:
+        print(f"NOTE: {OUT_RESP.name} not rebuilt (--skip-response); run --only response when the file is no longer locked")
+    else:
+        make_response()
     fig_rows = make_figures(Path(args.legacy_figures_dir))
     marked = make_marked_copy()
     DEVIATIONS.append(f"Marked copy statistics: {marked['paragraphs_marked']} paragraphs with highlighted text, {marked['cells_marked']} highlighted table cells, "

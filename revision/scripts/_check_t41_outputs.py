@@ -225,8 +225,11 @@ def main() -> None:
     st = subprocess.run(["git", "status", "--porcelain", "--", "revision/", "CIFRE_CANONICE.md"], cwd=ROOT, capture_output=True, text=True).stdout.splitlines()
     # F5 (2026-10-20): the submission deliverables (checklist, format report, verified references, bib, exported figures)
     # live in revision/ outside manuscript/ and scripts/ and are allowed to change.
+    # T8.2 (2026-10-25): revision/f8/ (validated F8 source texts, committed at T8.2), revision/STYLE_GUIDE.md (T8.1) and the
+    # untracked KB upload bundles revision/kb_upload_*.zip are part of the revision work and are allowed here.
     others = [l for l in st if not l[3:].startswith(("revision/manuscript/", "revision/scripts/", "revision/F5_",
-                                                      "revision/references_new", "revision/figures/"))
+                                                      "revision/references_new", "revision/figures/", "revision/f8/",
+                                                      "revision/STYLE_GUIDE.md", "revision/kb_upload_"))
               and l[3:] not in ("revision/requirements.txt", "revision/CIFRE_REVIZIE.md")]
     rec("Git: no changes in tracked revision/ files outside manuscript/, scripts/ (requirements.txt pin and the CIFRE_REVIZIE T0.4 row excepted)", not others, "; ".join(others))
     for f in ("CIFRE_CANONICE.md", "revision/TEXT_DECISIONS.md"):
