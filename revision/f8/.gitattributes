@@ -1,0 +1,2 @@
+# T8.5 (2026-10-25): the validated F8 source texts stay LF (root .gitattributes covers only csv/py/md/json)
+*.txt text eol=lf

@@ -126,6 +126,7 @@ Abstract: actualizat dacă intră persistence baseline sau o cifră nouă releva
 | 6-7 | 19 oct - 1 nov | F2 | LightGBM, CatBoost, TabNet, FT-Transformer, tuning raportat (închisă 19 oct: T2.1 și T2.2 PASS; săptămânile 6-7 devin rezervă pentru F4) |
 | 8-9 | 2-15 nov | F4 | Manuscris revizuit, response letter, CIFRE actualizate; draft la Buiu pe 15 nov |
 | 10-11 | 16-28 nov | F5 | Verificare, review Buiu, submisie |
+| - | 25 oct | T8 (stil; închis 25 oct) | Aliniere stilistică a textului adăugat în revizie la stilul v8 (decizie Adrian 25 oct; text validat în revision/f8/, aplicat, nu rescris): T8.1 ghid de stil și style_check.py (8172a3c), T8.2 manuscris 35 paragrafe (2576511), T8.3 Supplementary și Highlights (a48a04c), T8.4 response letter (d01d63e), T8.5 documente de proces (acest commit). Nicio cifră nouă; CIFRE_* neschimbate; 3.12 neatins (GOAL_FIX). Detalii: TEXT_DECISIONS.md secțiunea F8, STYLE_GUIDE.md, assembly_plan.md (deviația T8.2). Rămas deschis: pragul style_check pe response letter (27.7 cuvinte/frază pe toate paragrafele autorilor, 26.9 fără listele „Changes”) și conversia PDF (LibreOffice absent). |
 
 Puncte de control cu Buiu: după F0 (rezultat persistence, confirmare termen), după F3 (cifre complete, înainte de scriere; făcut 19 oct), după F4 (draft complet, 15 nov).
 
