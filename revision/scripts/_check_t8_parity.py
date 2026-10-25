@@ -220,8 +220,10 @@ def check_supp(before_s: Path, after_s: Path, before_h: Path, after_h: Path) -> 
         t_new = "\n".join([p.text for p in new.paragraphs] + [c.text for t in new.tables for r in t.rows for c in r.cells])
         rec(f"{name}: 0 lower-case 'random forest'", "random forest" not in t_new, str(t_new.count("random forest")))
         rec(f"{name}: number set unchanged", numbers(t_old) == numbers(t_new), f"{sorted(numbers(t_old) ^ numbers(t_new))}")
-        rec(f"{name}: text differs from before only by 'random forest' -> 'Random Forest' (and 'forests')",
-            re.sub(r"[Rr]andom [Ff]orests?", "RF", t_old) == re.sub(r"[Rr]andom [Ff]orests?", "RF", t_new))
+        # T8.8b (2026-10-25): the plural reads '100 Random Forest models' (was '100 random forests' before T8, 'Random Forests' at T8.3)
+        norm = lambda s: re.sub(r"[Rr]andom [Ff]orests?(?: models)?", "RF", s)
+        rec(f"{name}: text differs from before only by 'random forest' -> 'Random Forest' ('random forests' -> 'Random Forest models')",
+            norm(t_old) == norm(t_new))
     hl = [p.text for p in docx.Document(str(after_h)).paragraphs if p.style is not None and p.text.strip() and p.text[0].isupper()
           and not p.text.startswith(("Highlights", "Explainable Artificial"))]
     rec("Highlights: 5 bullets, each <= 85 characters", len(hl) == 5 and all(len(h) <= 85 for h in hl), "; ".join(f"{len(h)}" for h in hl))

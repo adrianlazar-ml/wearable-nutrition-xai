@@ -217,7 +217,7 @@ LEGEND_S1 = (
     "cells marked with an asterisk have a single Active test day and are not interpreted. Each cell gives the "
     "number of Active test days. Values for the comparable settings are in Table 9.")
 LEGEND_S2 = (
-    "Figure S2. Distribution of SHAP rank per feature across 100 Random Forests trained on the full 766-day "
+    "Figure S2. Distribution of SHAP rank per feature across 100 Random Forest models trained on the full 766-day "
     "training set with random seeds 0 to 99 (boxes: median and interquartile range over the 100 runs; diamonds: "
     "rank in the reported model, seed 42; features ordered by their rank in the reported model). Companion to "
     "Figure 5 of the main text, which shows the bootstrap mode.")
@@ -888,8 +888,8 @@ def assemble_manuscript(blocks: dict, v8_path: Path | None = None) -> None:
                       "revision/scripts/_t82_apply_f8.py, number parity per paragraph checked by revision/scripts/_check_t8_parity.py (one documented "
                       "exception: the Generalization paragraph adds the citation years 2024 and 2025 of Zignoli et al. and Kim et al., both already in "
                       "References). Three 'therefore' introduced by sentence splitting were cut (4.4, 4.5, 4.6). 'random forest' -> 'Random Forest' in the "
-                      "legends and captions written in revision (Table 4, Table 8, Table 11, Figure 2, Figure 3, Figure 4, Figure 5; plural 'Random Forests' "
-                      "in Figure 5). 3.12 (GOAL_FIX pending), the paragraphs identical to v8 ('We emphasize' in 3.2 included), tables, references, comments, "
+                      "legends and captions written in revision (Table 4, Table 8, Table 11, Figure 2, Figure 3, Figure 4, Figure 5; the plural in the Figure 5 "
+                      "and Figure S2 legends reads '100 Random Forest models' since T8.8b, 2026-10-25). 3.12 (GOAL_FIX pending), the paragraphs identical to v8 ('We emphasize' in 3.2 included), tables, references, comments, "
                       "Appendix A and the declarations are untouched. Style profile: revision/STYLE_GUIDE.md, measured by revision/scripts/style_check.py.")
     DEVIATIONS.append("T8.8a (2026-10-25, decision of the first author): in the retained v8 Introduction paragraph 'This paper addresses that gap...' "
                       "the words 'and by characterizing honestly what such a system can and cannot achieve.' became 'and by stating what such a system "

@@ -18,7 +18,7 @@ T8.1, 25 oct 2026. Referinta este manuscrisul submis, `revision/manuscript/BASE_
 
 ## 3. Vocabular si notatie
 
-- "Random Forest" cu majuscule, ca nume al modelului, in tot manuscrisul, in Supplementary, in Highlights si in response letter; "forest" / "the forest" singur ramane cu minuscule ("the raw forest", "100 forests retrained"). Pluralul, cand nu poate fi evitat, este "Random Forests".
+- "Random Forest" cu majuscule, ca nume al modelului, in tot manuscrisul, in Supplementary, in Highlights si in response letter; "forest" / "the forest" singur ramane cu minuscule ("the raw forest", "100 forests retrained"). Pluralul este "Random Forest models" ("100 Random Forest models retrained", legendele Figure 5 si Figure S2; T8.8b), nu "Random Forests".
 - Intervale care contin zero: "separated from zero" / "is not separated from zero" / "the interval includes zero"; NU "distinguished from zero", "distinguishable from zero", "excludes zero" (cu exceptia descrierii tehnice "intervals excluding the raw value" din 4.5, pastrata din F4).
 - Retelele vs persistence: "not separated from persistence after tuning" (formularea T7 "not distinguished from persistence" devine "not separated from persistence"; regula T7 ramane: fara "do not exceed persistence" despre retele fara "after tuning").
 - Zecimale: 3 in textul nou; 4 numai unde v8 avea deja 4 (Table 3, 5, 7, 12 si tabelele Supplementary S1, S2, care reproduc sursele).
