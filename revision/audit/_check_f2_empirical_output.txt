@@ -1,0 +1,19 @@
+Q1 max |sklearn balanced_accuracy - mean recall(labels=[0,1,2])| over 1000 RF resamples: 0.00e+00
+Q1 sklearn balanced_accuracy with Active absent from y_true but predicted: 0.5000 (1 warning(s); classes with 0 true samples are dropped, i.e. NOT fixed labels); gmean() returns nan
+Q2 label_metrics()['cohen_kappa'](RF) = 0.141524 == cohen_kappa_score(weights=None) 0.141524; ['qwk'] = 0.255061 == weights='quadratic' 0.255061
+Q3 gmean(y_true without Active) = nan
+Q3 bootstrap() on 3 real rows + 1 row without Active: used 3, skipped 1, warnings 0
+Q3/Q4 proba_metrics roc/pr on a resample without Active: nan, nan
+Q6 argmax(proba) == y_pred agreement: {'rf': 1.0, 'xgb': 1.0, 'svm': 0.9114583333333334}
+Q6 RF-SVM: y_pred(predict): n01 22 n10 20 p_cc 0.8774 | argmax(proba): n01 17 n10 23 p_cc 0.4292
+Q6 XGB-SVM: y_pred(predict): n01 27 n10 16 p_cc 0.1273 | argmax(proba): n01 19 n10 16 p_cc 0.7353
+Q6 SVM days where predict != argmax(proba): 17; SVM accuracy predict 0.6302 vs argmax 0.6719
+Q7 RF-XGB direct {'n01': 15, 'n10': 24, 'n11': 108, 'n00': 45} | mcnemar_counts (n00,n01,n10,n11) = (45, 15, 24, 108) | csv:
+{'pair': 'RF-XGB', 'n00': 45, 'n01': 15, 'n10': 24, 'n11': 108}
+Q11 paired_bootstrap(RF, XGB) diff_point +0.030319; (XGB, RF) -0.030319; CI(RF,XGB) [-0.0634, 0.1190] vs -CI(XGB,RF) [-0.0634, 0.1190]
+Q14 persistence predicted counts [44, 140, 8] == true support [44, 140, 8]: True
+Q14 last train label (snapshot) = 1; last test label = 1; persistence[0] = 1
+Q14 per-class precision [0.204545, 0.707143, 0.0] == recall [0.204545, 0.707143, 0.0]: True
+Q14 kappa -0.0566037736 vs MCC -0.0566037736
+Q14 resamples (of 1000) in which balanced_accuracy == f1_macro still holds for persistence: 1
+Q13 extended_metrics.SNAPSHOT = models\dataset_snapshot_20260331.csv (read only for the last train label); statistical_tests reads: ['bootstrap_indices_1000x192_seed42.npy', 'test_predictions_rf.csv', 'test_predictions_xgb.csv', 'test_predictions_svm.csv', 'test_predictions_persistence.csv']

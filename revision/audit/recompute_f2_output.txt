@@ -1,0 +1,115 @@
+rows 192 | support Rest/Normal/Active [44, 140, 8]
+PASS regenerated default_rng(42) matrix == saved npy ((1000, 192), int64)
+resamples with a class absent from y_true: 0
+
+== T1.1 RF, five extended metrics (point and 95% percentile CI, 1000 x 192, seed 42) ==
+PASS RF balanced_accuracy point: recomputed 0.522727 | claimed 0.5227
+PASS RF balanced_accuracy ci_low: recomputed 0.385100 | claimed 0.3851
+PASS RF balanced_accuracy ci_high: recomputed 0.663362 | claimed 0.6634
+PASS RF cohen_kappa point: recomputed 0.141524 | claimed 0.1415
+PASS RF cohen_kappa ci_low: recomputed -0.004983 | claimed -0.0050
+PASS RF cohen_kappa ci_high: recomputed 0.292407 | claimed 0.2924
+PASS RF g_mean point: recomputed 0.492306 | claimed 0.4923
+PASS RF g_mean ci_low: recomputed 0.296015 | claimed 0.2960
+PASS RF g_mean ci_high: recomputed 0.622836 | claimed 0.6228
+PASS RF roc_auc_ovr_macro point: recomputed 0.558075 | claimed 0.5581
+PASS RF roc_auc_ovr_macro ci_low: recomputed 0.419871 | claimed 0.4199
+PASS RF roc_auc_ovr_macro ci_high: recomputed 0.692052 | claimed 0.6921
+PASS RF pr_auc_macro point: recomputed 0.498304 | claimed 0.4983
+PASS RF pr_auc_macro ci_low: recomputed 0.371572 | claimed 0.3716
+PASS RF pr_auc_macro ci_high: recomputed 0.635876 | claimed 0.6359
+
+-- definition cross-checks on the full test set (RF)
+   sklearn balanced_accuracy_score 0.5227272727 vs manual mean recall 0.5227272727
+   sklearn cohen_kappa_score(weights=None) 0.1415241058 vs manual 0.1415241058
+   sklearn cohen_kappa_score(weights='quadratic') 0.2550607287  (QWK, must NOT equal the kappa row)
+   sklearn roc_auc_score(multi_class='ovr', average='macro') 0.5580748399 vs manual per-class mean 0.5580748399
+   sklearn average_precision_score(macro) 0.4983044300 vs manual per-class mean 0.4983044300
+   DIAGNOSTIC (naming, Q5): trapezoidal area under interpolated PR curve, macro = 0.491295 (XGB 0.446418, SVM 0.451757); AP macro RF 0.498304
+   ROC-AUC with columns [p_rest, p_active, p_normal] = 0.500737 (order matters; csv order gives the claimed value)
+   argmax(proba) == y_pred: RF 1.0000, XGB 1.0000, SVM 0.9115
+
+== T1.2 McNemar ==
+RF-XGB: n01 (A correct, B wrong) 15, n10 24, n11 108, n00 45 | csv n01 15 n10 24 n11 108 n00 45
+PASS RF-XGB counts
+PASS McNemar RF-XGB chi2_cc (manual formula): recomputed 1.641026 | claimed 1.6410
+PASS McNemar RF-XGB p_cc (scipy chi2.sf): recomputed 0.200185 | claimed 0.2002
+PASS McNemar RF-XGB p_exact (scipy binomtest): recomputed 0.199591 | claimed 0.1996
+   statsmodels p_cc 0.200185; with n01/n10 swapped 0.200185 (statistic symmetric in n01, n10)
+PASS RF-XGB recommended = cc (discordant 39)
+RF-SVM: n01 (A correct, B wrong) 22, n10 20, n11 101, n00 49 | csv n01 22 n10 20 n11 101 n00 49
+PASS RF-SVM counts
+PASS McNemar RF-SVM chi2_cc (manual formula): recomputed 0.023810 | claimed 0.0238
+PASS McNemar RF-SVM p_cc (scipy chi2.sf): recomputed 0.877371 | claimed 0.8774
+PASS McNemar RF-SVM p_exact (scipy binomtest): recomputed 0.877614 | claimed 0.8776
+   statsmodels p_cc 0.877371; with n01/n10 swapped 0.877371 (statistic symmetric in n01, n10)
+PASS RF-SVM recommended = cc (discordant 42)
+XGB-SVM: n01 (A correct, B wrong) 27, n10 16, n11 105, n00 44 | csv n01 27 n10 16 n11 105 n00 44
+PASS XGB-SVM counts
+PASS McNemar XGB-SVM chi2_cc (manual formula): recomputed 2.325581 | claimed 2.3256
+PASS McNemar XGB-SVM p_cc (scipy chi2.sf): recomputed 0.127263 | claimed 0.1273
+PASS McNemar XGB-SVM p_exact (scipy binomtest): recomputed 0.126289 | claimed 0.1263
+   statsmodels p_cc 0.127263; with n01/n10 swapped 0.127263 (statistic symmetric in n01, n10)
+PASS XGB-SVM recommended = cc (discordant 43)
+RF-persistence: n01 (A correct, B wrong) 50, n10 35, n11 73, n00 34 | csv n01 50 n10 35 n11 73 n00 34
+PASS RF-persistence counts
+PASS McNemar RF-persistence chi2_cc (manual formula): recomputed 2.305882 | claimed 2.3059
+PASS McNemar RF-persistence p_cc (scipy chi2.sf): recomputed 0.128885 | claimed 0.1289
+PASS McNemar RF-persistence p_exact (scipy binomtest): recomputed 0.128396 | claimed 0.1284
+   statsmodels p_cc 0.128885; with n01/n10 swapped 0.128885 (statistic symmetric in n01, n10)
+PASS RF-persistence recommended = cc (discordant 85)
+
+-- Holm (manual) on the 3 model pairs
+PASS Holm p_cc RF-XGB: recomputed 0.400370 | claimed 0.4004
+PASS Holm p_exact RF-XGB: recomputed 0.399182 | claimed 0.3992
+PASS Holm p_cc RF-SVM: recomputed 0.877371 | claimed 0.8774
+PASS Holm p_exact RF-SVM: recomputed 0.877614 | claimed 0.8776
+PASS Holm p_cc XGB-SVM: recomputed 0.381788 | claimed 0.3818
+PASS Holm p_exact XGB-SVM: recomputed 0.378868 | claimed 0.3789
+   statsmodels multipletests(holm) on p_cc: [0.40037  0.877371 0.381788] | manual: [0.40037  0.877371 0.381788]
+
+== T1.2 Cochran's Q (manual formula) ==
+matrix (192, 3); column totals (correct days) RF/XGB/SVM = [123, 132, 121]
+PASS Cochran Q statistic: recomputed 3.322581 | claimed 3.3226
+PASS Cochran Q p: recomputed 0.189894 | claimed 0.1899
+PASS Cochran df = 2 (k-1 = 2)
+   statsmodels cochrans_q: 3.322581, df 2, p 0.189894
+
+== T1.2 / T1.2b paired bootstrap (same row of indices on y_true, y_pred_A, y_pred_B) ==
+PASS paired RF-XGB f1_macro diff_point: recomputed 0.030319 | claimed 0.0303
+PASS paired RF-XGB f1_macro ci_low: recomputed -0.079601 | claimed -0.0796
+PASS paired RF-XGB f1_macro ci_high: recomputed 0.156117 | claimed 0.1561
+PASS paired RF-XGB f1_macro prop_diff_gt_0: recomputed 0.684000 | claimed 0.6840
+PASS paired RF-XGB f1_macro marginal A low (vs t11 rf): recomputed 0.378446 | claimed 0.3784
+PASS paired RF-XGB f1_macro marginal A high (vs t11 rf): recomputed 0.613000 | claimed 0.6130
+PASS paired RF-XGB f1_macro marginal B low (vs t11 xgb): recomputed 0.340611 | claimed 0.3406
+PASS paired RF-XGB f1_macro marginal B high (vs t11 xgb): recomputed 0.593342 | claimed 0.5933
+PASS paired RF-persistence f1_macro diff_point: recomputed 0.202428 | claimed 0.2024
+PASS paired RF-persistence f1_macro ci_low: recomputed 0.064213 | claimed 0.0642
+PASS paired RF-persistence f1_macro ci_high: recomputed 0.317328 | claimed 0.3173
+PASS paired RF-persistence f1_macro prop_diff_gt_0: recomputed 0.997000 | claimed 0.9970
+PASS paired RF-persistence f1_macro marginal A low (vs t11 rf): recomputed 0.378446 | claimed 0.3784
+PASS paired RF-persistence f1_macro marginal A high (vs t11 rf): recomputed 0.613000 | claimed 0.6130
+PASS paired RF-persistence f1_macro marginal B low (vs t11 persistence): recomputed 0.261179 | claimed 0.2612
+PASS paired RF-persistence f1_macro marginal B high (vs t11 persistence): recomputed 0.350085 | claimed 0.3501
+PASS paired RF-persistence balanced_accuracy diff_point: recomputed 0.218831 | claimed 0.2188
+PASS paired RF-persistence balanced_accuracy ci_low: recomputed 0.072825 | claimed 0.0728
+PASS paired RF-persistence balanced_accuracy ci_high: recomputed 0.362959 | claimed 0.3630
+PASS paired RF-persistence balanced_accuracy prop_diff_gt_0: recomputed 0.997000 | claimed 0.9970
+PASS paired RF-persistence balanced_accuracy marginal A low (vs t11 rf): recomputed 0.385100 | claimed 0.3851
+PASS paired RF-persistence balanced_accuracy marginal A high (vs t11 rf): recomputed 0.663362 | claimed 0.6634
+PASS paired RF-persistence balanced_accuracy marginal B low (vs t11 persistence): recomputed 0.260178 | claimed 0.2602
+PASS paired RF-persistence balanced_accuracy marginal B high (vs t11 persistence): recomputed 0.351950 | claimed 0.3520
+
+== persistence / majority identities ==
+PASS persistence balanced_accuracy: recomputed 0.303896 | claimed 0.3039
+PASS persistence f1_macro: recomputed 0.303896 | claimed 0.3039
+PASS persistence kappa: recomputed -0.056604 | claimed -0.0566
+PASS persistence g_mean: recomputed 0.000000 | claimed 0.0000
+PASS majority balanced_accuracy: recomputed 0.333333 | claimed 0.3333
+PASS majority kappa: recomputed 0.000000 | claimed 0.0000
+PASS majority g_mean: recomputed 0.000000 | claimed 0.0000
+persistence predicted counts [44, 140, 8] vs true support [44, 140, 8]
+
+76 / 76 comparisons identical at 4 decimals; 0 FAIL
+T3 VERDICT: PASS
