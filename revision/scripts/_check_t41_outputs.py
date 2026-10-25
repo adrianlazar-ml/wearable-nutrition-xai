@@ -229,7 +229,7 @@ def main() -> None:
     # untracked KB upload bundles revision/kb_upload_*.zip are part of the revision work and are allowed here.
     others = [l for l in st if not l[3:].startswith(("revision/manuscript/", "revision/scripts/", "revision/F5_",
                                                       "revision/references_new", "revision/figures/", "revision/f8/",
-                                                      "revision/STYLE_GUIDE.md", "revision/kb_upload_"))
+                                                      "revision/STYLE_GUIDE.md", "revision/kb_upload_", "revision/f8.zip"))
               and l[3:] not in ("revision/requirements.txt", "revision/CIFRE_REVIZIE.md")]
     rec("Git: no changes in tracked revision/ files outside manuscript/, scripts/ (requirements.txt pin and the CIFRE_REVIZIE T0.4 row excepted)", not others, "; ".join(others))
     for f in ("CIFRE_CANONICE.md", "revision/TEXT_DECISIONS.md"):

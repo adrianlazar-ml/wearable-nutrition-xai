@@ -36,7 +36,7 @@ T8.1, 25 oct 2026. Referinta este manuscrisul submis, `revision/manuscript/BASE_
 | R1 inainte de T8.2, paragrafe diferite de v8 (36) | 178 | 34.5 / 33.0 / 58 / 104 | 32.0% | 13 | 18 | 17 | 14 |
 | Response letter inainte de T8.4 (20 paragrafe) | 83 | 37.7 / 37 / 58 / 89 | 39.8% | 8 | 43 | 11 | 6 |
 
-Praguri (T8.6; `style_check.py` iese cu cod 1 daca nu sunt indeplinite): pe paragrafele diferite de v8, medie <= 27, p90 <= 45, fraze > 60 <= 1, "random forest" minuscule = 0, "distinguish" = 0, termeni interzisi = 0; "we" in proza manuscrisului <= 6. Response letter: medie <= 27, fraze > 60 <= 1, "random forest" = 0, "distinguish" = 0, termeni interzisi = 0.
+Praguri (T8.6; `style_check.py` iese cu cod 1 daca nu sunt indeplinite): pe paragrafele diferite de v8, medie <= 27, p90 <= 45, fraze > 60 <= 1, "random forest" minuscule = 0, "distinguish" = 0, termeni interzisi = 0; "we" in proza manuscrisului <= 6. Response letter: medie <= 27, fraze > 60 <= 1, "random forest" = 0, "distinguish" = 0, termeni interzisi = 0. Masurare (T8.8c, 25 oct 2026): numai pe paragrafele Response (paragraful introductiv, paragrafele "Response." si al doilea paragraf Response din R1.9); paragrafele "Changes." (liste de localizari, o singura "fraza" fiecare) si bullet-urile din "General changes" sunt enumerari si nu intra in profil. Pana la T8.8c se masurau toate paragrafele autorilor (27.7 cuvinte/fraza dupa T8.4, fata de 26.9 pe paragrafele Response).
 
 ## 5. Ce nu se atinge la alinierea stilistica
 

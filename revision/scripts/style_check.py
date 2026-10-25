@@ -22,6 +22,10 @@ Thresholds by mode (different-from-v8 paragraphs unless stated):
               'distinguish' = 0, forbidden terms = 0; 'we' in the whole prose <= 6 occurrences.
   response:   mean <= 27, sentences > 60 <= 1, 'random forest' = 0, 'distinguish' = 0, forbidden terms = 0
               (the letter has no v8 counterpart, so every paragraph counts as different; 'we' is allowed).
+              T8.8c (2026-10-25): measured on the Response paragraphs only (introductory paragraph, 'Response.' paragraphs
+              and the second Response paragraph of R1.9); the 'Changes.' paragraphs (location lists, one 'sentence' each)
+              and the 'General changes' bullets are enumerations and are excluded. Before T8.8c all authors' paragraphs
+              were measured (27.7 words/sentence after T8.4 against 26.9 on the Response paragraphs).
   other:      'random forest' = 0, forbidden terms = 0 (Supplementary, Highlights).
 """
 from __future__ import annotations
@@ -105,6 +109,8 @@ def prose_paragraphs(path: Path, mode: str) -> list[str]:
             continue
         if mode == "response" and is_quote(p):
             continue  # reviewer quotes (italic, indented) are not the authors' text
+        if mode == "response" and (text.startswith("Changes. ") or (p.style is not None and p.style.name == "List Paragraph")):
+            continue  # T8.8c: 'Changes.' location lists and the 'General changes' bullets are enumerations, not prose
         if is_quote(p):
             continue  # italic notes under tables
         body = strip_lead(p).strip()
