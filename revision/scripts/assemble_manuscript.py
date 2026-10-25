@@ -134,6 +134,32 @@ BASE_XREFS = [
      "The nineteen lag-1 features (eleven from the ring, eight from the watch) are summarized in Table 1."),
     ("Table 2. Macronutrient distribution", "by predicted activity class", "by predicted physiological state"),
     # audit-apply #13 (2026-10-26, audit F4 P0.1): the raw export folder holds 1,079 daily JSON files, not 1,083
+    # audit-apply #1 / #10 (2026-10-26, audit F1 Q3 and F4 F4.2): lag convention and sleep provenance in 3.3, paragraph 1
+    ("Data from the two sources were aggregated daily",
+     "influence the current day's metabolic state (Mason et al., 2022).",
+     "influence the current day's metabolic state (Mason et al., 2022). The lag is taken on the preceding record of the daily series, "
+     "which is the preceding calendar day except for 12 pairs of consecutive records separated by a gap in the raw data. Sleep-stage "
+     "features (deep and REM hours) come from whichever device wrote a sleep record to HealthKit for that date, the ring alone on 204 "
+     "of the 952 labeled days with an export file; on 8 days both devices wrote a record and the parser sums their durations, and on "
+     "44 days a nap is added to the night's total."),
+    # audit-apply #12 (2026-10-26, audit F4.4 and P1): the JSON export is the export application's merged aggregate, not a
+    # deduplicated source; the ring is among the sources pooled by the XML export
+    ("XML versus JSON data source. A key design decision",
+     "aggregates records from all sources (phone, watch, third-party apps) without deduplication, which double-counts steps.",
+     "aggregates records from all sources (phone, watch, ring and third-party apps) without deduplication, which double-counts steps."),
+    ("XML versus JSON data source. A key design decision",
+     "relative to the deduplicated JSON source,",
+     "relative to the JSON export (per-minute aggregates produced by the export application, which merges samples from the sources "
+     "that wrote to HealthKit),"),
+    ("Figure 1. End-to-end flow of the proposed system",
+     "Apple Watch (JSON export with step deduplication)",
+     "Apple Watch (JSON export: per-minute aggregates produced by the export application, which merges samples from the sources that "
+     "wrote to HealthKit)"),
+    ("Table 13 compares models trained on the XML and JSON",
+     "while metrics unaffected by double-counting agree closely.",
+     "while metrics unaffected by double-counting agree closely. The comparison is between the raw multi-source records of the XML "
+     "export and the merged per-minute aggregates of the export application; both pool the devices that wrote to HealthKit "
+     "(Section 3.1), so it does not compare contaminated with deduplicated data."),
     ("Ring data were retrieved through a cloud REST API", "processed 1,083 daily JSON files", "processed 1,079 daily JSON files"),
     ("Table 7. Per-device ablation", "(Random Forest, T3 labels)", "(Random Forest, reported labels)"),  # after the renumbering above
     # T5.3b (F5): American spelling in the retained base text of Related Work (the title of the Susnjak & Griffin
@@ -217,8 +243,9 @@ LEGEND_S1 = (
     "Figure S1. Labeling-threshold sensitivity grid: (a) macro F1 and (b) F1 Active of the Random Forest on the "
     "192-day test block for a Rest threshold in {55, 60, 65} and an Active readiness threshold in {80, 85, 90}, "
     "with the Active sleep threshold fixed at 75. The outlined cell is the reported setting (60/85/75). Hatched "
-    "cells marked with an asterisk have a single Active test day and are not interpreted. Each cell gives the "
-    "number of Active test days. Values for the comparable settings are in Table 9.")
+    "cells marked with an asterisk have a single Active test day; their intervals use the 660 of 1,000 resamples in which the "
+    "Active class is present (the 340 resamples without an Active day are dropped), and these cells are not interpreted. Each "
+    "cell gives the number of Active test days. Values for the comparable settings are in Table 9.")
 LEGEND_S2 = (
     "Figure S2. Distribution of SHAP rank per feature across 100 Random Forest models trained on the full 766-day "
     "training set with random seeds 0 to 99 (boxes: median and interquartile range over the 100 runs; diamonds: "
@@ -870,6 +897,16 @@ def assemble_manuscript(blocks: dict, v8_path: Path | None = None) -> None:
                       "(base_cal = round(25 * weight_kg); Rest base_cal - 200, Normal base_cal, Active base_cal + 200) and confidence_threshold.py "
                       "line 58 (CALORIC_MAP = {0: -200, 1: 0, 2: 200}, the caloric error of Section 4.12); 200 kcal is the maximum caloric error of "
                       "the safety layer in CIFRE_CANONICE.md.")
+    DEVIATIONS.append("audit-apply (2026-10-26, AUDIT_DECISIONS #1-#27, branch apply-audit): base (v8) text edited through BASE_XREFS "
+                      "tuples: 3.1 '1,083' -> '1,079' daily JSON files (#13) and a new provenance paragraph after 'Ring data were retrieved...' "
+                      "(#7, F4 block '3.1 Provenance'); 3.3 paragraph 1 gains the lag convention (#1) and the sleep provenance and summing rule "
+                      "(#10); 3.3 paragraph 2, the Figure 1 legend and 4.10 describe the JSON export as the export application's merged "
+                      "aggregates and name the ring among the pooled sources (#12); Table 1 Source column for features 12-19 from the F4 block "
+                      "'Table 1 Source column' (#7); the Figure 6 legend no longer says that aw_ features originate from the Apple Watch (#7); "
+                      "4.6 paragraph 1 compares two data paths (#7). Supplementary: Figure S1 legend states the 660 / 340 resample rule (#9), "
+                      "Table S1(b) caption states that the intervals are not adjusted for multiple comparisons (#5), S3 intro states the "
+                      "level A provenance (#7). All other entries are F4 text (F4_manuscript_changes.md, F4_response_letter.md). Log: "
+                      "revision/audit/apply_log.md.")
     DEVIATIONS.append("GOAL_FIX (audit-apply, 2026-10-26, decision of the first author, P2 = DA): in the retained v8 paragraph of 3.12 the words "
                       "', adjusted by the declared goal (maintenance, deficit, or surplus).' became '. The declared goal (fat loss, maintenance or "
                       "muscle gain) is recorded in the user profile and does not modify this target.' (BASE_XREFS tuple, which also carries the T7.2 "
@@ -1188,7 +1225,7 @@ def make_supplementary() -> None:
     append(doc, tm.cap, "Table S1. (b) Paired bootstrap differences (first minus second model) on macro F1 and balanced "
            "accuracy, 1,000 resamples of the 192 test days on the shared resampling matrix (seed 42); 95% percentile "
            "interval of the difference and proportion of resamples with a positive difference (descriptive, not a p-value). "
-           "No resample was skipped.")
+           "No resample was skipped. The intervals are not adjusted for multiple comparisons.")
     rows = [["Pair", "Metric", "Difference", "95% CI of the difference", "Proportion of resamples > 0"]]
     for _, r in pb.iterrows():
         metric = "macro F1" if r["metric"] == "f1_macro" else "balanced accuracy"

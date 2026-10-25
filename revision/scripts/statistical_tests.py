@@ -334,7 +334,7 @@ def main() -> None:
               "prop_diff_gt_0 = proportion of resamples with diff > 0 (descriptive, not a p-value). "
               "ci_A / ci_B = marginal CIs of each model on the same resamples (identical to T1.1). "
               "n_skipped = resamples with a class absent from y_true. RF-persistence (T1.2b) is a baseline "
-              "comparison, outside the Holm family of 3 model pairs; no multiplicity adjustment applies to CIs. "
+              "comparison, outside the Holm family of 3 model pairs; the intervals are not adjusted for multiple comparisons. "
               f"Script: revision/scripts/statistical_tests.py, run {day}."]
     write_text(res / "t12_paired_bootstrap_table.md", "\n".join(pb_md) + "\n")
 
