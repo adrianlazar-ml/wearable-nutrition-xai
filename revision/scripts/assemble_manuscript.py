@@ -133,6 +133,8 @@ BASE_XREFS = [
      "After feature engineering and labeling (Sections 3.2 and 3.3), the unified dataset contained 958 usable days described by nineteen lag-1 features (eleven from the ring, eight from the watch), summarized in Table 1.",
      "The nineteen lag-1 features (eleven from the ring, eight from the watch) are summarized in Table 1."),
     ("Table 2. Macronutrient distribution", "by predicted activity class", "by predicted physiological state"),
+    # audit-apply #13 (2026-10-26, audit F4 P0.1): the raw export folder holds 1,079 daily JSON files, not 1,083
+    ("Ring data were retrieved through a cloud REST API", "processed 1,083 daily JSON files", "processed 1,079 daily JSON files"),
     ("Table 7. Per-device ablation", "(Random Forest, T3 labels)", "(Random Forest, reported labels)"),  # after the renumbering above
     # T5.3b (F5): American spelling in the retained base text of Related Work (the title of the Susnjak & Griffin
     # reference keeps 'survival modelling', as published)
