@@ -197,9 +197,12 @@ def check_response(before: Path, after: Path) -> None:
         if a != b:
             j = next((x for x in range(min(len(a), len(b))) if a[x] != b[x]), min(len(a), len(b)))
             print(f"    #{i} first difference at char {j}: docx '{a[j-30:j+50]}' vs F8 '{b[j-30:j+50]}'")
-    n_old = numbers("\n".join(po)) | {c.text for c in []}
+    n_old = numbers("\n".join(po))
     n_new = numbers("\n".join(pn))
-    rec("response letter: number set unchanged (R1 subset of new and new subset of R1)", n_old == n_new,
+    # documented exception (same as the manuscript's Generalization paragraph): R1.1 'Changes' now cites Zignoli et al. (2024)
+    # and Kim et al. (2025), both in the References of the manuscript (decision of the first author, 25 Oct 2026)
+    rec("response letter: number set unchanged (R1 subset of new; new minus R1 within the documented exception {2024, 2025})",
+        not (n_old - n_new) and (n_new - n_old) <= {"2024", "2025"},
         f"before \\ after {sorted(n_old - n_new)}; after \\ before {sorted(n_new - n_old)}")
     txt = "\n".join(p.text for p in new.paragraphs)
     rec("response letter: 0 'distinguish'", "distinguish" not in txt, str(txt.count("distinguish")))
