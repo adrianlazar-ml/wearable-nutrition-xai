@@ -206,20 +206,20 @@ LEGEND_FIG4 = (
     "baseline macro F1 with interval; crosses: majority baseline macro F1. The rightmost block is the reported "
     "test set. Values are in Table 11.")
 LEGEND_S1 = (
-    "Figure S1. Labeling-threshold sensitivity grid: (a) macro F1 and (b) F1 Active of the random forest on the "
+    "Figure S1. Labeling-threshold sensitivity grid: (a) macro F1 and (b) F1 Active of the Random Forest on the "
     "192-day test block for a Rest threshold in {55, 60, 65} and an Active readiness threshold in {80, 85, 90}, "
     "with the Active sleep threshold fixed at 75. The outlined cell is the reported setting (60/85/75). Hatched "
     "cells marked with an asterisk have a single Active test day and are not interpreted. Each cell gives the "
     "number of Active test days. Values for the comparable settings are in Table 9.")
 LEGEND_S2 = (
-    "Figure S2. Distribution of SHAP rank per feature across 100 random forests trained on the full 766-day "
+    "Figure S2. Distribution of SHAP rank per feature across 100 Random Forests trained on the full 766-day "
     "training set with random seeds 0 to 99 (boxes: median and interquartile range over the 100 runs; diamonds: "
     "rank in the reported model, seed 42; features ordered by their rank in the reported model). Companion to "
     "Figure 5 of the main text, which shows the bootstrap mode.")
 LEGEND_S3 = (
     "Figure S3. Safety-layer coverage (percentage of the 192 test days that receive the model's prediction rather "
     "than the Normal fallback) as a function of the confidence threshold, for raw, Platt-calibrated and "
-    "isotonic-calibrated random forest probabilities. The dotted line marks the 0.50 threshold used by the system. "
+    "isotonic-calibrated Random Forest probabilities. The dotted line marks the 0.50 threshold used by the system. "
     "Under calibrated probabilities the argmax is Normal on every test day at every threshold, so the coverage of "
     "the calibrated variants is not informative.")
 
@@ -1176,9 +1176,9 @@ def make_supplementary() -> None:
     append_table(doc, rows)
 
     # ---- S2: calibration -----------------------------------------------------------------------
-    append(doc, tm.h1, "S2. Calibration of the random forest")
+    append(doc, tm.h1, "S2. Calibration of the Random Forest")  # T8.3 (2026-10-25): capitalized model name
     cal = pd.read_csv(RES / "t13_calibration.csv", keep_default_na=False)
-    append(doc, tm.cap, "Table S2. (a) Calibration metrics of the random forest on the 192 test days: raw probabilities and "
+    append(doc, tm.cap, "Table S2. (a) Calibration metrics of the Random Forest on the 192 test days: raw probabilities and "
            "one-versus-rest Platt and isotonic calibrators fitted on out-of-fold training probabilities (fit on folds 1-4, "
            "612 days, primary; fit on folds 2-4, 459 days, sensitivity). ECE and MCE are top-label with 10 equal-width bins; "
            "the multiclass Brier score is the sum over classes (range 0 to 2). Point estimate [95% bootstrap interval] on "
