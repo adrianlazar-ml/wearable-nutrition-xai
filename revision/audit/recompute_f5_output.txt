@@ -1,0 +1,146 @@
+====================================================================================================
+recompute_f5.py  (independent; no imports from revision/scripts)
+====================================================================================================
+PASS test_predictions_xgb.csv: y_true == rf
+PASS test_predictions_svm.csv: y_true == rf
+PASS t21_predictions_lgbm.csv: y_true and dates == rf
+PASS t21_predictions_lgbm.csv: argmax(proba) == y_pred on 192 days
+PASS t21_predictions_lgbm.csv: probabilities sum to 1
+PASS t21_predictions_catboost.csv: y_true and dates == rf
+PASS t21_predictions_catboost.csv: argmax(proba) == y_pred on 192 days
+PASS t21_predictions_catboost.csv: probabilities sum to 1
+PASS t21_predictions_tabnet.csv: y_true and dates == rf
+PASS t21_predictions_tabnet.csv: argmax(proba) == y_pred on 192 days
+PASS t21_predictions_tabnet.csv: probabilities sum to 1
+PASS t21_predictions_ftt.csv: y_true and dates == rf
+PASS t21_predictions_ftt.csv: argmax(proba) == y_pred on 192 days
+PASS t21_predictions_ftt.csv: probabilities sum to 1
+PASS t22_predictions_rf.csv: y_true and dates == rf
+PASS t22_predictions_rf.csv: argmax(proba) == y_pred on 192 days
+PASS t22_predictions_xgb.csv: y_true and dates == rf
+PASS t22_predictions_xgb.csv: argmax(proba) == y_pred on 192 days
+PASS t22_predictions_svm.csv: y_true and dates == rf
+INFO t22_predictions_svm.csv: y_pred = predict(); argmax agreement 0.9062 (claimed 0.9062)
+PASS svm tuned argmax agreement == 0.9062
+PASS t22_predictions_lgbm.csv: y_true and dates == rf
+PASS t22_predictions_lgbm.csv: argmax(proba) == y_pred on 192 days
+PASS t22_predictions_catboost.csv: y_true and dates == rf
+PASS t22_predictions_catboost.csv: argmax(proba) == y_pred on 192 days
+PASS t22_predictions_tabnet.csv: y_true and dates == rf
+PASS t22_predictions_tabnet.csv: argmax(proba) == y_pred on 192 days
+PASS t22_predictions_ftt.csv: y_true and dates == rf
+PASS t22_predictions_ftt.csv: argmax(proba) == y_pred on 192 days
+PASS snapshot: 958 labelled rows
+PASS snapshot test labels (rows 766-957) == csv y_true
+PASS snapshot test dates == csv dates
+PASS persistence rebuilt (last train label + shifted y_true) == test_predictions_persistence.csv
+PASS regenerated default_rng(42) index matrix == bootstrap_indices_1000x192_seed42.npy
+INFO resamples with an absent class: 0 (skip rule has no effect when 0)
+
+--- R1. T2.1 points (F1 macro / balanced accuracy) and delta RF minus model ---
+PASS F1 macro rf          0.5063 == claim 0.5063 == csv
+PASS F1 macro catboost    0.4980 == claim 0.498 == csv
+PASS F1 macro xgb         0.4760 == claim 0.476 == csv
+PASS F1 macro svm         0.4347 == claim 0.4347 == csv
+PASS F1 macro ftt         0.4115 == claim 0.4115 == csv
+PASS F1 macro lgbm        0.4089 == claim 0.4089 == csv
+PASS F1 macro persistence 0.3039 == claim 0.3039 == csv
+PASS F1 macro tabnet      0.2911 == claim 0.2911 == csv
+PASS F1 macro majority    0.2811 == claim 0.2811 == csv
+PASS hierarchy at the point: rf > catboost > xgb > svm > ftt > lgbm > persistence > tabnet > majority
+PASS balanced accuracy rf        0.5227 == csv
+PASS balanced accuracy lgbm      0.3895 == csv
+PASS balanced accuracy catboost  0.4737 == csv
+PASS balanced accuracy tabnet    0.2823 == csv
+PASS balanced accuracy ftt       0.4290 == csv
+PASS delta RF minus lgbm      F1 +0.0974 [-0.0627, +0.2335] prop 0.907 == claim / csv
+PASS delta RF minus lgbm      balanced acc +0.1332 [-0.0014, +0.2639] == csv
+PASS delta lgbm      minus persistence F1 +0.1050 [-0.0203, +0.2460] == csv
+PASS delta RF minus catboost  F1 +0.0083 [-0.0841, +0.1131] prop 0.563 == claim / csv
+PASS delta RF minus catboost  balanced acc +0.0490 [-0.0255, +0.1565] == csv
+PASS delta catboost  minus persistence F1 +0.1941 [+0.0381, +0.3139] == csv
+PASS delta RF minus tabnet    F1 +0.2152 [+0.0772, +0.3345] prop 0.997 == claim / csv
+PASS delta RF minus tabnet    balanced acc +0.2405 [+0.0940, +0.3924] == csv
+PASS delta tabnet    minus persistence F1 -0.0128 [-0.0819, +0.0517] == csv
+PASS delta RF minus ftt       F1 +0.0948 [-0.0085, +0.1912] prop 0.960 == claim / csv
+PASS delta RF minus ftt       balanced acc +0.0937 [-0.0185, +0.2205] == csv
+PASS delta ftt       minus persistence F1 +0.1076 [+0.0038, +0.2100] == csv
+
+--- R2. McNemar model vs RF (A = model) and Holm over the family of 4 ---
+PASS RF-TabNet n01 / n10 32 / 67, chi2_cc 11.6768, p_cc 0.0006 == claim 32 / 67, 0.0006
+PASS lgbm      n00/n01/n10/n11 44/25/14/109 p_cc 0.1093 p_exact 0.1081 == csv
+PASS catboost  n00/n01/n10/n11 48/21/12/111 p_cc 0.1637 p_exact 0.1628 == csv
+PASS tabnet    n00/n01/n10/n11 37/32/67/56 p_cc 0.0006 p_exact 0.0006 == csv
+PASS ftt       n00/n01/n10/n11 44/25/27/96 p_cc 0.8897 p_exact 0.8899 == csv
+PASS Holm lgbm      p_cc 0.3279 / p_exact 0.3244 == csv (manual == statsmodels)
+PASS Holm catboost  p_cc 0.3279 / p_exact 0.3255 == csv (manual == statsmodels)
+PASS Holm tabnet    p_cc 0.0025 / p_exact 0.0022 == csv (manual == statsmodels)
+PASS Holm ftt       p_cc 0.8897 / p_exact 0.8899 == csv (manual == statsmodels)
+PASS only TabNet significant after Holm (0.0025); others > 0.05
+PASS T2.2 McNemar rf        tuned vs RF canonical n01/n10 15/7 p_cc 0.1356 Holm(7) 0.4464 == csv
+PASS T2.2 McNemar xgb       tuned vs RF canonical n01/n10 26/13 p_cc 0.0547 Holm(7) 0.2733 == csv
+PASS T2.2 McNemar svm       tuned vs RF canonical n01/n10 21/22 p_cc 1.0000 Holm(7) 1.0000 == csv
+PASS T2.2 McNemar lgbm      tuned vs RF canonical n01/n10 21/11 p_cc 0.1116 Holm(7) 0.4464 == csv
+PASS T2.2 McNemar catboost  tuned vs RF canonical n01/n10 14/13 p_cc 1.0000 Holm(7) 1.0000 == csv
+PASS T2.2 McNemar tabnet    tuned vs RF canonical n01/n10 22/44 p_cc 0.0097 Holm(7) 0.0682 == csv
+PASS T2.2 McNemar ftt       tuned vs RF canonical n01/n10 16/35 p_cc 0.0117 Holm(7) 0.0703 == csv
+PASS T2.2: no McNemar significant after Holm over 7
+
+--- R3. T2.2 CV: fold mean, winners, reference rank ---
+PASS cv rows 117 = 110 eligible + 7 reference
+PASS f1_mean == simple mean of the 3 fold scores on all 117 rows
+PASS f1_sd == sample sd (ddof 1) on all 117 rows
+PASS rf        winner cfg  8 mean 0.3680 (ties 1); ref 0.3595 rank 3/21; == t22_run_meta_test.json winners == t22_test_results.csv
+PASS xgb       winner cfg 10 mean 0.3925 (ties 1); ref 0.3488 rank 13/21; == t22_run_meta_test.json winners == t22_test_results.csv
+PASS svm       winner cfg  1 mean 0.4078 (ties 1); ref 0.3705 rank 4/21; == t22_run_meta_test.json winners == t22_test_results.csv
+PASS lgbm      winner cfg 13 mean 0.4013 (ties 1); ref 0.3951 rank 5/21; == t22_run_meta_test.json winners == t22_test_results.csv
+PASS catboost  winner cfg  1 mean 0.3834 (ties 1); ref 0.3627 rank 13/21; == t22_run_meta_test.json winners == t22_test_results.csv
+PASS tabnet    winner cfg  1 mean 0.4162 (ties 1); ref 0.1982 rank 6/6; == t22_run_meta_test.json winners == t22_test_results.csv
+PASS ftt       winner cfg  2 mean 0.4348 (ties 1); ref 0.4334 rank 2/6; == t22_run_meta_test.json winners == t22_test_results.csv
+PASS RF reference rank 3 / 21 (claim 3 / 21)
+PASS RF winner 0.3680 minus reference 0.3595 = 0.0085 (claim 0.0085)
+INFO RF eligible configurations above the reference: cfg 8 0.3680; cfg 17 0.3640
+PASS reference ranks == CIFRE_REVIZIE row T2.2 (3 / 13 / 4 / 5 / 13 / 6 / 2)
+
+--- R4. T2.2 tuned test F1 macro, deltas, comparison labels ---
+PASS F1 macro lgbm      tuned 0.5739 == claim 0.5739 == t22_test_results.csv
+PASS F1 macro rf        tuned 0.5683 == claim 0.5683 == t22_test_results.csv
+PASS F1 macro catboost  tuned 0.5368 == claim 0.5368 == t22_test_results.csv
+PASS F1 macro xgb       tuned 0.5043 == claim 0.5043 == t22_test_results.csv
+PASS F1 macro svm       tuned 0.4386 == claim 0.4386 == t22_test_results.csv
+PASS F1 macro ftt       tuned 0.3698 == claim 0.3698 == t22_test_results.csv
+PASS F1 macro tabnet    tuned 0.3412 == claim 0.3412 == t22_test_results.csv
+PASS tuned hierarchy: LightGBM > RF > CatBoost > XGB > SVM > FT-T > TabNet
+PASS LightGBM tuned minus RF canonical +0.0676 [+0.0001, +0.1483] (claim +0.0676 [+0.0001, +0.1483])
+PASS LightGBM tuned minus RF tuned +0.0056 [-0.0305, +0.0450] (claim +0.0056 [-0.0305, +0.0450])
+PASS RF tuned minus RF canonical +0.0619 [+0.0028, +0.1398] (claim +0.0619 [+0.0028, +0.1398])
+PASS all 54 rows of t22_comparisons.csv reproduce (tuned minus other; label == vector; 7 x 4 x 2 minus rf-c)
+PASS comparison labels (a) RF canonical / (b) own reference / (c) RF tuned / (d) persistence match the 'other' column
+
+--- R5. ParameterSampler(random_state 42) regeneration and TimeSeriesSplit folds ---
+PASS t22_search_space.json sha256 79c1aed12f0151e7 == 79c1aed12f0151e7
+PASS search space header: seed 42, n_iter 20, not reduced
+PASS rf        20 configurations regenerated == json (exact, floats included)
+PASS xgb       20 configurations regenerated == json (exact, floats included)
+PASS svm       20 configurations regenerated == json (exact, floats included)
+PASS lgbm      20 configurations regenerated == json (exact, floats included)
+PASS catboost  20 configurations regenerated == json (exact, floats included)
+PASS 100 sampled + 2 x 5 grid configurations
+INFO tabnet grid config keys in json: ['batch_size', 'lr', 'n_d', 'n_steps', 'virtual_batch_size'] | reference keys: ['batch_size', 'drop_last', 'lr', 'n_d', 'n_steps', 'virtual_batch_size']
+PASS TimeSeriesSplit(3, test_size 154) on 766 rows: [(0, 303, 304, 457), (0, 457, 458, 611), (0, 611, 612, 765)]
+PASS Active in train / validation per fold from the snapshot labels: [(10, 7), (17, 8), (25, 13)]
+INFO inner-train label counts (rows 0-611): (135, 452, 25); min class 25 -> SMOTE k 3; after SMOTE 3 x 452 = 1356 (claimed 1,356)
+INFO train label counts (rows 0-765): (158, 570, 38); after SMOTE 3 x 570 = 1710 (claimed 1,710)
+PASS SMOTE row counts 1,356 (inner) and 1,710 (full train)
+INFO TabNet default batch 1024, drop_last True: batches per epoch = 1356 // 1024 = 1, 1710 // 1024 = 1; rows seen per epoch 1024 (75.5% of inner-train, 59.9% of train); best_epoch 5 -> 5 optimizer steps, 5,120 row visits; fold 1 / 2 train after SMOTE 669 / 1008 -> 0 / 0 batches
+
+--- R6. LightGBM default refit from the snapshot + imputer_revision.joblib + SMOTE(42, k 3) ---
+PASS imputer refit on the snapshot train rows == imputer_revision.joblib statistics
+PASS SMOTE train: 1710 rows, 570 per class
+PASS LightGBM classes_ == [0, 1, 2]
+PASS LightGBM argmax(proba) == predict() on 192 days
+PASS LightGBM y_pred identical to t21_predictions_lgbm.csv (0 days differ; max abs proba diff 1.11e-16)
+PASS LightGBM refit F1 macro 0.4089 (claim 0.4089)
+
+====================================================================================================
+ALL PASS

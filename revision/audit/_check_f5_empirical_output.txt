@@ -1,0 +1,57 @@
+pytorch_tabnet from: C:\Users\Adrian\disertatie_v2\revision\vendor\pytorch_tabnet
+PASS pytorch_tabnet imported from revision/vendor
+
+--- E1. EarlyStopper vs pytorch_tabnet EarlyStopping on the same score sequences ---
+PASS recorded tabnet validation history (21 epochs): TabNet rule (5, 21, 21) == FT-T rule (5, 21, 21) == recorded (best_epoch, stopped, run) (5, 21, 21)
+PASS recorded ftt validation history (27 epochs): TabNet rule (11, 27, 27) == FT-T rule (11, 27, 27) == recorded (best_epoch, stopped, run) (11, 27, 27)
+PASS 2000 / 2000 random sequences (ties included) x patience in (1, 2, 3, 5, 16): identical (best_epoch, stopped_epoch, epochs_run)
+PASS tie sequence [0.3 x 4], patience 2: strict improvement, stop at epoch 3 -> (1, 3, 3)
+
+--- E2. TabNet batches per epoch with the package defaults (batch 1024, drop_last True) ---
+  n = 669: 0 batch(es) per epoch, 0 rows seen per epoch
+PASS n = 669: batches 0 == 0
+  n = 1008: 0 batch(es) per epoch, 0 rows seen per epoch
+PASS n = 1008: batches 0 == 0
+  n = 1356: 1 batch(es) per epoch, 1024 rows seen per epoch
+PASS n = 1356: batches 1 == 1
+  n = 1710: 1 batch(es) per epoch, 1024 rows seen per epoch
+PASS n = 1710: batches 1 == 1
+  tuned TabNet (batch 128, drop_last False) on 1710 rows: 14 batches, 1710 rows per epoch
+
+--- E3. FT-Transformer: two constructions through em.ftt_build(19, 42) ---
+PASS state_dict identical on 53 tensors (899,523 parameters): stage A and the refit start from the same weights
+  DataLoader order: randperm(1356) vs randperm(1710) from the same seeded generator: first 8 indices [1182, 388, 644, 1282, 606, 673, 526, 1191] vs [1212, 307, 314, 1051, 1578, 1170, 202, 963]
+  batches per epoch at batch 64: ceil(1356 / 64) = 22 (stage A), ceil(1710 / 64) = 27 (refit); optimizer steps at best_epoch 11: 242 vs 297
+PASS t21_run_meta.json: FT-T refit 27 batches per epoch
+
+--- E4. Search space regenerated and written with the script's own writer ---
+PASS regenerated file sha256 79c1aed12f0151e7 == committed 79c1aed12f0151e7 (byte-identical)
+  run_cv order: write_json at hyperparameter_search.py:450, load_data :452, make_folds :453, first fit inside the loop :461-470
+
+--- E5. Fold validation blocks and the inner split ---
+PASS fold 1: validation = raw rows 304-457 imputed with the fold-train imputer (154 real rows, no SMOTE); imputer / scaler statistics == refit on rows 0-303; train 304 -> 669 after SMOTE k 3
+       validation dates 2024-05-04 .. 2024-10-11; last train date 2024-05-03
+PASS fold 2: validation = raw rows 458-611 imputed with the fold-train imputer (154 real rows, no SMOTE); imputer / scaler statistics == refit on rows 0-457; train 458 -> 1008 after SMOTE k 3
+       validation dates 2024-10-12 .. 2025-04-14; last train date 2024-10-11
+PASS fold 3: validation = raw rows 612-765 imputed with the fold-train imputer (154 real rows, no SMOTE); imputer / scaler statistics == refit on rows 0-611; train 612 -> 1356 after SMOTE k 3
+       validation dates 2025-04-15 .. 2025-09-18; last train date 2025-04-14
+PASS inner split (612 / 154) == fold 3 matrices; validation = rows 612-765 real; inner-train after SMOTE 1,356
+PASS validation dates strictly after the last inner-train date; dates monotonic
+  (E5 1.4 s)
+
+--- E6. CatBoost default through em.fit_eval_model('catboost', 42, data) ---
+PASS y_pred identical on 192 days (0 differ), max abs proba diff 1.11e-16; fit 18.4 s
+PASS F1 macro 0.4980 (claim 0.4980); effective params iterations 1000, depth 6, lr 0.0813, tree_count 1000
+  (E6 18.4 s)
+
+--- E7. LightGBM / CatBoost: predict() vs argmax(predict_proba) on the canonical split ---
+PASS lgbm: predict() == argmax(proba) on 192 / 192 days and == t21_predictions_lgbm.csv (0.3 s)
+PASS catboost: predict() == argmax(proba) on 192 / 192 days and == t21_predictions_catboost.csv (18.3 s)
+
+--- E8. Diagnostic (sizing only, not a proposed figure): LightGBM winner with / without the fixed subsample_freq = 1 ---
+  as run (json / csv params, subsample_freq 1)       subsample_freq 1  test macro F1 0.5739  y_pred == t22_predictions_lgbm.csv: True
+PASS winner as run reproduces t22_predictions_lgbm.csv (0.5739)
+  as described in Appendix B1 (no subsample_freq)    subsample_freq 0  test macro F1 0.4965  y_pred == t22_predictions_lgbm.csv: False
+  INFO without subsample_freq the LightGBM default (0) disables bagging: subsample 0.6 has no effect; F1 0.4965
+
+ALL PASS
