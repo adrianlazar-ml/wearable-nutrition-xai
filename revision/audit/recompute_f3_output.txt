@@ -1,0 +1,133 @@
+test rows 192, support [44, 140, 8]; OOF rows 612, support [127, 452, 33], folds [1, 2, 3, 4]
+PASS OOF rows: recomputed 612 claimed 612
+PASS OOF Active rows: recomputed 33 claimed 33
+regenerated matrix == saved npy: True int64 (1000, 192)
+
+=== T1.3 raw RF on test ===
+PASS ECE top-label raw (sklearn-uniform bin rule): recomputed 0.137701 claimed 0.1377
+     ECE with the alternative left-closed [lo, hi) bins: 0.137701 (same at 4 dp: True)
+     test days whose max(p) equals an interior bin edge exactly: 0; days with max(p) == 0.50: 0
+PASS MCE top-label raw: recomputed 0.883183 claimed 0.8832
+PASS ECE raw CI low: recomputed 0.081513 claimed 0.0815
+PASS ECE raw CI high: recomputed 0.207356 claimed 0.2074
+PASS Brier multiclass raw (sum over classes): recomputed 0.509099 claimed 0.5091
+     sklearn brier_score_loss(scale_by_half=False) = 0.509098758360; |diff| = 0.00e+00; scale_by_half=True would give 0.254549
+PASS Brier raw CI low: recomputed 0.474740 claimed 0.4747
+PASS Brier raw CI high: recomputed 0.548922 claimed 0.5489
+PASS log loss raw (manual -mean log p_true): recomputed 0.852175 claimed 0.8522
+     sklearn log_loss = 0.852175467313; rows with p(true class) == 0: 0
+PASS log loss raw CI low: recomputed 0.770082 claimed 0.7701
+PASS log loss raw CI high: recomputed 0.964825 claimed 0.9648
+PASS ECE Active raw (OvR): recomputed 0.093601 claimed 0.0936
+PASS Brier Active raw: recomputed 0.050199 claimed 0.0502
+
+=== OOF raw p_active reliability (fit rows, 612) ===
+     bin 0 (0.0, 0.1]: n = 306, mean p_active 0.0293, Active fraction 0.0327
+     bin 1 (0.1, 0.2]: n = 118, mean p_active 0.1460, Active fraction 0.0678
+     bin 2 (0.2, 0.3]: n =  84, mean p_active 0.2496, Active fraction 0.0833
+     bin 3 (0.3, 0.4]: n =  54, mean p_active 0.3486, Active fraction 0.0741
+     bin 4 (0.4, 0.5]: n =  34, mean p_active 0.4401, Active fraction 0.0882
+     bin 5 (0.5, 0.6]: n =   8, mean p_active 0.5439, Active fraction 0.0000
+     bin 6 (0.6, 0.7]: n =   6, mean p_active 0.6562, Active fraction 0.1667
+     bin 7 (0.7, 0.8]: n =   2, mean p_active 0.7386, Active fraction 0.0000
+     Active fraction over non-empty bins: min 0.0000, max 0.1667; bins with 0 Active: [5, 7]
+FAIL OOF Active fraction between 3 percent and 17 percent in every bin: min 0.0000, max 0.1667
+
+=== Calibrators refit on the 612 OOF rows (fit 1-4) ===
+PASS Platt slope Rest (statsmodels Logit, no penalty): recomputed 0.396962 claimed 0.397
+PASS Platt intercept Rest: recomputed -1.059280 claimed -1.0593
+PASS Platt slope Normal (statsmodels Logit, no penalty): recomputed 0.221038 claimed 0.221
+PASS Platt intercept Normal: recomputed 1.026014 claimed 1.026
+PASS Platt slope Active (statsmodels Logit, no penalty): recomputed 0.209471 claimed 0.2095
+PASS Platt intercept Active: recomputed -2.367283 claimed -2.3673
+     isotonic monotone on 1001-point grid: {0: True, 1: True, 2: True}
+  -- platt: rows with zero sum (fallback) 0; max |row sum - 1| 2.22e-16; argmax Normal on 192/192 days; argmax changed vs raw 53; days with p_active >= 0.50: 0
+PASS ECE top-label platt: recomputed 0.036063 claimed 0.0361
+PASS ECE platt CI low: recomputed 0.012344 claimed 0.0123
+PASS ECE platt CI high: recomputed 0.099635 claimed 0.0996
+PASS Brier multiclass platt: recomputed 0.412354 claimed 0.4124
+PASS log loss platt: recomputed 0.696883 claimed 0.6969
+PASS p_active max platt: recomputed 0.102910 claimed 0.1029
+PASS ECE Active platt: recomputed 0.020622 claimed 0.0206
+PASS argmax changed vs raw platt: recomputed 53 claimed 53
+PASS F1 macro of calibrated argmax platt (non-canonical): recomputed 0.281124 claimed 0.2811
+  -- isotonic: rows with zero sum (fallback) 0; max |row sum - 1| 2.22e-16; argmax Normal on 192/192 days; argmax changed vs raw 53; days with p_active >= 0.50: 0
+PASS ECE top-label isotonic: recomputed 0.040481 claimed 0.0405
+PASS ECE isotonic CI low: recomputed 0.018928 claimed 0.0189
+PASS ECE isotonic CI high: recomputed 0.107674 claimed 0.1077
+PASS Brier multiclass isotonic: recomputed 0.409517 claimed 0.4095
+PASS log loss isotonic: recomputed 0.711098 claimed 0.7111
+PASS p_active max isotonic: recomputed 0.189588 claimed 0.1896
+PASS ECE Active isotonic: recomputed 0.034033 claimed 0.034
+PASS argmax changed vs raw isotonic: recomputed 53 claimed 53
+PASS F1 macro of calibrated argmax isotonic (non-canonical): recomputed 0.281124 claimed 0.2811
+
+=== Safety layer, raw RF, manual ===
+PASS coverage at 0.50 (percent): recomputed 65.625000 claimed 65.625
+PASS covered days at 0.50: recomputed 126 claimed 126
+PASS overridden at 0.50: recomputed 66 claimed 66
+PASS mean caloric error at 0.50 (all 192 days): recomputed 58.333333 claimed 58.3333
+PASS max caloric error at 0.50: recomputed 200 claimed 200
+PASS emitted Rest at 0.50: recomputed 28 claimed 28
+PASS emitted Normal at 0.50: recomputed 162 claimed 162
+PASS emitted Active at 0.50: recomputed 2 claimed 2
+PASS F1 macro after fallback at 0.50: recomputed 0.506708 claimed 0.5067
+PASS accuracy after fallback at 0.50: recomputed 0.708333 claimed 0.7083
+PASS F1 Active after fallback at 0.50: recomputed 0.400000 claimed 0.4
+PASS mean caloric error at threshold 0: recomputed 71.875000 claimed 71.875
+PASS overridden at threshold 0: recomputed 0 claimed 0
+PASS mean caloric error of always Normal: recomputed 54.166667 claimed 54.1667
+     always Normal = 52 non-Normal days x 200 / 192 = 54.1667; mean over covered days only at 0.50 (NOT the reported convention): 66.6667
+     with '<= 0.50' instead of '< 0.50': overridden 66 (identical: True; no day has max(p) == 0.50)
+     stored 16-feature table at 0.50: coverage 80.2083, overridden 38, mean error 68.7500 (canonical RF: 65.6250 / 66 / 58.3333)
+
+=== T3.1 labels regenerated from data/oura_combined.csv ===
+     raw rows 1009, rows with both scores 958
+     958 labelled dates == snapshot dates: True
+     canonical labels (60/85/75) == snapshot nutrition_label on 958 rows: True
+     split index int(958 * 0.8) = 766; test dates == test_predictions_rf.csv dates: True
+     R55_A80: labelled 958, 958 [97, 726, 135], train [70, 580, 116], test [27, 146, 19]  == grid csv
+     R55_A85: labelled 958, 958 [97, 815, 46], train [70, 658, 38], test [27, 157, 8]  == grid csv
+     R55_A90: labelled 958, 958 [97, 858, 3], train [70, 694, 2], test [27, 164, 1]  == grid csv
+     R60_A80: labelled 958, 958 [202, 621, 135], train [158, 492, 116], test [44, 129, 19]  == grid csv
+     R60_A85: labelled 958, 958 [202, 710, 46], train [158, 570, 38], test [44, 140, 8]  == grid csv
+     R60_A90: labelled 958, 958 [202, 753, 3], train [158, 606, 2], test [44, 147, 1]  == grid csv
+     R65_A80: labelled 958, 958 [360, 463, 135], train [278, 372, 116], test [82, 91, 19]  == grid csv
+     R65_A85: labelled 958, 958 [360, 552, 46], train [278, 450, 38], test [82, 102, 8]  == grid csv
+     R65_A90: labelled 958, 958 [360, 595, 3], train [278, 486, 2], test [82, 109, 1]  == grid csv
+PASS all 9 cells: 958 labelled days, 766/192 cut, distributions == grid csv
+PASS R55_A85 Rest on 958: recomputed 97 claimed 97
+PASS R55_A85 Normal on 958: recomputed 815 claimed 815
+PASS R55_A85 Active on 958: recomputed 46 claimed 46
+     days with readiness >= 90 and sleep < 80: 0 (readiness >= 90 days: 3)
+     labels (R=55, 90, 75) == (R=55, 90, 80): True
+     labels (R=60, 90, 75) == (R=60, 90, 80): True
+     labels (R=65, 90, 75) == (R=65, 90, 80): True
+
+=== T3.1 cell R55_A85 (t31_predictions_rf_R55_A85.csv) ===
+     csv dates == test dates: True | csv y_true == regenerated R55 test labels: True | argmax(proba) == y_pred: True
+PASS R55_A85 F1 macro: recomputed 0.505319 claimed 0.5053
+     F1 macro without fixed labels: 0.505319 (all 3 classes present in test)
+PASS R55_A85 F1 Active: recomputed 0.615385 claimed 0.6154
+PASS R55_A85 accuracy: recomputed 0.713542 claimed 0.7135
+PASS R55_A85 MCC: recomputed 0.037877 claimed 0.0379
+     last train day 2025-09-18 readiness 70 sleep 64 -> R55 label 1 (canonical label 1)
+PASS R55_A85 persistence F1 macro: recomputed 0.321145 claimed 0.3211
+     paired bootstrap: used 1000 / 1000 resamples
+PASS R55_A85 delta RF minus persistence (point): recomputed 0.184174 claimed 0.1842
+PASS R55_A85 delta CI low: recomputed 0.028099 claimed 0.0281
+PASS R55_A85 delta CI high: recomputed 0.291884 claimed 0.2919
+PASS R55_A85 RF F1 macro CI low: recomputed 0.357385 claimed 0.3574
+PASS R55_A85 RF F1 macro CI high: recomputed 0.608411 claimed 0.6084
+PASS R55_A85 persistence CI low: recomputed 0.277085 claimed 0.2771
+PASS R55_A85 persistence CI high: recomputed 0.367875 claimed 0.3679
+PASS R55_A85 prop(delta > 0): recomputed 0.988000 claimed 0.988
+
+=== Scratch retraining of cell R55_A85 (no revision/scripts import) ===
+     train after SMOTE 1974 rows ([658, 658, 658]); elapsed 1.8 s
+PASS scratch retrain y_pred == t31_predictions_rf_R55_A85.csv on 192 days; max |proba diff| 9.90e-17
+PASS scratch R55_A85 F1 macro: recomputed 0.505319 claimed 0.5053
+
+=== VERDICT ===
+  FAIL OOF Active fraction >= 3 percent in every non-empty bin (manuscript sentence): min 0.0000
+74 / 75 comparisons PASS at 4 decimals; 1 FAIL
