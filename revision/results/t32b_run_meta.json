@@ -1,0 +1,211 @@
+{
+  "task": "T3.2b watch-only heart-rate sensitivity (register only)",
+  "run_date": "2026-10-26 06:46:10",
+  "elapsed_seconds": 0.17,
+  "seed": 42,
+  "n_boot": 1000,
+  "rng": "numpy default_rng(42), fresh generator per series and per pair (same resample indices for both series)",
+  "inputs": {
+    "audit_csv": "revision\\audit\\p0_parser_vs_watch_only.csv",
+    "snapshot": "models\\dataset_snapshot_20260331.csv",
+    "metric": "heart_rate",
+    "feature": "aw_hr_mean",
+    "label_column": "nutrition_label (label of day t)"
+  },
+  "subset_definition": "labelled days with >= 1 non-Oura heart-rate record (watch_only defined); not random",
+  "interpretation": "sensitivity of the T3.2 aw_hr_mean row to the record source mix, not a validation",
+  "counts": {
+    "n_hr_rows": 1071,
+    "n_hr_labelled_flag": 952,
+    "n_snapshot": 958,
+    "n_labelled_with_hr": 952,
+    "n_watch_only_undefined": 632,
+    "n_subset": 320
+  },
+  "n": 320,
+  "label_distribution": [
+    66,
+    240,
+    14
+  ],
+  "per_year": {
+    "2023": {
+      "n_subset": 72,
+      "n_labelled": 198,
+      "share": 0.36363636363636365,
+      "subset_rest_normal_active": [
+        15,
+        51,
+        6
+      ],
+      "labelled_rest_normal_active": [
+        38,
+        150,
+        10
+      ],
+      "first": "2023-06-12",
+      "last": "2023-12-31"
+    },
+    "2024": {
+      "n_subset": 109,
+      "n_labelled": 325,
+      "share": 0.3353846153846154,
+      "subset_rest_normal_active": [
+        26,
+        82,
+        1
+      ],
+      "labelled_rest_normal_active": [
+        80,
+        236,
+        9
+      ],
+      "first": "2024-01-02",
+      "last": "2024-12-30"
+    },
+    "2025": {
+      "n_subset": 114,
+      "n_labelled": 346,
+      "share": 0.32947976878612717,
+      "subset_rest_normal_active": [
+        20,
+        88,
+        6
+      ],
+      "labelled_rest_normal_active": [
+        65,
+        258,
+        23
+      ],
+      "first": "2025-01-04",
+      "last": "2025-12-30"
+    },
+    "2026": {
+      "n_subset": 25,
+      "n_labelled": 89,
+      "share": 0.2808988764044944,
+      "subset_rest_normal_active": [
+        5,
+        19,
+        1
+      ],
+      "labelled_rest_normal_active": [
+        19,
+        66,
+        4
+      ],
+      "first": "2026-01-01",
+      "last": "2026-03-29"
+    }
+  },
+  "identity": {
+    "tolerance": 0.011,
+    "max_abs_diff_subset": 0.8200000000000074,
+    "max_abs_diff_all_labelled": 0.8200000000000074,
+    "n_all_labelled": 952,
+    "mismatch_days_subset": [
+      "2026-03-29"
+    ],
+    "mismatch_days_all_labelled": [
+      "2026-03-29"
+    ],
+    "documented_exceptions": [
+      "2026-03-29"
+    ],
+    "labels_identical": true
+  },
+  "spearman": {
+    "rho": 0.6767861821619608,
+    "p": 3.3051527459215004e-44,
+    "n": 320,
+    "f4_reference": 0.6768,
+    "f4_n": 320,
+    "reproduced": true
+  },
+  "parser_minus_watch": {
+    "median": 1.230000000000004,
+    "p5": -10.623000000000005,
+    "p95": 9.985000000000005,
+    "max_abs": 27.36,
+    "n_days_differing": 317
+  },
+  "records_per_day": {
+    "n_all_median": 809.0,
+    "n_all_p25": 736.25,
+    "n_all_p75": 860.0,
+    "n_noo_median": 1.0,
+    "n_noo_p25": 1.0,
+    "n_noo_p75": 2.0,
+    "n_noo_min": 1,
+    "n_noo_max": 333,
+    "days_noo_le_5": 297,
+    "share_noo_median": 0.0013157894736842105
+  },
+  "results": {
+    "parser_all": {
+      "n": 320,
+      "n_rest": 66,
+      "median_rest": 92.1,
+      "p25_rest": 89.9725,
+      "p75_rest": 94.19500000000001,
+      "n_normal": 240,
+      "median_normal": 85.535,
+      "p25_normal": 82.46000000000001,
+      "p75_normal": 88.65,
+      "n_active": 14,
+      "median_active": 80.31,
+      "p25_active": 76.825,
+      "p75_active": 83.81,
+      "cliff_active_rest": -0.8354978354978355,
+      "cliff_active_rest_ci_low": -0.9826839826839827,
+      "cliff_active_rest_ci_high": -0.6015692640692643,
+      "cliff_active_normal": -0.48214285714285715,
+      "cliff_active_normal_ci_low": -0.7750446428571429,
+      "cliff_active_normal_ci_high": -0.15116071428571431,
+      "cliff_normal_rest": -0.6597222222222222,
+      "cliff_normal_rest_ci_low": -0.7729813762626263,
+      "cliff_normal_rest_ci_high": -0.5428582702020203,
+      "spearman_parser_vs_watch": 0.6767861821619608,
+      "n_days_differing": 317
+    },
+    "watch_only": {
+      "n": 320,
+      "n_rest": 66,
+      "median_rest": 94.0,
+      "p25_rest": 86.615,
+      "p75_rest": 99.0,
+      "n_normal": 240,
+      "median_normal": 84.0,
+      "p25_normal": 79.0,
+      "p75_normal": 90.0,
+      "n_active": 14,
+      "median_active": 82.5,
+      "p25_active": 80.0825,
+      "p75_active": 84.375,
+      "cliff_active_rest": -0.7034632034632035,
+      "cliff_active_rest_ci_low": -0.8853896103896104,
+      "cliff_active_rest_ci_high": -0.4717803030303031,
+      "cliff_active_normal": -0.13482142857142856,
+      "cliff_active_normal_ci_low": -0.37273809523809526,
+      "cliff_active_normal_ci_high": 0.11173363095238084,
+      "cliff_normal_rest": -0.5435606060606061,
+      "cliff_normal_rest_ci_low": -0.665490845959596,
+      "cliff_normal_rest_ci_high": -0.40814867424242435,
+      "spearman_parser_vs_watch": 0.6767861821619608,
+      "n_days_differing": 317
+    }
+  },
+  "t32_reference_cliff_active_rest_all_days": -0.84,
+  "outputs": [
+    "t32b_watch_only_hr.csv",
+    "t32b_watch_only_hr_table.md",
+    "t32b_run_meta.json"
+  ],
+  "versions": {
+    "python": "3.11.9",
+    "numpy": "2.4.3",
+    "pandas": "2.3.3",
+    "scipy": "1.17.1"
+  },
+  "sanity_checks_failed": []
+}
