@@ -8,3 +8,8 @@
 *.joblib binary
 *.docx binary
 *.pdf binary
+# Text outputs (audit *_output.txt, pip freeze lists, baselines): LF (repo-hygiene, 2026-10-26)
+*.txt text eol=lf
+# Two root reports written as UTF-16 by PowerShell redirection: keep as binary (no EOL conversion)
+audit_csv_output.txt -text
+sanity_check_output.txt -text
