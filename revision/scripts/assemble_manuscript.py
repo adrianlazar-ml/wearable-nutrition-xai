@@ -151,6 +151,16 @@ BASE_XREFS = [
      "relative to the deduplicated JSON source,",
      "relative to the JSON export (per-minute aggregates produced by the export application, which merges samples from the sources "
      "that wrote to HealthKit),"),
+    # audit-apply #7 (2026-10-26): Figure 6 legend and 4.6 base paragraph (two data paths, not two devices)
+    ("Figure 6. Global feature importance for the Random Forest",
+     "Feature names prefixed with \"aw_\" originate from the Apple Watch; the remaining features originate from the Oura Ring.",
+     "Feature names prefixed with \"aw_\" come from the HealthKit path (the watch export; for heart rate, steps and active energy the "
+     "aggregates include ring samples, Section 3.1); the remaining features come from the Oura Ring API."),
+    ("An ablation study trained the Random Forest model", "Combining the devices yields", "Combining the two data paths yields"),
+    ("An ablation study trained the Random Forest model",
+     "and that neither device alone captures the physiological state adequately.",
+     "and that neither data path alone captures the physiological state adequately; the watch-only set is the HealthKit path, whose "
+     "heart-rate, step and energy aggregates include ring samples (Section 3.1)."),
     ("Figure 1. End-to-end flow of the proposed system",
      "Apple Watch (JSON export with step deduplication)",
      "Apple Watch (JSON export: per-minute aggregates produced by the export application, which merges samples from the sources that "
@@ -669,6 +679,30 @@ def assemble_manuscript(blocks: dict, v8_path: Path | None = None) -> None:
     set_text(p, txt)
     plan("3.1 Dataset", "The dataset comprises physiological data from a single participant", "replace phrase (sentence 1) + 2 new sentences", "3.1")
     DEVIATIONS.append("3.1: the base sentence 'Data span June 2023 to March 2026, totaling 1,009 days with valid data from both devices.' was dropped because the inserted F4 text restates the dates and the day count in the same paragraph.")
+    # audit-apply #7 (2026-10-26): provenance paragraph after the parser sentence of 3.1, and the Source column of Table 1
+    p_ring = find_par(doc, "Ring data were retrieved through a cloud REST API")
+    new_body(p_ring, renumber(paras(block(blocks, "3.1 Provenance"))[0]))
+    plan("3.1 Provenance (audit #7)", "Ring data were retrieved through a cloud REST API", "insert after", "3.1, paragraph 3")
+    cap1 = find_par(doc, "Table 1. Physiological features used in the classification pipeline")
+    t1 = find_table_after(doc, cap1)
+    hdr1 = [c.text.strip() for c in t1.rows[0].cells]
+    src_rows = tables(block(blocks, "Table 1 Source column"))[0]
+    src_map = {r[0].strip(): r[1].strip() for r in src_rows[1:]}
+    n_src = 0
+    for row in t1.rows[1:]:
+        no = row.cells[hdr1.index("No.")].text.strip()
+        if no in src_map:
+            cell = row.cells[hdr1.index("Source")]
+            if cell.text.strip() != "Watch":
+                raise SystemExit(f"STOP: Table 1 Source of feature {no} is {cell.text.strip()!r}, expected 'Watch'")
+            runs = cell.paragraphs[0].runs
+            runs[0].text = src_map[no]
+            for r in runs[1:]:
+                r._r.getparent().remove(r._r)
+            n_src += 1
+    if n_src != len(src_map):
+        raise SystemExit(f"STOP: Table 1 Source column: {n_src} cells replaced, {len(src_map)} expected")
+    plan("Table 1 Source column (audit #7)", "Table 1. Physiological features used in the classification pipeline", "replace Source cells of features 12-19", "Table 1")
 
     # ---- 3.2 Labeling (T4.1-D: prescriptive block at the end of the paragraph) -----------------
     p = find_par(doc, "Each day is assigned to one of three nutritionally relevant classes")
@@ -1283,7 +1317,10 @@ def make_supplementary() -> None:
     append(doc, tm.h1, "S3. Agreement of the labels with ring signals and lag-1 indicators")
     tests = pd.read_csv(RES / "t32_tests.csv", keep_default_na=False)
     desc = pd.read_csv(RES / "t32_descriptives.csv", keep_default_na=False)
-    append(doc, tm.body, "Level B indicators are raw ring signals that do not enter the labeling rule but feed the "
+    append(doc, tm.body, "Level A indicators (Table 10 of the main text) come from the HealthKit path and are independent of the "
+           "label rule; heart rate, steps and active energy include ring samples merged by HealthKit (Section 3.1 of the main text), "
+           "so only HRV, SpO2 and respiratory rate are also independent of the ring's sensors. "
+           "Level B indicators are raw ring signals that do not enter the labeling rule but feed the "
            "readiness score, so they show the internal consistency of that score rather than independent validation. "
            "The lag-1 rows compare the value of day t-1 with the class of day t. Expected directions were fixed before the "
            "analysis. p-values are approximate because consecutive days are autocorrelated; inference rests on the effect "
