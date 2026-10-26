@@ -26,6 +26,7 @@ T8.1, 25 oct 2026. Referinta este manuscrisul submis, `revision/manuscript/BASE_
 - Interdictiile din TEXT_DECISIONS raman: "best performing", "best overall", "best model", "significant" / "significantly" ca eticheta (fara test raportat; "significance label" in response letter R1.3 este descrierea a ceea ce NU se face), "stable over time", "optimal thresholds", "honestly", "three years". Fara em dash nicaieri (nici in response letter).
 - Engleza americana (v8 este US): verificarea permanenta din `_check_t41_outputs.py` (perechile din `f5_us_spelling.py`).
 - Numele claselor Rest / Normal / Active cu majuscula; "macro F1", "F1 Active", "balanced accuracy", "paired bootstrap difference" ca in v8.
+- Provenance wording (T9.1, 26 oct 2026): in Abstract, Highlights, Introduction, Conclusions si response letter NU apar "two devices are complementary", "both devices are complementary", "device-independent", "watch indicators", "ring and watch are complementary"; comparatia dispozitivelor se numeste "two data paths" (in Abstract "both data sources"), iar indicatorii de validare a etichetelor "rule-independent indicators" / "indicators that do not enter the labeling rule". Methods, Results si Discussion nu intra in verificare (formularile hardware din 3.1, 3.3, 3.9, 4.6 si Discussion raman). Verificare permanenta in `_check_t41_outputs.py` (check "Provenance wording (T9.1)").
 
 ## 4. Cifre de referinta (style_check.py, proza fara tabele, legende, note, referinte, declaratii, anexa)
 

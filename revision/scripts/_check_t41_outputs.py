@@ -56,6 +56,40 @@ def all_text(d) -> str:
     return "\n".join(parts)
 
 
+# T9.1 (2026-10-26): provenance wording. Section 3.1 states that three of the HealthKit features (mean heart rate,
+# steps, active energy) pool ring samples on 95.6% to 99.7% of the labeled days, so the device ablation compares two
+# data paths, not two sensors. The front and back matter (Abstract, Highlights, Introduction, Conclusions) and the
+# response letter must not phrase that comparison, or the label-validation indicators, in device terms. Methods,
+# Results and Discussion are outside this check: the hardware wording of 3.1, 3.3, 3.9, 4.6 and the Discussion
+# ("ring and watch data") is legitimate. Rule: STYLE_GUIDE.md ("provenance wording"), TEXT_DECISIONS.md section T9.
+PROVENANCE_FORBIDDEN = ("two devices are complementary", "both devices are complementary", "device-independent",
+                        "watch indicators", "ring and watch are complementary")
+PROVENANCE_SCOPE = "Abstract, Introduction, Conclusions, Highlights and Response letter"
+
+
+def provenance_sections(man, highlights, response) -> dict[str, str]:
+    """Text of the five places covered by the provenance wording rule (manuscript sections cut by heading)."""
+    pars = list(man.paragraphs)
+    idx = next(i for i, p in enumerate(pars) if p.text.strip() == "Abstract")
+    out = {"Abstract": pars[idx + 1].text}
+
+    def section(start: str, stop: str) -> str:
+        i = next(k for k, p in enumerate(pars) if p.style.name.startswith("Heading") and p.text.strip().startswith(start))
+        j = next(k for k in range(i + 1, len(pars)) if pars[k].text.strip().startswith(stop))
+        return "\n".join(p.text for p in pars[i + 1:j])
+
+    out["Introduction"] = section("1. Introduction", "2. Related Work")
+    out["Conclusions"] = section("6. Conclusions", "CRediT authorship contribution statement")
+    out["Highlights"] = "\n".join(p.text for p in highlights.paragraphs)
+    out["Response letter"] = all_text(response)
+    return out
+
+
+def provenance_hits(sections: dict[str, str]) -> list[str]:
+    """Case-insensitive hits of PROVENANCE_FORBIDDEN per section, as 'Section: phrase'."""
+    return [f"{name}: '{s}'" for name, text in sections.items() for s in PROVENANCE_FORBIDDEN if s in text.lower()]
+
+
 def main() -> None:
     docs = {}
     for k, p in DOCS.items():
@@ -87,6 +121,11 @@ def main() -> None:
     hl = [p.text for p in docs["highlights"].paragraphs if p.style.name == "List Paragraph" and p.text.strip()]
     rec("Highlights: 3 to 5 bullets", 3 <= len(hl) <= 5, f"{len(hl)} bullets")
     rec("Highlights: each at most 85 characters", all(len(h) <= 85 for h in hl), "; ".join(str(len(h)) for h in hl))
+
+    # T9.1 (2026-10-26): provenance wording in the front and back matter and in the response letter (helpers above)
+    hits = provenance_hits(provenance_sections(man, docs["highlights"], docs["response"]))
+    rec(f"Provenance wording (T9.1): none of {', '.join(repr(s) for s in PROVENANCE_FORBIDDEN)} in the {PROVENANCE_SCOPE}",
+        not hits, "; ".join(hits) if hits else "0 hits")
 
     # em dash and placeholders in every docx
     for k, d in docs.items():
