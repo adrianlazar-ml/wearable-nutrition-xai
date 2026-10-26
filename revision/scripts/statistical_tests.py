@@ -289,6 +289,9 @@ def main() -> None:
              "ci_A_low", "ci_A_high", "ci_B_low", "ci_B_high", "n_used"]]
     check(int(pb.n_skipped.sum()) == 0, f"resamples skipped (sum over pairs x metrics): {int(pb.n_skipped.sum())}")
     # sanity: marginal CIs == T1.1 and point differences == canonical, at 4 decimals
+    # Audit F2 (2026-10-25) observation, kept as is: equality of two values each rounded to 4 decimals is fragile
+    # near a rounding boundary (a difference of 1e-9 can flip the fourth decimal); it passes on the recorded
+    # values and is not changed, a tolerance comparison (abs diff < 5e-5) would be the robust form.
     for r in pb.itertuples():
         a, b = r.pair.split("-")
         ka, kb = a.lower(), b.lower()

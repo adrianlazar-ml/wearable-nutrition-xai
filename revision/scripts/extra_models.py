@@ -274,6 +274,9 @@ def inner_preprocess(X: pd.DataFrame, y: pd.Series, dates: pd.Series) -> tuple[S
 def make_tree(name: str, seed: int, **overrides):
     """Package defaults plus seed / threads / verbosity only (overrides exist for unit tests)."""
     if name == "rf":
+        # Audit F5 O6 (2026-10-25): the seed argument is ignored for "rf"; build_models()["rf"] carries the canonical
+        # random_state (42). The RF rows of T2.1 are the canonical reference evaluated once with seed 42, so no
+        # output is affected; left unchanged so that the identity test T2.1.0 keeps its exact meaning.
         return build_models()["rf"]
     if name == "lgbm":
         return LGBMClassifier(random_state=seed, n_jobs=1, verbose=-1, **overrides)

@@ -34,6 +34,14 @@ reference (safety_layer_calibrated.py); the mismatch is recorded as a T1.3
 finding in CIFRE_REVIZIE.md; CIFRE_CANONICE.md stays untouched and the erratum
 is written at T4.3. Evidence script, kept; do not "fix" it to exit 0.
 Run from repo root:  python revision/scripts/_check_t13_safety_layer.py
+
+What this script does and does not do (clarified 2026-10-26, audit F3 observation): it does NOT rerun
+confidence_threshold.main() or the old 16-feature pipeline; the "canonical" column is read from the stored
+table outputs/tables/confidence_threshold_analysis.csv, whose figures are the ones printed in
+CIFRE_CANONICE.md section 7, and the "canonical RF" column is recomputed here from
+revision/results/test_predictions_rf.csv with the two unchanged functions above. The audit (F3, 2026-10-25)
+executed the old pipeline's logic itself and confirmed the erratum of Section 4.9 by execution. The exit
+code 1 is the intended outcome of this evidence script, not a failure.
 """
 
 from __future__ import annotations

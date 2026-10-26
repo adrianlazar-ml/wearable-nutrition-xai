@@ -216,6 +216,9 @@ def build_frame(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series]:
     lag_all = pd.DataFrame({f"{v}_lag1": df[v].shift(1) for v in VARIABLES})
     sel = df["date"].isin(dates).to_numpy()
     for v in VARIABLES:
+        # Audit F4 (2026-10-25) observation, kept as is: the first clause compares df[v].shift(1) with lag_all,
+        # which IS df[v].shift(1), so it is always True (tautological); the second clause, array_equal against the
+        # canonical lag-1 feature X[f"{v}_lag1"] on the 958 labeled dates, is the identity actually tested.
         ident[v] = lag_identity(df[v], lag_all[f"{v}_lag1"]) and bool(
             np.array_equal(np.nan_to_num(lag_all[f"{v}_lag1"].to_numpy(dtype=float)[sel], nan=-1e30),
                            np.nan_to_num(X[f"{v}_lag1"].to_numpy(dtype=float), nan=-1e30)))
