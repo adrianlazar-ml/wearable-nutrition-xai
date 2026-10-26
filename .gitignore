@@ -25,3 +25,7 @@ logs/
 # OS / editor
 .DS_Store
 Thumbs.db
+
+# Date brute Apple Health (export JSON zilnic, Health Auto Export): date personale, nu intra in repo (repo-hygiene, 2026-10-26).
+# Fisierele deja urmarite din data/apple_health/ (export.xml si csv-urile XML) sunt decizia autorului, vezi revision/audit/untracked_inventory.md.
+data/apple_health/New Automation/
