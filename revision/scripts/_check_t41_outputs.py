@@ -9,6 +9,7 @@ import hashlib
 import re
 import subprocess
 import sys
+import zipfile
 from pathlib import Path
 
 import docx
@@ -137,6 +138,26 @@ def main() -> None:
             body_t = t.split("Removed from the submitted version")[0] if k == "marked" else t
             rec(f"{DOCS[k].name}: 0 'canonical' in the text", len(re.findall(r"canonical", body_t, re.I)) == 0, f"{len(re.findall(r'canonical', body_t, re.I))} found")
             rec(f"{DOCS[k].name}: 0 paragraphs containing 'Internal'", "Internal" not in t)
+
+    # T10.5 (2026-11-01): the sensitivity-label content marking of the base ('Internal' text box in the footers,
+    # ClassificationContentMarking* / MSIP_Label_* properties in docProps/custom.xml, docMetadata/LabelInfo.xml) must
+    # not reach any generated docx. Checked on the zip parts, not on the python-docx text (text boxes are invisible to it).
+    marking_hits = []
+    for k, path in DOCS.items():
+        with zipfile.ZipFile(path) as z:
+            for name in z.namelist():
+                low = name.lower()
+                if low.startswith("word/footer") or low.startswith("word/header"):
+                    if "Internal" in z.read(name).decode("utf-8", "replace"):
+                        marking_hits.append(f"{path.name}:{name}:'Internal'")
+                if low == "docprops/custom.xml":
+                    x = z.read(name).decode("utf-8", "replace")
+                    if "ClassificationContentMarking" in x or "MSIP_Label" in x:
+                        marking_hits.append(f"{path.name}:{name}:classification property")
+                if low == "docmetadata/labelinfo.xml":
+                    marking_hits.append(f"{path.name}:{name}:present")
+    rec("T10.5: 0 sensitivity-label marking in the 5 docx ('Internal' in header/footer XML, ClassificationContentMarking / MSIP_Label in docProps/custom.xml, docMetadata/LabelInfo.xml)",
+        not marking_hits, "; ".join(marking_hits) if marking_hits else "0 hits")
 
     # T6.4 (F5): American spelling in the body text of every docx, checked with the UK -> US pair list of
     # f5_us_spelling.py (check only, no replacement). Explicit exceptions: titles of published works in References.

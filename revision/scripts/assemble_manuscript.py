@@ -584,6 +584,11 @@ def apply_v8_wording(doc, v8_path: Path) -> None:
 
 def assemble_manuscript(blocks: dict, v8_path: Path | None = None) -> None:
     doc = docx.Document(str(BASE))
+    stripped = strip_classification_marking(doc)
+    DEVIATIONS.append(f"T10.5 (2026-11-01): the sensitivity-label content marking of the base ('Internal' footer text box, "
+                      f"docProps/custom.xml classification properties, docMetadata/LabelInfo.xml) is removed from every "
+                      f"generated docx: {stripped['footer_runs']} footer runs and parts {stripped['parts']} dropped from the manuscript; "
+                      f"the derived files start from the same stripped base (empty_doc_from_base). The base files are unchanged.")
     if v8_path is not None:
         apply_v8_wording(doc, v8_path)
     body_tmpl = find_par(doc, "The dataset comprises physiological data from a single participant")
@@ -1169,8 +1174,45 @@ class Templates:
             setattr(self, name, Paragraph(copy.deepcopy(getattr(self, name)._p), doc))
 
 
+CLASSIFICATION_SHAPE_NS = "http://schemas.microsoft.com/office/drawing/2020/classificationShape"
+CLASSIFICATION_RELTYPES = ("/custom-properties", "/classificationlabels")
+
+
+def strip_classification_marking(doc) -> dict:
+    """T10.5 (2026-11-01): remove the Microsoft Purview sensitivity-label content marking that the base docx carries and
+    that every derived file inherited: the footer text box 'Internal' (a w:drawing with aclsh:classification in
+    word/footer1-3.xml, present twice per footer as mc:Choice + mc:Fallback inside one run), the three
+    ClassificationContentMarkingFooter* properties of docProps/custom.xml and the label record docMetadata/LabelInfo.xml
+    (clbl:labelList). The run that holds the drawing is removed; the two package relationships are dropped, so the two
+    parts are not written. The base files are never modified (sha256 check in main). Returns the counts."""
+    removed = {"footer_runs": 0, "parts": []}
+    tag = "{%s}classification" % CLASSIFICATION_SHAPE_NS
+    for section in doc.sections:
+        for hf in (section.footer, section.first_page_footer, section.even_page_footer,
+                   section.header, section.first_page_header, section.even_page_header):
+            if hf.is_linked_to_previous:
+                continue
+            runs = []
+            for el in hf._element.iter(tag):
+                run = el
+                while run is not None and run.tag != qn("w:r"):
+                    run = run.getparent()
+                if run is not None and run not in runs:
+                    runs.append(run)
+            for run in runs:
+                run.getparent().remove(run)
+                removed["footer_runs"] += 1
+    pkg = doc.part.package
+    for rid, rel in list(pkg.rels.items()):
+        if any(rel.reltype.endswith(t) for t in CLASSIFICATION_RELTYPES):
+            removed["parts"].append(str(rel.target_part.partname))
+            pkg.rels.pop(rid)
+    return removed
+
+
 def empty_doc_from_base():
     doc = docx.Document(str(BASE))
+    strip_classification_marking(doc)
     tm = Templates(doc)
     body = doc.element.body
     for child in list(body.iterchildren()):
