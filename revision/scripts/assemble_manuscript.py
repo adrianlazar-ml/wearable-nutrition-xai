@@ -1319,7 +1319,7 @@ def make_supplementary() -> None:
     desc = pd.read_csv(RES / "t32_descriptives.csv", keep_default_na=False)
     append(doc, tm.body, "Level A indicators (Table 10 of the main text) come from the HealthKit path and are independent of the "
            "label rule; heart rate, steps and active energy include ring samples merged by HealthKit (Section 3.1 of the main text), "
-           "so only HRV, SpO2 and respiratory rate are also independent of the ring's sensors. "
+           "so only HRV and SpO2 are also independent of the ring's sensors, and respiratory rate almost entirely so. "
            "Level B indicators are raw ring signals that do not enter the labeling rule but feed the "
            "readiness score, so they show the internal consistency of that score rather than independent validation. "
            "The lag-1 rows compare the value of day t-1 with the class of day t. Expected directions were fixed before the "
