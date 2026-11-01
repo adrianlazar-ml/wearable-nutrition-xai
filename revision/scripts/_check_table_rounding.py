@@ -195,7 +195,8 @@ def spec_agreement(rows_map: dict[str, str], cols=("Rest", "Normal", "Active")):
 
 
 def spec_table10():
-    return spec_agreement({"Mean 24-h heart rate": "aw_hr_mean", "Respiratory rate": "aw_resp_rate", "HRV, SDNN": "aw_hrv_mean",
+    # T10.9b (2026-11-01): row label 'Mean 24-h heart rate' renamed to the v8 form '24-hour' in Table 10; same cells checked
+    return spec_agreement({"Mean 24-hour heart rate": "aw_hr_mean", "Respiratory rate": "aw_resp_rate", "HRV, SDNN": "aw_hrv_mean",
                            "SpO2": "aw_spo2", "Active calories": "aw_active_calories", "Steps": "aw_steps"})
 
 
