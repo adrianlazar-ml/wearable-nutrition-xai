@@ -115,3 +115,21 @@ Nicio alta diferenta.
 Neatinse (regulile din brief): title page, CRediT / competing interest / Funding / GenAI / Data availability, comentariile Word, Highlights, Table 1, paragrafele identice cu v8 in afara celor listate; fara em dash; engleza americana; LF.
 
 Ramas deschis (nu face parte din T10): Q2-Q7 pentru Buiu; forma "Limitation 3" vs "Limitation (N)" si "24-h" din Table 10 (raportate in F10, neaplicate); pragul istoric 249 din _check_t8_parity.py; merge-ul r1-final-pass in master (decizie Adrian).
+
+## T10.9 (1 nov 2026): trei corectii din review-ul T10_summary / F10 (commit-uri a07b4a4, e9e7dcc, 663729a + summary)
+
+| Subtask | Commit | Rezultat |
+|---|---|---|
+| T10.9a Abstract 249 | a07b4a4 | PASS: OLD gasit o data (F4 ABSTRACT + manuscris + copia marcata; 0 in Highlights si Response); Abstract 249 cuvinte (split pe spatii); set de numere identic (958, 33 prezente, nimic altceva schimbat); _check_t8_parity 19 / 26 (18 / 26 la T10.8, regula "Abstract <= 249" trece, restul neschimbat); check 74 PASS |
+| T10.9b "24-h" -> "24-hour" | e9e7dcc | PASS: inventar "24-h" inainte: o singura aparitie in cele 3 docx, eticheta de rand din Table 10 (F4 4.7, text de revizie, nu v8); dupa: 0 in manuscris, Supplementary, Response; _check_table_rounding 402 / 0 dupa redenumirea cheii de rand "Mean 24-h heart rate" -> "Mean 24-hour heart rate" in _check_table_rounding.py (cheia leaga eticheta de aw_hr_mean; aceleasi 7 celule verificate, nu e o slabire; fara redenumire scriptul se oprea cu "STOP: row 'Mean 24-h heart rate' matched 0 rows") |
+| T10.9c trimiteri la limitari | 663729a | PASS: 0 trimiteri cu paranteze in afara enumerarii; lista N inainte == dupa |
+| T10.9d verificare finala | (acest commit) | PASS: toate check-urile de mai jos |
+
+Inventar T10.9c (manuscris + Response, enumerarea din Discussion exclusa):
+- Manuscris: 0 trimiteri cu paranteze inainte si dupa; singura trimitere e "Limitation 3, Section 5" (3.12), neschimbata; enumerarea (1)-(9) din paragraful "Limitations" intacta.
+- Response, inainte (8): "Limitation (1) rewritten" (R1.1 Changes); "Table 1 and Limitation (9)." (R1.5 Response); "Limitation (4); new Limitation (9)" (R1.5 Changes); "Figure 6 legend; Limitation (6)." (Comment 6 Changes); "Figure S3; Limitation (5)." (Comment 9 Changes); "Temporal robustness"; Limitation (1); Abstract" (Comment 10 Changes); "Changes. Limitation (3) rewritten with figures" (R2.a Changes). Dupa: aceleasi 8 locuri cu "Limitation N"; lista N inainte [1, 9, 4, 9, 6, 5, 1, 3] (+ "new Limitation 9" din General changes, deja fara paranteze) == dupa. Neatinse: "### Limitation (1), rescrisa" si "Limitations (9)" din titlurile de bloc ale F4_manuscript_changes.md (adnotari editoriale, nu text de manuscris).
+- TEXT_DECISIONS.md: linia T10.9c adaugata la finalul sectiunii T10.
+
+Verificare finala T10.9d (dupa reasamblarea celor 5 docx): _check_t41_outputs 75 / 75; t41 R1 1581 / 1099 / 0 si S1 387 / 321 / 0 (neschimbate); _check_table_rounding 402 / 0; _check_t32b_outputs ALL PASS (run_meta restaurat); _check_t42_response ALL PASS; style_check 8 / 8 (26.4), 2 / 2, 5 / 5 (27.0); _check_t91_wording PASS 0 hits; _check_t8_parity 19 / 26 (+1 fata de T10.8: Abstract <= 249); pytest 111 passed; comentarii Word 9 + 1; CIFRE_CANONICE.md sha256 a80e9d6c5986c98b... identic.
+
+Diferente de text fata de ec85606 (toate partile word/*.xml comparate; subsolurile neschimbate): manuscris si copia marcata 2 paragrafe (Abstract, T10.9a; randul "Mean 24-hour heart rate (bpm)" din Table 10, T10.9b); Response 7 paragrafe (cele 8 trimiteri la limitari, T10.9c; R1.5 Changes contine doua); Supplementary si Highlights 0. Numerele identice pe fiecare paragraf schimbat. Nicio alta diferenta. Adnotarea din F4 (titlul blocului ABSTRACT) actualizata la 249 in commit-ul de summary.
