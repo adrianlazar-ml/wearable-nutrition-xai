@@ -42,6 +42,6 @@ Praguri (T8.6; `style_check.py` iese cu cod 1 daca nu sunt indeplinite): pe para
 ## 5. Ce nu se atinge la alinierea stilistica
 
 - Paragrafele identice cu v8 (inclusiv "We emphasize..." din 3.2 si "to the best of our knowledge" din contributii).
-- 3.12 (contine fraza "adjusted by the declared goal", decizie Buiu in asteptare, GOAL_FIX).
+- 3.12: GOAL_FIX aplicat, confirmat de Buiu 30 oct 2026 (obiectivul declarat este camp de profil si nu modifica tinta; fraza v8 "adjusted by the declared goal" a disparut la apply-audit).
 - Tabelele si cifrele lor, referintele, cele 9 comentarii Word ale manuscrisului si comentariul de pe linia Authors din response letter, Appendix A, declaratiile.
 - Nicio cifra noua si nicio cifra mutata: pentru fiecare paragraf inlocuit, setul de numere din vechi si din nou este identic (verificat de `revision/scripts/_check_t8_parity.py`).
