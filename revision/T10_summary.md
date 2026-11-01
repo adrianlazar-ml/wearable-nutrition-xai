@@ -133,3 +133,28 @@ Inventar T10.9c (manuscris + Response, enumerarea din Discussion exclusa):
 Verificare finala T10.9d (dupa reasamblarea celor 5 docx): _check_t41_outputs 75 / 75; t41 R1 1581 / 1099 / 0 si S1 387 / 321 / 0 (neschimbate); _check_table_rounding 402 / 0; _check_t32b_outputs ALL PASS (run_meta restaurat); _check_t42_response ALL PASS; style_check 8 / 8 (26.4), 2 / 2, 5 / 5 (27.0); _check_t91_wording PASS 0 hits; _check_t8_parity 19 / 26 (+1 fata de T10.8: Abstract <= 249); pytest 111 passed; comentarii Word 9 + 1; CIFRE_CANONICE.md sha256 a80e9d6c5986c98b... identic.
 
 Diferente de text fata de ec85606 (toate partile word/*.xml comparate; subsolurile neschimbate): manuscris si copia marcata 2 paragrafe (Abstract, T10.9a; randul "Mean 24-hour heart rate (bpm)" din Table 10, T10.9b); Response 7 paragrafe (cele 8 trimiteri la limitari, T10.9c; R1.5 Changes contine doua); Supplementary si Highlights 0. Numerele identice pe fiecare paragraf schimbat. Nicio alta diferenta. Adnotarea din F4 (titlul blocului ABSTRACT) actualizata la 249 in commit-ul de summary.
+
+## T10.9e (1 nov 2026, branch t109e-s3-split din master a5b6f4b): fraza T3.2b din S3 in doua fraze
+
+T0: fraza OLD (74 de cuvinte) gasita exact o data in sursa (assemble_manuscript.py, make_supplementary, literalul de pe linia 1365) si o data in KBS_Supplementary_R1.docx.
+- Inainte: "On the 320 labeled days with at least one HealthKit heart-rate sample not written by the ring (median one such sample per day; a sensitivity check on a non-random subset, not a validation on an independent sensor), the Active versus Rest contrast persists on those samples alone (Cliff's delta -0.703 [-0.885, -0.472], against -0.835 [-0.983, -0.602] on all samples of the same days), whereas the Active versus Normal contrast does not (-0.135 [-0.373, +0.112])."
+- Dupa: "On the 320 labeled days with at least one HealthKit heart-rate sample not written by the ring (median one such sample per day), the Active versus Rest contrast persists on those samples alone (Cliff's delta -0.703 [-0.885, -0.472], against -0.835 [-0.983, -0.602] on all samples of the same days), whereas the Active versus Normal contrast does not (-0.135 [-0.373, +0.112]). This is a sensitivity check on a non-random subset, not a validation on an independent sensor."
+- Cuvinte: fraza 1 = 60, fraza 2 = 16 (ambele <= 60); singurele cuvinte noi "This is"; hyphen-minus ASCII, 0 caractere non-ASCII; aceleasi 10 numere (set identic pe paragraf).
+
+style_check.py, mod `other` (Supplementary, Highlights): prag nou "prose: sentences > 60 words = 0" pe paragrafele de proza (legendele de tabel si de figura, notele italice de sub tabele si "Keywords" sunt excluse de prose_paragraphs, aceeasi regula ca listele "Changes" pe Response); documentat in STYLE_GUIDE sectiunea 4 si in docstring. Dovada: Supplementary de la a5b6f4b da FAIL (1 fraza > 60, cea de 74), dupa T10.9e PASS 3 / 3; niciun alt paragraf de proza din Supplementary nu depaseste 60 (urmatoarea cea mai lunga: 57, "Level A indicators ..."); Highlights 3 / 3.
+
+TEXT_DECISIONS.md, sectiunea T10, linia T10.2: formularea in doua fraze inlocuieste fraza unica. Neatins (nelistat in task, raportat): lista SUPPLEMENTARY din F4_manuscript_changes.md citeaza inca fraza unica din T10.2 (adnotare editoriala, nu sursa Supplementary).
+
+| Check | Rezultat |
+|---|---|
+| _check_t41_outputs.py | 75 / 75 (dupa commit; inainte de commit cele doua check-uri git pe TEXT_DECISIONS / STYLE_GUIDE nemodificate dadeau FAIL, asteptat) |
+| t41 R1 / S1 | 1581 / 1099 / 0 ; 387 / 321 / 0 (neschimbate) |
+| _check_table_rounding | 402 / 0 |
+| _check_t32b_outputs / _check_t42_response | ALL PASS / ALL PASS (run_meta restaurat) |
+| style_check manuscris / Response / Supplementary / Highlights | 8 / 8 (26.4) ; 5 / 5 (27.0) ; 3 / 3 ; 3 / 3 |
+| _check_t91_wording | PASS 0 hits |
+| _check_t8_parity | 19 / 26 (neschimbat) |
+| pytest | 111 passed |
+| Comentarii Word | 9 + 1 |
+| CIFRE_CANONICE.md | sha256 a80e9d6c5986c98b... identic |
+| Diferente de text fata de a5b6f4b | numai paragraful S3 din KBS_Supplementary_R1.docx (word/document.xml); celelalte 4 docx identice in toate partile |

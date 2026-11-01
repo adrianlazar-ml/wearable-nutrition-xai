@@ -26,7 +26,8 @@ Thresholds by mode (different-from-v8 paragraphs unless stated):
               and the second Response paragraph of R1.9); the 'Changes.' paragraphs (location lists, one 'sentence' each)
               and the 'General changes' bullets are enumerations and are excluded. Before T8.8c all authors' paragraphs
               were measured (27.7 words/sentence after T8.4 against 26.9 on the Response paragraphs).
-  other:      'random forest' = 0, forbidden terms = 0 (Supplementary, Highlights).
+  other:      'random forest' = 0, forbidden terms = 0, sentences > 60 words = 0 (T10.9e; Supplementary, Highlights; captions,
+              legends and italic notes excluded).
 """
 from __future__ import annotations
 
@@ -205,6 +206,9 @@ def thresholds(mode: str, all_pr: dict, diff_pr: dict) -> list[tuple[str, bool, 
     else:
         T.append(("prose: 'random forest' (lower case) = 0", all_pr.get("random forest", 0) == 0, str(all_pr.get("random forest", 0))))
         T.append(("prose: forbidden terms = 0", all_pr.get("forbidden_total", 0) == 0, str(all_pr.get("forbidden", {}))))
+        # T10.9e (2026-11-01): revision prose of the Supplementary / Highlights; captions, legends and italic table notes are
+        # excluded by prose_paragraphs (same rule as the 'Changes' lists of the response letter, STYLE_GUIDE section 4)
+        T.append(("prose: sentences > 60 words = 0", all_pr.get("n_gt60", 0) == 0, str(all_pr.get("n_gt60", 0))))
     return T
 
 

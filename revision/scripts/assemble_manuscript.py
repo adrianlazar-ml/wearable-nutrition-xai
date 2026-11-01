@@ -1362,7 +1362,7 @@ def make_supplementary() -> None:
     append(doc, tm.body, "Level A indicators (Table 10 of the main text) come from the HealthKit path and are independent of the "
            "label rule; heart rate, steps and active energy include ring samples merged by HealthKit (Section 3.1 of the main text), "
            "so only HRV and SpO2 are also independent of the ring's sensors, and respiratory rate almost entirely so. "
-           "On the 320 labeled days with at least one HealthKit heart-rate sample not written by the ring (median one such sample per day; a sensitivity check on a non-random subset, not a validation on an independent sensor), the Active versus Rest contrast persists on those samples alone (Cliff's delta -0.703 [-0.885, -0.472], against -0.835 [-0.983, -0.602] on all samples of the same days), whereas the Active versus Normal contrast does not (-0.135 [-0.373, +0.112]). "
+           "On the 320 labeled days with at least one HealthKit heart-rate sample not written by the ring (median one such sample per day), the Active versus Rest contrast persists on those samples alone (Cliff's delta -0.703 [-0.885, -0.472], against -0.835 [-0.983, -0.602] on all samples of the same days), whereas the Active versus Normal contrast does not (-0.135 [-0.373, +0.112]). This is a sensitivity check on a non-random subset, not a validation on an independent sensor. "
            "Level B indicators are raw ring signals that do not enter the labeling rule but feed the "
            "readiness score, so they show the internal consistency of that score rather than independent validation. "
            "The lag-1 rows compare the value of day t-1 with the class of day t. Expected directions were fixed before the "
