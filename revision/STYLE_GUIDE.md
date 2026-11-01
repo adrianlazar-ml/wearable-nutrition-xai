@@ -14,7 +14,7 @@ T8.1, 25 oct 2026. Referinta este manuscrisul submis, `revision/manuscript/BASE_
 - Subiect impersonal sau numele obiectului: "The evaluation adds...", "Calibration of the Random Forest probabilities was assessed...", "The configuration fixed before this revision is kept...".
 - "we" numai pentru decizii ale autorilor ("We emphasize that these labels are operational pseudo-labels", "to the best of our knowledge"); in proza manuscrisului cel mult 6 aparitii (v8 are 4).
 - Response letter: aceleasi reguli de lungime si vocabular; "we" este permis (autorii raspund in nume propriu).
-- Fara formule retorice ("the picture is that", "we report it honestly", "as the reviewer's concern deserves" se inlocuiesc cu enuntul direct).
+- Fara formule retorice ("the picture is that", "we report it honestly", "as the reviewer's concern deserves" se inlocuiesc cu enuntul direct). Termeni interzisi in response letter, verificati de style_check.py (T10.3, 1 nov 2026): "concern deserves", "concern implies".
 
 ## 3. Vocabular si notatie
 

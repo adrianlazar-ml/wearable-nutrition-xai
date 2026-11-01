@@ -54,7 +54,8 @@ CAPTION_RE = re.compile(r"^(Table|Figure) (S?\d+|A\.1|A1)\b")
 NUMBERED_HEADING_RE = re.compile(r"^\d+(\.\d+)*\.\s")
 LEAD_RE = re.compile(r"^(?:[A-Z][^.]{2,70}\.|Response\.|Changes\.)\s$")
 FORBIDDEN = ["best performing", "best overall", r"\bsignificant(ly)?\b", "stable over time", "optimal thresholds",
-             "honestly", "—"]  # em dash
+             "honestly", "—",  # em dash
+             "concern deserves", "concern implies"]  # T10.3 (2026-11-01): rhetorical formulas, response letter (STYLE_GUIDE section 2)
 ABBR = r"(?:et al|vs|Fig|e\.g|i\.e|approx|St|No|cf)\."
 
 
