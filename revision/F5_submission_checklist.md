@@ -20,7 +20,7 @@ Stare la deschidere: F0-F4 inchise (CIFRE_REVIZIE.md, assembly_plan.md), docx-ur
 | T6.5 | Figurile 6 si 7, doar raport | F5_format_report.md, sectiunea T6.5 | caption, sursa cifrelor, cost de reconstructie per figura | PASS: script original gasit in Downloads/assa/fix_eswa_figures.py (nu in repo), cifre in revision/results (t14_shap_reference.csv; test_predictions_*.csv), cost mic; nicio reconstructie (commit ee05f5e) |
 | T6.6 | Verificare finala | rerulare completa | cifre identice; 0 forme UK; comentarii numarate | PASS cu diferenta explicata: manuscris FOUND 1061 / NEGASIT 0 identice, numere extrase 1516 (1509 + cele 7 etichete de sectiune si tabel din T6.1, toate SKIPPED 445); Supplementary 372 / 308 / 0 identic; outputs 69 / 69; comentarii: 6 "verify in Zotero" + 3 T6.2 = 9 in manuscris si in copia marcata, 0 in celelalte |
 
-Reguli: o singura cifra nu se schimba; nu se inventeaza date bibliografice; comentariile "verify in Zotero" raman pana la importul in Zotero; inlocuirile se fac pe liste de matches afisate inainte; un commit per task cu prefixul task-ului.
+Reguli: o singura cifra nu se schimba; nu se inventeaza date bibliografice; comentariile "verify in Zotero" raman pana la importul in Zotero (regula inchisa la T11c, 3 nov 2026: lista de referinte e text static, comentariile scoase, importul optional); inlocuirile se fac pe liste de matches afisate inainte; un commit per task cu prefixul task-ului.
 
 Deschise dupa aceasta sesiune (de decis cu Adrian / Buiu): (1) cele 7 cross-referinte pozitionale din raport, de inlocuit sau nu cu numere de sectiune; (2) Acknowledgements, Declaration of competing interest, CRediT, Funding: sectiuni absente, de adaugat daca KBS le cere in manuscris; (3) pagina de titlu fara autori si afilieri (baza anonimizata v8); (4) "Table A1" ramane in CIFRE_CANONICE.md (sectiunea Revision 1, coloana de locatie), fisier pe care checker-ul il cere neschimbat; (5) ordinea autorilor la Tomczak & Tomczak 2014 (pagina revistei listeaza Ewa, Maciej; articolul si citarile curente Maciej, Ewa), de confirmat la importul in Zotero.
 
@@ -45,7 +45,7 @@ Maparea fisier -> tip de item in Editorial Manager (pagina de upload la revizie,
 
 Puncte deschise dupa T11b (cu datele noi: pachetul la coautor pe 9-10 nov 2026, coautorul il urca la primire; 1 dec 2026 ramane termenul EM):
 1. T12b: clona publica (Optiunea C, cod + 11 agregate zilnice, fara docx-ul manuscrisului), DOI Zenodo; apoi rescrierea frazei a doua din Data availability (cod + agregate zilnice, DOI, fara "upon acceptance") si bullet in General changes.
-2. Importul in Zotero, regenerarea celor 6 referinte noi (APA 7) si scoaterea celor 6 comentarii "verify in Zotero" (singurele comentarii Word ramase).
+2. INCHIS la T11c (3 nov 2026): importul in Zotero nu e necesar inainte de submisie. BASE_MANUSCRIPT_v8.docx nu are campuri Zotero (0 ZOTERO_ITEM / ZOTERO_BIBL / CSL_CITATION / fldChar; 34 de intrari ca text static), lista de referinte este text static, iar forma APA 7 a celor 6 intrari noi a fost verificata manual la F5 (6 / 6, references_new_verified.md). Cele 6 comentarii "verify in Zotero" au fost scoase (0 comentarii Word in toate cele 6 docx). Importul in Zotero ramane optional, doar pentru consistenta de format.
 3. Raspunsul editorial office la tipul de item pentru manuscrisul curat (coautor).
 4. Corectarea numelui in EM, "Adrian A. Lazar" -> "Adrian Lazar" (coautor).
 5. Abstractul din EM: se inlocuieste la upload cu abstractul de 249 de cuvinte al R1 (split pe spatii; `_check_t8_parity.py`).
@@ -53,4 +53,4 @@ Puncte deschise dupa T11b (cu datele noi: pachetul la coautor pe 9-10 nov 2026, 
 7. "[date of submission]" in cover letter, la upload.
 8. Textul verbatim al mesajelor WhatsApp din 3 nov (15:37, 20:57, ~21:29, 21:30, ~21:33) de adaugat in WhatsappBuiu.txt (Downloads) de catre primul autor; sesiunea T11b nu l-a avut.
 
-Ramase dupa F5 (din plan, sectiunea 5 si 8): review Buiu (minimum o saptamana), regenerarea referintelor din Zotero (APA 7) si scoaterea comentariilor, repo public cu DOI (anonimizare profil, demo_end_to_end_v2.py, fisierele nestaged), submisie cu cel putin 5 zile inainte de 1 decembrie 2026.
+Ramase dupa F5 (din plan, sectiunea 5 si 8): review Buiu (minimum o saptamana), regenerarea referintelor din Zotero (APA 7) si scoaterea comentariilor (inchis la T11c: lista statica, comentarii scoase, import optional), repo public cu DOI (anonimizare profil, demo_end_to_end_v2.py, fisierele nestaged), submisie cu cel putin 5 zile inainte de 1 decembrie 2026.
