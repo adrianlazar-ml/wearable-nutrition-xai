@@ -724,7 +724,8 @@ def assemble_manuscript(blocks: dict, v8_path: Path | None = None) -> None:
                       "'remove if KBS requires anonymized main document; check Editorial Manager' on the CRediT heading and the 'T7 draft' "
                       "comment on the 'Authors:' line of the response letter are removed; the comments 'confirm roles with coauthor' and "
                       "'confirm no funding with coauthor' stayed until T11b.3 (2026-11-03), when the co-author confirmed the CRediT draft and "
-                      "the absence of funding (Q2, Q3 closed): 6 Word comments remain, all 'verify in Zotero'.")
+                      "the absence of funding (Q2, Q3 closed): 6 Word comments remained, all 'verify in Zotero', until T11c.1 (removed: "
+                      "the v8 reference list is static text, no Zotero fields; 0 Word comments in every deliverable).")
 
     # ---- Introduction --------------------------------------------------------------------------
     pos = paras(block(blocks, "Paragraf de pozitionare"))[0]
@@ -1155,7 +1156,8 @@ def assemble_manuscript(blocks: dict, v8_path: Path | None = None) -> None:
                       "Data availability, Appendix A, References. No Acknowledgements section (nobody to acknowledge; added only if the coauthor asks). "
                       "T11b.3 (2026-11-03, co-author's answers of 3 Nov 2026): CRediT draft confirmed and no grant, so the two remaining draft comments "
                       "('confirm roles with coauthor', 'confirm no funding with coauthor') are no longer placed, texts unchanged (Funding: Elsevier standard "
-                      "sentence); no Acknowledgements section (co-author's decision); 6 Word comments remain in the manuscript and the marked copy, all 'verify in Zotero'.")
+                      "sentence); no Acknowledgements section (co-author's decision); the 6 'verify in Zotero' comments that remained were removed at T11c.1 "
+                      "(static reference list): 0 Word comments in the manuscript and the marked copy.")
 
     # ---- Appendix A before References ----------------------------------------------------------
     refs_h = find_par(doc, "References")
@@ -1186,10 +1188,12 @@ def assemble_manuscript(blocks: dict, v8_path: Path | None = None) -> None:
             newp = Paragraph(insert_before(ref_pars[0], clone_paragraph(ref_tmpl, ref)), doc)
         else:
             newp = Paragraph(insert_after(after, clone_paragraph(ref_tmpl, ref)), doc)
-        doc.add_comment(runs=newp.runs, text=REF_COMMENT, author="T4.1 assembly", initials="T41")
+        # T11c.1 (2026-11-03): the Word comment REF_COMMENT ('verify in Zotero') is no longer placed: BASE_MANUSCRIPT_v8.docx
+        # carries no Zotero fields (0 ZOTERO_ITEM / ZOTERO_BIBL / CSL_CITATION / fldChar; 34 static entries), so the reference
+        # list is static text and the 6 entries, verified manually at F5 (references_new_verified.md), need no Zotero import
         ref_pars.append(newp)
         ref_pars.sort(key=lambda q: q.text.split("(")[0].strip().lower())
-        plan("REFERINTE NOI", f"References: {ref[:40]}", "insert alphabetically + comment 'verify in Zotero'", "References")
+        plan("REFERINTE NOI", f"References: {ref[:40]}", "insert alphabetically (no Word comment since T11c.1)", "References")
 
     # ---- uncited base references (T4.1-B) ------------------------------------------------------
     uncited = find_uncited_references(doc)
@@ -1869,7 +1873,7 @@ def write_plan(fig_rows, highlights, base_sha, legacy_dir) -> None:
     L.append("- Keywords: 'Keywords:' label kept from the base, list replaced by the F4 list (KEYWORDS_MODE = " + KEYWORDS_MODE + "). T11b.1 (2026-11-03, co-author's decision): "
              "the five keywords of the Editorial Manager record of the original submission, in EM order, completed with 'Decision support systems' (co-author) and 'SHAP' "
              "(first author) to reach 7; 'Explainable AI', 'Physiological state classification', 'mHealth' and 'Random Forest' of the earlier lists are not used.")
-    L.append("- New references: six APA 7 entries inserted alphabetically, each carrying the Word comment 'verify in Zotero' (kept until the Zotero import); T4.1-F (2026-10-20): authors, titles, volumes, pages, editors, DOIs / stable proceedings URLs verified on the publishers' pages (revision/references_new_verified.md, revision/references_new.bib); NeurIPS and AAAI papers cited as proceedings, not arXiv.")
+    L.append("- New references: six APA 7 entries inserted alphabetically; the Word comment 'verify in Zotero' that each carried (T4.1, placeholder for a Zotero import) was removed at T11c.1 (2026-11-03): BASE_MANUSCRIPT_v8.docx has no Zotero fields (0 ZOTERO_ITEM / ZOTERO_BIBL / CSL_CITATION / fldChar), the reference list is static text, and the APA 7 form of the 6 entries was verified manually at F5, so no Zotero import is needed before submission; T4.1-F (2026-10-20): authors, titles, volumes, pages, editors, DOIs / stable proceedings URLs verified on the publishers' pages (revision/references_new_verified.md, revision/references_new.bib); NeurIPS and AAAI papers cited as proceedings, not arXiv.")
     L.append("- T4.1-B: base paragraph of 4.3 'Table 5 reports bootstrap confidence intervals for the best model' -> 'for the reported model'; Abstract: first 'SHAP' expanded to 'SHAP (Shapley additive explanations)' in F4_manuscript_changes.md (248 words); heading 3.5 renamed; "
              "the two persistence per-class F1 cells of Table 4 now have a row in CIFRE_REVIZIE.md (T0.4).")
     L.append("- T4.1-D (editorial fixes after the read-through, 2026-10-19): Discussion 'Temporal robustness' shortened in F4 (figures stay in 4.8, 'canonical' -> 'reported'); "

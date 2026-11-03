@@ -262,8 +262,10 @@ def main() -> None:
     rec("Every reference entry is cited in the text", not uncited, f"{len([r for r in refs if r.strip()])} entries; uncited: " + "; ".join(uncited))
 
     # comments on new references
+    # T11c.1 (2026-11-03): the 6 'verify in Zotero' comments are gone (v8 reference list is static text, no Zotero fields;
+    # the 6 entries verified manually at F5): 0 expected
     cm = [c for c in man.comments if "verify in Zotero" in c.text]
-    rec("6 Word comments 'verify in Zotero' on the new references", len(cm) == 6, f"{len(cm)} comments")
+    rec("0 Word comments 'verify in Zotero' on the new references (6 until T11c.1)", len(cm) == 0, f"{len(cm)} comments")
     # T7.9 (2026-10-22): comment inventory was 9 in the manuscript (6 'verify in Zotero' + 3 'T6.2 draft' on the declaration
     # sections) and 1 in the response letter ('T7 draft', on the Authors line). T11.2 (2026-11-03): the CRediT heading comment
     # on anonymization and the 'T7 draft' comment are gone (single-blind review): 8 in the manuscript and in the marked copy,
@@ -273,8 +275,8 @@ def main() -> None:
     n_man = len(list(man.comments)); n_resp = len(list(docs["response"].comments)); n_marked = len(list(docs["marked"].comments))
     n_other = len(list(docs["highlights"].comments)) + len(list(docs["supplementary"].comments))
     n_t62 = sum(1 for d in docs.values() for c in d.comments if c.author == "T6.2 draft" or "with coauthor" in c.text)
-    rec("Word comments: 6 in the manuscript and in the marked copy (all 'verify in Zotero'; 0 'T6.2 draft' since T11b.3), 0 in the response letter, 0 elsewhere",
-        n_man == 6 and n_marked == 6 and n_resp == 0 and n_other == 0 and n_t62 == 0,
+    rec("Word comments: 0 in the manuscript and in the marked copy (6 'verify in Zotero' until T11c.1; 0 'T6.2 draft' since T11b.3), 0 in the response letter, 0 elsewhere",
+        n_man == 0 and n_marked == 0 and n_resp == 0 and n_other == 0 and n_t62 == 0,
         f"manuscript {n_man}, marked {n_marked}, response {n_resp}, others {n_other}, 'T6.2 draft' {n_t62}")
 
     # T11.2 (2026-11-03): title page reproduced from the Editorial Manager submission (single-blind), built from the T11
