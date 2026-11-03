@@ -24,7 +24,7 @@ Run everything from the repository root with `python -W error` (every script was
 2. T1, analyses on the saved predictions: `extended_metrics.py` (T1.1, about 20 to 30 s), `statistical_tests.py` (T1.2), `calibration_rf.py --stage A` then `--stage B` and `safety_layer_calibrated.py` (T1.3, a few seconds each stage), `shap_stability.py --mode bootstrap` and `--mode seeds` (T1.4, about one minute per mode), `group_ablation.py` (T1.5, about 20 to 25 s).
 3. T3, labels and time: `threshold_sensitivity.py` (T3.1), `label_agreement.py` (T3.2, a few seconds), `expanding_window.py` (T3.3, about 20 to 30 s).
 4. T2, additional models: `extra_models.py --mode main` (T2.1, about 3 minutes) and `--mode seeds` (about 11 minutes); `hyperparameter_search.py --mode cv` (T2.2, about 28 minutes), `--mode test` (3 to 4 minutes) and `--mode seeds` (about 6 minutes).
-5. F4, manuscript assembly: `assemble_manuscript.py` (needs the submitted v8 docx and the legacy figure folder, see its `--help`), then `_check_t41_numbers.py`, `_check_t41_outputs.py`, `_check_table_rounding.py`, `style_check.py`.
+5. F4, manuscript assembly: `assemble_manuscript.py` (needs the submitted v8 docx and the legacy figure folder, see its `--help`), then `_check_t41_numbers.py`, `_check_t41_outputs.py`, `_check_table_rounding.py`, `style_check.py`. The same run builds the sixth docx, `manuscript/KBS_Cover_Letter_R1.docx`, from `F4_cover_letter_R1.md` (T11.5; checked by `_check_t115_cover_letter.py`).
 
 Determinism: every producing script was run twice in a row and the outputs compared byte for byte by its `_check_t*_outputs.py` script (sha256 on csv, md, npy, png, pdf; json compared without the run-date fields). The 1,000-resample bootstrap matrix (`results/bootstrap_indices_1000x192_seed42.npy`, `numpy.random.default_rng(42)`) is shared by all T1, T2 and T3 scripts, so differences between systems are paired. Unit tests: `python -m pytest revision/scripts/ -q`.
 
@@ -40,6 +40,10 @@ What is in the repository and what is not:
 ## Provenance of the HealthKit features
 
 The parser never reads the `source` field of the JSON records and pools every record of a day. On the labeled days, the aggregates attributed to the watch include ring samples merged by HealthKit for heart rate (99.7% of the days), steps (95.6%) and active energy (99.4%); HRV and SpO2 come from the watch only, respiratory rate almost entirely so, and the sleep-stage features come from whichever device wrote a sleep record (the ring alone on 204 of 952 days, both devices summed on 8 days). The manuscript therefore describes the two sources as two data paths (ring scores from the API, HealthKit aggregates from the watch export), and the independence of the label validation from the ring's sensors is restricted to HRV, SpO2 and respiratory rate (Sections 3.1, 3.10, 4.7, Limitation 9 of the revised manuscript; `audit/AUDIT_F4_provenance_shap_ablation_agreement.md`). Lesson for any reuse of Health Auto Export data: filter by `source` at parse time.
+
+## Record of the original submission
+
+`manuscript/submitted/` holds the Editorial Manager PDF of the original submission (KNOSYS-D-26-14863, received from the co-author on 2 November 2026; sha256 in its README). `audit/em_submission_diff.md` (script `scripts/_t11_em_diff.py`) shows that its manuscript block is the v8 base plus a title page with the authors (single-blind review). The folder is excluded from the public release (e-mail addresses and a telephone number; `audit/hygiene_summary.md`).
 
 ## Verification notes
 
