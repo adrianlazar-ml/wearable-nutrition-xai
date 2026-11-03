@@ -57,7 +57,7 @@ Trimiteri "Limitation N":
 
 ## (5) Keywords si Abstract
 
-- Keywords v8: 7 (Personalized nutrition; Wearable devices; Explainable AI; SHAP; Physiological state classification; Random Forest; mHealth). R1: 7 (Random Forest inlocuit cu Decision support systems, decizie 19 oct). Limita KBS 1-7 (F4_manuscript_changes.md, FORMAT KBS): ambele conforme; nimic de semnalat (se semnaleaza doar peste 7).
+- Keywords v8: 7 (Personalized nutrition; Wearable devices; Explainable AI; SHAP; Physiological state classification; Random Forest; mHealth). R1 la T10.7: 7 (Random Forest inlocuit cu Decision support systems, decizie 19 oct). R1 la T11b.1 (3 nov 2026, decizia coautorului): 7 (Personalized nutrition; Wearable devices; Multimodal physiological data; Knowledge-based decision support; Explainable artificial intelligence (XAI); Decision support systems; SHAP: cele 5 din metadatele Editorial Manager ale submisiei originale, in ordinea EM, plus Decision support systems si SHAP; KEYWORDS_MODE = 'em7'; regenerat cu `_check_t11b_inventory.py --after`). Limita KBS 1-7 (F4_manuscript_changes.md, FORMAT KBS): toate conforme; nimic de semnalat (se semnaleaza doar peste 7).
 - Abstract R1: 250 de cuvinte (split pe spatii; limita 250, check permanent PASS); 0 citari (nicio paranteza cu an), 0 trimiteri la sectiuni, 0 trimiteri la tabele / figuri.
 
 ## (6) Highlights
@@ -70,5 +70,5 @@ Trimiteri "Limitation N":
 - Ordinea citarilor: crescatoare pe tabele, figuri, S-tabele, S-figuri; Table A.1 citata devreme (3.5), ca tabel de anexa.
 - Orfani: 0 in ambele sensuri (40 de intrari, toate citate; nicio citare fara intrare).
 - Limitari: (1)-(9) o data fiecare, in ordine; toate trimiterile consistente; forma "Limitation 3" (manuscris) vs "Limitation (N)" (scrisoare) neuniforma.
-- Keywords: 7 / 7 (limita 1-7, conform); Abstract 250 de cuvinte, fara citari si fara trimiteri.
+- Keywords: 7 / 7 (limita 1-7, conform; lista em7 de la T11b.1, 3 nov 2026); Abstract 250 de cuvinte, fara citari si fara trimiteri.
 - Highlights: 5 bullets, 75 / 83 / 78 / 85 / 82 caractere.

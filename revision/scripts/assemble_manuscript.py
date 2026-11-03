@@ -264,12 +264,14 @@ KEYWORDS = {
     # support systems'); the F4 line stays the source and must equal this list (checked at assembly)
     "manuscript": ["Personalized nutrition", "Wearable devices", "Explainable AI", "Decision support systems", "SHAP",
                    "Physiological state classification", "mHealth"],
-    # 'em': the keywords of the Editorial Manager record of the original submission (metadata page of the PDF), kept as the
-    # alternative pending the co-author's decision (question sent 3 Nov 2026); not used until KEYWORDS_MODE says so
+    # 'em': the keywords of the Editorial Manager record of the original submission (metadata page of the PDF), in EM order
     "em": ["Personalized nutrition", "Wearable devices", "Multimodal physiological data", "Knowledge-based decision support",
            "Explainable artificial intelligence (XAI)"],
 }
-KEYWORDS_MODE = "manuscript"                   # 'manuscript' | 'em' (T11.4; unchanged in T11)
+# 'em7' (T11b.1, co-author's decision of 3 Nov 2026, 15:37, completed by the first author at 21:29): the EM list in EM order,
+# followed by 'Decision support systems' (co-author) and 'SHAP' (first author) to reach the KBS maximum of 7
+KEYWORDS["em7"] = [*KEYWORDS["em"], "Decision support systems", "SHAP"]
+KEYWORDS_MODE = "em7"                          # 'manuscript' | 'em' | 'em7' (T11b.1: em7 active; the F4 line must equal the active list)
 TITLE_PAGE_STYLE = "TitlePage"                 # paragraph style of the title-page lines (recognized by the checkers)
 TITLE_PAGE = [(f"{FIRST_AUTHOR}, {SECOND_AUTHOR}*" if CORRESPONDING == SECOND_AUTHOR else f"{FIRST_AUTHOR}*, {SECOND_AUTHOR}"),
               *AFFILIATION_LINES, EMAIL_FIRST, f"{EMAIL_SECOND}, {TEL_SECOND}", "* Corresponding author"]
@@ -685,12 +687,13 @@ def assemble_manuscript(blocks: dict, v8_path: Path | None = None) -> None:
     if len(runs) < 2 or runs[0].text.strip() != "Keywords:":
         raise SystemExit("STOP: keywords paragraph not in the expected two-run form")
     lead_ws = re.match(r"\s*", runs[1].text).group(0)
-    # T11.4 (2026-11-03): the F4 line stays the source of the 'manuscript' list; KEYWORDS_MODE selects the list written
+    # T11.4 (2026-11-03): KEYWORDS_MODE selects the list written; T11b.1 (2026-11-03): the F4 line stays the source and
+    # must equal the ACTIVE list (KEYWORDS[KEYWORDS_MODE]), not the historical 'manuscript' list
     f4_keywords = [k.strip() for k in m.group(1).rstrip(". ").split(";")]
-    if f4_keywords != KEYWORDS["manuscript"]:
-        raise SystemExit(f"STOP: F4 keywords {f4_keywords} differ from KEYWORDS['manuscript']")
     if KEYWORDS_MODE not in KEYWORDS or not 1 <= len(KEYWORDS[KEYWORDS_MODE]) <= 7:
         raise SystemExit(f"STOP: KEYWORDS_MODE {KEYWORDS_MODE!r} invalid or list outside 1-7 keywords")
+    if f4_keywords != KEYWORDS[KEYWORDS_MODE]:
+        raise SystemExit(f"STOP: F4 keywords {f4_keywords} differ from KEYWORDS[{KEYWORDS_MODE!r}]")
     runs[1].text = lead_ws + "; ".join(KEYWORDS[KEYWORDS_MODE])  # T4.1-D item 10: no final period
     for r in runs[2:]:
         r._r.getparent().remove(r._r)
@@ -1851,7 +1854,9 @@ def write_plan(fig_rows, highlights, base_sha, legacy_dir) -> None:
              (EMAIL_SECOND if COVER_SIGNATORY == SECOND_AUTHOR else EMAIL_FIRST) + "); '[date of submission]' is the only placeholder left, "
              "to be filled at upload. Header lines and the signature block are one paragraph per line; the body paragraphs are separated by blank lines.")
     L.append("- Discussion paragraphs 'Temporal robustness', 'Choice of classifier' and 'Generalization from a single subject' received a bold run-in lead (base convention); in 4.7 the run-in leads 'Threshold sensitivity.' and 'Agreement with label-independent indicators.' present in F4 were set in bold.")
-    L.append("- Keywords: 'Keywords:' label kept from the base, list replaced by the F4 list (Random Forest -> Decision support systems).")
+    L.append("- Keywords: 'Keywords:' label kept from the base, list replaced by the F4 list (KEYWORDS_MODE = " + KEYWORDS_MODE + "). T11b.1 (2026-11-03, co-author's decision): "
+             "the five keywords of the Editorial Manager record of the original submission, in EM order, completed with 'Decision support systems' (co-author) and 'SHAP' "
+             "(first author) to reach 7; 'Explainable AI', 'Physiological state classification', 'mHealth' and 'Random Forest' of the earlier lists are not used.")
     L.append("- New references: six APA 7 entries inserted alphabetically, each carrying the Word comment 'verify in Zotero' (kept until the Zotero import); T4.1-F (2026-10-20): authors, titles, volumes, pages, editors, DOIs / stable proceedings URLs verified on the publishers' pages (revision/references_new_verified.md, revision/references_new.bib); NeurIPS and AAAI papers cited as proceedings, not arXiv.")
     L.append("- T4.1-B: base paragraph of 4.3 'Table 5 reports bootstrap confidence intervals for the best model' -> 'for the reported model'; Abstract: first 'SHAP' expanded to 'SHAP (Shapley additive explanations)' in F4_manuscript_changes.md (248 words); heading 3.5 renamed; "
              "the two persistence per-class F1 cells of Table 4 now have a row in CIFRE_REVIZIE.md (T0.4).")
