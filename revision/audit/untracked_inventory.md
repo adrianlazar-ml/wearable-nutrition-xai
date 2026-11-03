@@ -13,7 +13,7 @@ Total: 1085 files in 4 folders.
 
 ## Tracked file deleted in the working copy (not untracked, listed for completeness)
 
-- disertatie_audit.zip: tracked at HEAD, deleted in the working copy since before the revision work (unstaged deletion, `D`). Author's decision whether to commit the deletion.
+- disertatie_audit.zip: tracked at HEAD, deleted in the working copy since before the revision work (unstaged deletion, `D`). Author's decision whether to commit the deletion. Decided 3 November 2026: deletion committed (`git rm`); contents duplicated (root scripts, header-only samples, CIFRE_CANONICE of 19 April 2026), blob recoverable from f7cc4ca (`hygiene_summary.md`, Public release). The count of 180 tracked files in `tracked_data_inventory.md` covers data/, models/ and outputs/ only and did not include the zip, so it is unchanged.
 
 ## Temporary files created by the assistant in earlier sessions
 

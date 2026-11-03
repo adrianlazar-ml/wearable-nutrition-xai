@@ -19,7 +19,7 @@ Branch `repo-hygiene` from master 24919c4 ("audit-apply: rounding pairs check (1
 
 Top 10 tracked files by size (bytes): data/apple_health/export.xml 1,562,338,195; data/apple_health/heart_rate.csv 90,615,631; data/apple_health/active_calories.csv 67,682,466; data/Oura/raw/temperature.csv 44,993,767; data/Oura/raw/heartrate.csv 37,410,309; data/apple_health/steps.csv 27,103,810; data/apple_health/basal_calories.csv 23,521,036; data/apple_health/sleep.csv 11,836,556; data/Oura/raw/dailyactivity.csv 7,988,365; data/apple_health/respiratory_rate.csv 5,044,749. Nine of the ten are raw personal data; none of them is read by the revision scripts (they read models/dataset_snapshot_20260331.csv, data/oura_combined.csv and apple_watch_api/apple_health_daily.csv).
 
-Untracked inventory: 1,085 files in 4 folders (details in `untracked_inventory.md`, not repeated here); plus the unstaged deletion of the tracked `disertatie_audit.zip`, left as is.
+Untracked inventory: 1,085 files in 4 folders (details in `untracked_inventory.md`, not repeated here); plus the unstaged deletion of the tracked `disertatie_audit.zip`, left as is at the time (removed from tracking on 3 November 2026, see Public release).
 
 ## T2: branch chosen and why
 
@@ -34,6 +34,8 @@ Conclusion: this private repository stays untouched. Every hash cited in CIFRE_R
 3. Verify the clone: `git ls-files | grep -c "^data/"` must be 0; `python revision/scripts/_check_t41_outputs.py` and `python -m pytest revision/scripts/ -q` must pass if the snapshot is included, or the README must state which scripts cannot run without it; `git count-objects -vH` should drop from the current 263 MiB (1,478 loose objects) to a few tens of MiB.
 4. Add the chosen LICENSE and complete the three README placeholders, then push the clone to the public remote and archive it on Zenodo; the DOI goes into the README and into the Data availability statement at acceptance.
 5. Keep this repository as the private record; add a note at the top of CIFRE_REVIZIE.md with the path of the commit-map, so that any hash in the registers can be looked up in the public history.
+
+`disertatie_audit.zip` (3 November 2026): removed from tracking (`git rm`; the file had been missing from the working copy since before the revision work). Its 60 entries are duplicated elsewhere: the root pipeline scripts of the frozen March 2026 version (tracked at the repository root), `scripts_archive/` comparison, exploration and old-version scripts, `_data_samples/` CSV header rows only, and CIFRE_CANONICE.md as of 19 April 2026. It stays in the exclusion list because the blob remains recoverable from commit f7cc4ca ("Snapshot pre-audit, 26.05.2026"), the only commit that ever contained it.
 
 T11.0 (2026-11-03): `revision/manuscript/submitted/` (the Editorial Manager PDF of the original submission, KNOSYS-D-26-14863.pdf, and its README) is added to the exclusion list above: the PDF carries the authors' e-mail addresses and a telephone number on the title page and in the cover letter, and the Editorial Manager metadata page.
 
