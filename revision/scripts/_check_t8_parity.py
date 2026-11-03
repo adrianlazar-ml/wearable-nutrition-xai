@@ -151,7 +151,8 @@ def check_manuscript(before: Path, after: Path) -> None:
     rec("3.12 paragraphs byte-identical (c14n XML between the 3.12 and 3.13 headings)",
         section_xml(old, "3.12.", "3.13.") == section_xml(new, "3.12.", "3.13.") and len(section_xml(new, "3.12.", "3.13.")) > 0)
     # T11.2 (2026-11-03): the T6.2 anonymization comment on the CRediT heading was removed (single-blind review), 9 -> 8
-    rec("8 Word comments in the manuscript (9 before T11.2)", len(list(new.comments)) == 8, str(len(list(new.comments))))
+    # T11b.3 (2026-11-03): the two remaining T6.2 draft comments removed (CRediT confirmed, no funding; co-author 3 Nov 2026), 8 -> 6
+    rec("6 Word comments in the manuscript (8 before T11b.3, 9 before T11.2)", len(list(new.comments)) == 6, str(len(list(new.comments))))
     idx = next(i for i, p in enumerate(new.paragraphs) if p.text.strip() == "Abstract")
     n_abs = len(new.paragraphs[idx + 1].text.split())
     rec("Abstract <= 249 words (split on spaces, as R1)", n_abs <= 249, f"{n_abs} words")

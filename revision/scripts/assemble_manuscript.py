@@ -723,7 +723,8 @@ def assemble_manuscript(blocks: dict, v8_path: Path | None = None) -> None:
                       "In the marked copy the title page is not highlighted (it reproduces the submission, not a change). The Word comment "
                       "'remove if KBS requires anonymized main document; check Editorial Manager' on the CRediT heading and the 'T7 draft' "
                       "comment on the 'Authors:' line of the response letter are removed; the comments 'confirm roles with coauthor' and "
-                      "'confirm no funding with coauthor' stay (Q2, Q3 open).")
+                      "'confirm no funding with coauthor' stayed until T11b.3 (2026-11-03), when the co-author confirmed the CRediT draft and "
+                      "the absence of funding (Q2, Q3 closed): 6 Word comments remain, all 'verify in Zotero'.")
 
     # ---- Introduction --------------------------------------------------------------------------
     pos = paras(block(blocks, "Paragraf de pozitionare"))[0]
@@ -1133,13 +1134,17 @@ def assemble_manuscript(blocks: dict, v8_path: Path | None = None) -> None:
             # T11.3 (2026-11-03): the author names of the F4 block must be the T11 parameters (the F4 text stays the source)
             if not text.startswith(f"{FIRST_AUTHOR}: ") or f" {SECOND_AUTHOR}: " not in text:
                 raise SystemExit(f"STOP: CRediT statement does not carry '{FIRST_AUTHOR}: ' and ' {SECOND_AUTHOR}: '")
-            doc.add_comment(runs=bp.runs, text="confirm roles with coauthor", author="T6.2 draft", initials="T62")
             # T11.2 (2026-11-03): the heading comment 'remove if KBS requires anonymized main document; check Editorial Manager'
-            # (T6.2) is no longer placed: the review is single-blind (Editorial Manager PDF of the original submission)
-            note = " + comment 'confirm roles with coauthor' (text); the T6.2 heading comment on anonymization is no longer placed (T11.2)"
+            # (T6.2) is no longer placed: the review is single-blind (Editorial Manager PDF of the original submission).
+            # T11b.3 (2026-11-03): the text comment 'confirm roles with coauthor' is no longer placed: CRediT draft confirmed
+            # by the co-author (3 Nov 2026, 15:37); text unchanged
+            note = " (CRediT roles confirmed by the co-author 3 Nov 2026, T11b.3: no Word comment; the T6.2 heading comment on anonymization is no longer placed, T11.2)"
         elif head.startswith("Funding"):
-            doc.add_comment(runs=bp.runs, text="confirm no funding with coauthor", author="T6.2 draft", initials="T62")
-            note = " + comment 'confirm no funding with coauthor'"
+            # T11b.3 (2026-11-03): 'confirm no funding with coauthor' no longer placed: no grant (co-author, 3 Nov 2026); the
+            # Elsevier standard sentence of the F4 block is kept
+            if not text.startswith("This research did not receive any specific grant from funding agencies"):
+                raise SystemExit("STOP: Funding paragraph is not the Elsevier standard sentence")
+            note = " (no funding confirmed by the co-author 3 Nov 2026, T11b.3: Elsevier standard sentence, no Word comment)"
         plan("DECLARATIONS", "Declaration of generative AI (heading, insert before)", "new unnumbered section (heading + paragraph)" + note, head)
     DEVIATIONS.append("T6.2 (F5, 2026-10-20, KBS pp. 26-27): three declaration sections (CRediT authorship contribution statement, Declaration of "
                       "competing interest, Funding) inserted after Conclusions and before the GenAI declaration as a DRAFT for the coauthor (text in "
@@ -1147,7 +1152,10 @@ def assemble_manuscript(blocks: dict, v8_path: Path | None = None) -> None:
                       "coauthor' and, because the v8 base is anonymized (no authors on the title page), 'remove if KBS requires anonymized main "
                       "document; check Editorial Manager' on the CRediT heading (this third comment was removed at T11.2, 2026-11-03: single-blind "
                       "review confirmed from the Editorial Manager PDF). Final order: CRediT, competing interest, Funding, GenAI declaration, "
-                      "Data availability, Appendix A, References. No Acknowledgements section (nobody to acknowledge; added only if the coauthor asks).")
+                      "Data availability, Appendix A, References. No Acknowledgements section (nobody to acknowledge; added only if the coauthor asks). "
+                      "T11b.3 (2026-11-03, co-author's answers of 3 Nov 2026): CRediT draft confirmed and no grant, so the two remaining draft comments "
+                      "('confirm roles with coauthor', 'confirm no funding with coauthor') are no longer placed, texts unchanged (Funding: Elsevier standard "
+                      "sentence); no Acknowledgements section (co-author's decision); 6 Word comments remain in the manuscript and the marked copy, all 'verify in Zotero'.")
 
     # ---- Appendix A before References ----------------------------------------------------------
     refs_h = find_par(doc, "References")

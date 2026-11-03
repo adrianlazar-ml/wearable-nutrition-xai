@@ -267,11 +267,15 @@ def main() -> None:
     # T7.9 (2026-10-22): comment inventory was 9 in the manuscript (6 'verify in Zotero' + 3 'T6.2 draft' on the declaration
     # sections) and 1 in the response letter ('T7 draft', on the Authors line). T11.2 (2026-11-03): the CRediT heading comment
     # on anonymization and the 'T7 draft' comment are gone (single-blind review): 8 in the manuscript and in the marked copy,
-    # 0 in the response letter, 0 in the other files
+    # 0 in the response letter, 0 in the other files. T11b.3 (2026-11-03): the two 'T6.2 draft' comments ('confirm roles with
+    # coauthor', 'confirm no funding with coauthor') are gone (CRediT confirmed, no grant: co-author's answers of 3 Nov 2026):
+    # 6 in the manuscript and in the marked copy, all 'verify in Zotero'
     n_man = len(list(man.comments)); n_resp = len(list(docs["response"].comments)); n_marked = len(list(docs["marked"].comments))
     n_other = len(list(docs["highlights"].comments)) + len(list(docs["supplementary"].comments))
-    rec("Word comments: 8 in the manuscript and in the marked copy (6 'verify in Zotero' + 2 'T6.2 draft'), 0 in the response letter, 0 elsewhere",
-        n_man == 8 and n_marked == 8 and n_resp == 0 and n_other == 0, f"manuscript {n_man}, marked {n_marked}, response {n_resp}, others {n_other}")
+    n_t62 = sum(1 for d in docs.values() for c in d.comments if c.author == "T6.2 draft" or "with coauthor" in c.text)
+    rec("Word comments: 6 in the manuscript and in the marked copy (all 'verify in Zotero'; 0 'T6.2 draft' since T11b.3), 0 in the response letter, 0 elsewhere",
+        n_man == 6 and n_marked == 6 and n_resp == 0 and n_other == 0 and n_t62 == 0,
+        f"manuscript {n_man}, marked {n_marked}, response {n_resp}, others {n_other}, 'T6.2 draft' {n_t62}")
 
     # T11.2 (2026-11-03): title page reproduced from the Editorial Manager submission (single-blind), built from the T11
     # parameters of assemble_manuscript.py; not highlighted in the marked copy; the two anonymization comments removed;

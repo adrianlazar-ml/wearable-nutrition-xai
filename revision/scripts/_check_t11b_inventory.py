@@ -126,15 +126,18 @@ def main() -> None:
         if p.text.strip() == "Data availability":
             print(f"    manuscript @ {i}: {p.text}")
             print(f"    manuscript @ {i + 1}: {pars[i + 1].text}")
-    # section order after Conclusions (T11b.3)
-    print("\n--- headings after Conclusions (manuscript) ---")
-    seen = False
-    for i, p in enumerate(pars):
-        t = p.text.strip()
-        if t.startswith("6.") and "Conclusions" in t:
-            seen = True
-        if seen and p.style is not None and p.style.name.lower().startswith("heading") and t:
-            print(f"    @ {i} [{p.style.name}] {t}")
+    # section order after Conclusions (T11b.3): the unnumbered headings are 'Normal' paragraphs holding exactly the title
+    print("\n--- section order after Conclusions (manuscript and marked copy) ---")
+    expected_order = ["6. Conclusions and Future Work", "CRediT authorship contribution statement", "Declaration of competing interest",
+                      "Funding", "Declaration of generative AI and AI-assisted technologies in the manuscript preparation", "Data availability",
+                      "Appendix A. Hyperparameter search", "References"]
+    for k in ("manuscript", "marked"):
+        ps = docs[k].paragraphs
+        found = [(i, p.text.strip()) for i, p in enumerate(ps) if p.text.strip() in expected_order or p.text.strip().startswith("Declaration of generative AI")]
+        order = [t if t in expected_order else "Declaration of generative AI and AI-assisted technologies in the manuscript preparation" for _, t in found]
+        ok = order == expected_order
+        fails += not ok
+        print(f"    [{'PASS' if ok else 'FAIL'}] {k}: " + " > ".join(f"{t[:28]}@{i}" for i, t in found))
     print("\n--- Word comments per docx ---")
     for k, d in docs.items():
         cs = list(d.comments)
