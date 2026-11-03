@@ -26,4 +26,31 @@ Deschise dupa aceasta sesiune (de decis cu Adrian / Buiu): (1) cele 7 cross-refe
 
 Actualizare T11 (3 nov 2026; PDF-ul Editorial Manager al submisiei originale, primit de la coautor pe 2 nov 2026, `revision/manuscript/submitted/`, comparat cu v8 in `revision/audit/em_submission_diff.md`): Q4 si Q5 inchise din PDF (manuscrisul submis are title page cu autori, afiliere, emailuri si marcajul de corresponding author; corresponding author Catalin Buiu; review single-blind), deci punctul (3) de mai sus se inchide: title page-ul este reprodus in KBS_Manuscript_R1.docx (T11.2) si comentariile Word despre anonimizare (heading CRediT, linia Authors din Response) sunt scoase; Q2 (roluri CRediT), Q3 (finantare), Q6 si Q7 raman deschise. Puncte noi pe lista de submisie: (a) abstractul din metadatele EM (cel submis, "nearly three years") se inlocuieste la upload cu abstractul de 249 de cuvinte al R1; (b) cover letter R1, livrabil nou: `revision/manuscript/KBS_Cover_Letter_R1.docx` (sursa `revision/F4_cover_letter_R1.md`; "[date of submission]" se completeaza la upload; semnatar si afiliere PROVIZORII, decizia coautorului); (c) corectarea numelui primului autor in Editorial Manager (Adrian A. Lazar -> Adrian Lazar), de catre corresponding author ("A." este initiala tatalui; manuscrisul si cover letter-ul folosesc "Adrian Lazar"); (d) keywords: decizia coautorului intre lista R1 (7) si lista din metadatele EM (5), KEYWORDS_MODE in assemble_manuscript.py (intrebare trimisa 3 nov). Detalii: TEXT_DECISIONS.md, sectiunea T11.
 
+Actualizare T11b (3 nov 2026; raspunsurile coautorului din 3 nov, 15:37 si 21:30; TEXT_DECISIONS.md, sectiunea T11b): Q2 (CRediT confirmat), Q3 (niciun grant), Q6 (fara Acknowledgements) si Q7 (Optiunea C: cod + 11 agregate zilnice; docx-ul manuscrisului nu intra in repo-ul public) inchise; punctul (2) de mai sus se inchide (CRediT, competing interest si Funding sunt in manuscris, fara comentarii Word; Acknowledgements nu se adauga); punctele (b), (c) si (d) de mai sus se inchid astfel: (b) cover letter semnata de primul autor, afilierea confirmata (ramane doar "[date of submission]"); (c) ramane de facut de catre coautor in EM; (d) KEYWORDS_MODE = "em7" (cele 5 din EM, in ordinea EM, plus Decision support systems si SHAP = 7).
+
+Maparea fisier -> tip de item in Editorial Manager (pagina de upload la revizie, capturi de ecran 3 nov 2026; obligatorii: Cover letter, Revised manuscript (marked up), LaTeX source files, Declaration of competing interests):
+
+| Fisier (revision/manuscript/) | Tip de item EM | Stare |
+|---|---|---|
+| KBS_Manuscript_R1.docx (manuscrisul curat) | "LaTeX source files" | IPOTEZA, in asteptarea raspunsului editorial office (coautorul intreaba); nu exista tip "clean manuscript"; nota paginii EM cere versiuni editabile (Word sau LaTeX) pentru "Latest editable source file"; rezerva: tipul indicat de editorial office |
+| KBS_Manuscript_R1_marked.docx | Revised manuscript (marked up) | decis |
+| KBS_Response_R1.docx | Response to reviewers | decis |
+| KBS_Highlights_R1.docx | Highlights | decis |
+| KBS_Supplementary_R1.docx | Supplementary material | decis |
+| KBS_Cover_Letter_R1.docx | Cover letter | decis; "[date of submission]" se completeaza la upload |
+| revision/figures/Figure_N.{pdf,png} (10 figuri, T5.2) | Figure | de verificat in Guide for Authors daca figurile se incarca separat cand sunt incluse in docx (KBS_journal.pdf nu are strat de text; de citit pagina web a Guide for Authors); fisierele exista deja |
+| Declaration of competing interests | formularul Elsevier (ca la submisia originala) | de completat de coautor la upload; textul din manuscris (sectiunea Declaration of competing interest) ramane |
+| tabelele | raman in docx (nu se incarca separat) | decis |
+| Research data | NU se incarca in EM; Optiunea C prin link / DOI Zenodo (T12b) | de facut la T12b |
+
+Puncte deschise dupa T11b (cu datele noi: pachetul la coautor pe 9-10 nov 2026, coautorul il urca la primire; 1 dec 2026 ramane termenul EM):
+1. T12b: clona publica (Optiunea C, cod + 11 agregate zilnice, fara docx-ul manuscrisului), DOI Zenodo; apoi rescrierea frazei a doua din Data availability (cod + agregate zilnice, DOI, fara "upon acceptance") si bullet in General changes.
+2. Importul in Zotero, regenerarea celor 6 referinte noi (APA 7) si scoaterea celor 6 comentarii "verify in Zotero" (singurele comentarii Word ramase).
+3. Raspunsul editorial office la tipul de item pentru manuscrisul curat (coautor).
+4. Corectarea numelui in EM, "Adrian A. Lazar" -> "Adrian Lazar" (coautor).
+5. Abstractul din EM: se inlocuieste la upload cu abstractul de 249 de cuvinte al R1 (split pe spatii; `_check_t8_parity.py`).
+6. Campul Keywords din EM: cele 7 din KEYWORDS["em7"], in aceeasi ordine.
+7. "[date of submission]" in cover letter, la upload.
+8. Textul verbatim al mesajelor WhatsApp din 3 nov (15:37, 20:57, ~21:29, 21:30, ~21:33) de adaugat in WhatsappBuiu.txt (Downloads) de catre primul autor; sesiunea T11b nu l-a avut.
+
 Ramase dupa F5 (din plan, sectiunea 5 si 8): review Buiu (minimum o saptamana), regenerarea referintelor din Zotero (APA 7) si scoaterea comentariilor, repo public cu DOI (anonimizare profil, demo_end_to_end_v2.py, fisierele nestaged), submisie cu cel putin 5 zile inainte de 1 decembrie 2026.
