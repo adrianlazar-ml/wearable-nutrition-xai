@@ -2,7 +2,7 @@
 
 This folder holds the scripts, result files, figure registers and verification reports of Revision 1 of the manuscript submitted to Knowledge-Based Systems. The public repository `wearable-nutrition-xai` is a filtered copy of the authors' private working repository (section "What is excluded and why").
 
-- Manuscript: "AI System for Personalized Nutrition and Diet Recommendations Based on Wearable and mHealth Data", Adrian Lazar and Catalin Buiu (National University of Science and Technology POLITEHNICA Bucharest), Knowledge-Based Systems, Revision 1 under review (2026).
+- Manuscript: "Explainable Artificial Intelligence for Personalized Nutrition: A Multimodal Framework Integrating Smart Ring and Smartwatch Data", Adrian Lazar and Catalin Buiu (National University of Science and Technology POLITEHNICA Bucharest), Knowledge-Based Systems, Revision 1 under review (2026).
 - Public repository: `wearable-nutrition-xai` (GitHub, https://github.com/adrianlazar-ml/wearable-nutrition-xai); release v1.0-R1 is the state of the revised submission.
 - Archived release: Zenodo DOI 10.5281/zenodo.XXXXXXX (placeholder, filled at the first release).
 - License: MIT for the code and the documentation (`LICENSE` at the repository root); CC BY 4.0 for the daily aggregates published under `data/`, `apple_watch_api/` and `models/dataset_snapshot_20260331.csv` (`LICENSE-DATA`). How to cite: `CITATION.cff`.

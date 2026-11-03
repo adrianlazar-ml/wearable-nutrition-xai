@@ -1,4 +1,4 @@
-# AI System for Personalized Nutrition and Diet Recommendations Based on Wearable and mHealth Data
+# Explainable Artificial Intelligence for Personalized Nutrition: A Multimodal Framework Integrating Smart Ring and Smartwatch Data
 
 Adrian Lazar, Catalin Buiu
 
@@ -8,7 +8,7 @@ This repository, `wearable-nutrition-xai`, is the public entry point to the code
 
 ## 2. Purpose
 
-The repository holds the code and the daily aggregate data supporting the Revision 1 manuscript submitted to Knowledge-Based Systems (Elsevier). The work originates in the first author's MSc dissertation (National University of Science and Technology POLITEHNICA Bucharest, June 2026): a three-class daily physiological state classifier (Rest, Normal, Active) trained on one participant's Oura ring and Apple Watch data, with SHAP explanations feeding a rule-based nutrition recommender. The dissertation pipeline scripts at the root and the revision scripts under `revision/` are both included, so every figure reported in the manuscript can be regenerated.
+The repository holds the code and the daily aggregate data supporting the Revision 1 manuscript submitted to Knowledge-Based Systems (Elsevier). The work originates in the first author's MSc dissertation, "AI System for Personalized Nutrition and Diet Recommendations Based on Wearable and mHealth Data" (National University of Science and Technology POLITEHNICA Bucharest, June 2026): a three-class daily physiological state classifier (Rest, Normal, Active) trained on one participant's Oura ring and Apple Watch data, with SHAP explanations feeding a rule-based nutrition recommender. The dissertation pipeline scripts at the root and the revision scripts under `revision/` are both included, so every figure reported in the manuscript can be regenerated.
 
 ## 3. Repository history
 

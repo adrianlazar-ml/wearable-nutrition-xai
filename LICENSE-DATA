@@ -4,8 +4,8 @@ Scope: the daily aggregate data files of the repository wearable-nutrition-xai,
 that is the csv files under data/ (activity.csv, readiness.csv, sleep.csv,
 sleep_metrics.csv, stress.csv, oura_historical.csv, oura_combined.csv,
 dataset_combinat.csv, dataset_combinat_json.csv, dataset_combinat_json_extended.csv),
-apple_watch_api/apple_health_daily.csv, apple_watch_api/apple_health_auto.csv and
-models/dataset_snapshot_20260331.csv. They hold one row per day of a single
+apple_watch_api/apple_health_daily.csv and models/dataset_snapshot_20260331.csv.
+They hold one row per day of a single
 participant (the first author), 2023 to 2026, derived from an Oura ring and an
 Apple Watch; no record-level, minute-level or location data are included.
 
