@@ -11,7 +11,9 @@ Inputs (never modified):
 
 Outputs (revision/manuscript/):
   assembly_plan.md, KBS_Manuscript_R1.docx, KBS_Highlights_R1.docx, KBS_Supplementary_R1.docx,
-  KBS_Response_R1.docx, figures/
+  KBS_Response_R1.docx, KBS_Manuscript_R1_marked.docx, KBS_Cover_Letter_R1.docx (T11.5, from revision/F4_cover_letter_R1.md), figures/
+T11 (2026-11-03): title page (authors, affiliation, e-mails) built from the parameters FIRST_AUTHOR .. COVER_SIGNATORY below;
+  KEYWORDS_MODE selects the keyword list.
 
 Run from the repo root:  python revision/scripts/assemble_manuscript.py [--legacy-figures-dir DIR]
 Only dependency beyond the frozen environment: python-docx 1.2.0 (revision/requirements.txt).
@@ -232,8 +234,47 @@ NEW_REFERENCES = [
     "https://tss.awf.poznan.pl/The-need-to-report-effect-size-estimates-revisited-An-overview-of-some-recommended,188960,0,2.html",
 ]
 REF_COMMENT = "verify in Zotero (provisional APA 7 entry added at assembly, T4.1)"
-# T7.6g (2026-10-22): Word comment on the 'Authors: ...' run of the response letter (line kept; anonymization pending coauthor)
-RESPONSE_AUTHORS_COMMENT = "T7 draft: remove if KBS review is double-anonymized; pending coauthor (title page question)"
+# T7.6g (2026-10-22): the 'Authors: ...' run of the response letter carried the Word comment "T7 draft: remove if KBS review
+# is double-anonymized; pending coauthor (title page question)". T11.2 (2026-11-03): the comment is removed; the Editorial
+# Manager PDF of the original submission shows a title page with authors (single-blind review).
+
+# ----------------------------------------------------------------------------------------------
+# T11 (2026-11-03): authors, affiliation, keywords and cover letter. Source: the Editorial Manager PDF of the original
+# submission (revision/manuscript/submitted/KNOSYS-D-26-14863.pdf, metadata page, cover letter and title page; compared
+# with v8 in revision/audit/em_submission_diff.md). Review is single-blind: the submitted main document carries the authors.
+# Values marked PROVISIONAL are applied as they stand and reported as provisional (T11_summary.md) until the co-author decides.
+# ----------------------------------------------------------------------------------------------
+FIRST_AUTHOR = "Adrian Lazar"    # decision of the first author (3 Nov 2026): the 'A.' of the EM record and of the submitted title
+#                                  page is the father's initial of the Romanian civil records, not a middle name; the EM record
+#                                  is to be corrected by the corresponding author; the manuscript uses the dissertation form
+SECOND_AUTHOR = "Catalin Buiu"   # without diacritics, as in Editorial Manager and on the submitted title page
+AFFILIATION_LINES = [            # PROVISIONAL: the four lines of the original cover letter (the submitted title page omits the
+    "Department of Automatic Control and Systems Engineering",   # faculty line and the postal code); only this list changes
+    "Faculty of Automatic Control and Computers",                # if the co-author answers otherwise
+    "National University of Science and Technology POLITEHNICA Bucharest",
+    "Splaiul Independentei 313, 060042 Bucharest, Romania",
+]
+EMAIL_FIRST = "***REMOVED-EMAIL***"   # submitted title page
+EMAIL_SECOND = "***REMOVED-EMAIL***"           # submitted title page
+TEL_SECOND = "***REMOVED-TEL***"              # submitted title page
+CORRESPONDING = SECOND_AUTHOR                  # Editorial Manager: Corresponding Author Catalin Buiu
+COVER_SIGNATORY = SECOND_AUTHOR                # PROVISIONAL: co-author's decision
+KEYWORDS = {
+    # 'manuscript': the Revision 1 list of F4_manuscript_changes.md (ABSTRACT block; T4.1-D: 'Random Forest' -> 'Decision
+    # support systems'); the F4 line stays the source and must equal this list (checked at assembly)
+    "manuscript": ["Personalized nutrition", "Wearable devices", "Explainable AI", "Decision support systems", "SHAP",
+                   "Physiological state classification", "mHealth"],
+    # 'em': the keywords of the Editorial Manager record of the original submission (metadata page of the PDF), kept as the
+    # alternative pending the co-author's decision (question sent 3 Nov 2026); not used until KEYWORDS_MODE says so
+    "em": ["Personalized nutrition", "Wearable devices", "Multimodal physiological data", "Knowledge-based decision support",
+           "Explainable artificial intelligence (XAI)"],
+}
+KEYWORDS_MODE = "manuscript"                   # 'manuscript' | 'em' (T11.4; unchanged in T11)
+TITLE_PAGE_STYLE = "TitlePage"                 # paragraph style of the title-page lines (recognized by the checkers)
+TITLE_PAGE = [(f"{FIRST_AUTHOR}, {SECOND_AUTHOR}*" if CORRESPONDING == SECOND_AUTHOR else f"{FIRST_AUTHOR}*, {SECOND_AUTHOR}"),
+              *AFFILIATION_LINES, EMAIL_FIRST, f"{EMAIL_SECOND}, {TEL_SECOND}", "* Corresponding author"]
+COVER_MD = ROOT / "revision" / "F4_cover_letter_R1.md"
+OUT_COVER = MAN / "KBS_Cover_Letter_R1.docx"
 
 # Figure legends written at assembly for figures without a legend in F4 (flagged in assembly_plan.md)
 LEGEND_FIG3 = (
@@ -644,10 +685,42 @@ def assemble_manuscript(blocks: dict, v8_path: Path | None = None) -> None:
     if len(runs) < 2 or runs[0].text.strip() != "Keywords:":
         raise SystemExit("STOP: keywords paragraph not in the expected two-run form")
     lead_ws = re.match(r"\s*", runs[1].text).group(0)
-    runs[1].text = lead_ws + m.group(1).rstrip(". ")  # T4.1-D item 10: no final period
+    # T11.4 (2026-11-03): the F4 line stays the source of the 'manuscript' list; KEYWORDS_MODE selects the list written
+    f4_keywords = [k.strip() for k in m.group(1).rstrip(". ").split(";")]
+    if f4_keywords != KEYWORDS["manuscript"]:
+        raise SystemExit(f"STOP: F4 keywords {f4_keywords} differ from KEYWORDS['manuscript']")
+    if KEYWORDS_MODE not in KEYWORDS or not 1 <= len(KEYWORDS[KEYWORDS_MODE]) <= 7:
+        raise SystemExit(f"STOP: KEYWORDS_MODE {KEYWORDS_MODE!r} invalid or list outside 1-7 keywords")
+    runs[1].text = lead_ws + "; ".join(KEYWORDS[KEYWORDS_MODE])  # T4.1-D item 10: no final period
     for r in runs[2:]:
         r._r.getparent().remove(r._r)
-    plan("Keywords", "Keywords: Personalized nutrition; Wearable devices; Explainable AI; SHAP", "replace keyword list", "Keywords")
+    plan("Keywords", "Keywords: Personalized nutrition; Wearable devices; Explainable AI; SHAP", f"replace keyword list (KEYWORDS_MODE = {KEYWORDS_MODE})", "Keywords")
+
+    # ---- T11.2 (2026-11-03): title page between the title and 'Abstract' -------------------------
+    title_par = doc.paragraphs[0]
+    if not title_par.text.startswith("Explainable Artificial Intelligence for Personalized Nutrition") or doc.paragraphs[1].text.strip() != "Abstract":
+        raise SystemExit("STOP: the base does not start with the title paragraph followed by 'Abstract'")
+    add_title_page_style(doc)
+    anchor = title_par
+    for line in TITLE_PAGE:
+        anchor = Paragraph(insert_after(anchor, clone_paragraph(body_tmpl, line)), doc)
+        anchor.style = doc.styles[TITLE_PAGE_STYLE]
+        anchor.alignment = title_par.alignment
+        anchor.paragraph_format.space_after = Pt(0)
+    plan("TITLE PAGE (T11.2)", title_par.text, f"insert {len(TITLE_PAGE)} paragraphs after the title (style {TITLE_PAGE_STYLE}, aligned as the title)", "title page")
+    DEVIATIONS.append("T11.2 (2026-11-03): single-blind review confirmed from the Editorial Manager PDF of the original submission "
+                      "(revision/manuscript/submitted/KNOSYS-D-26-14863.pdf, received 2 Nov 2026): the submitted main document carries a "
+                      "title page with the authors, affiliation, e-mail addresses and the corresponding-author mark. The title page is "
+                      "reproduced between the title and 'Abstract' from the T11 parameters (" + "; ".join(f"'{s}'" for s in TITLE_PAGE) +
+                      "), paragraphs of style '" + TITLE_PAGE_STYLE + "', centered as the title, no table. Name of the first author: "
+                      "'" + FIRST_AUTHOR + "' (the submitted title page and the EM record read 'Adrian A. Lazar'; the 'A.' is the father's "
+                      "initial of the Romanian civil records, not a middle name; the EM record is to be corrected by the corresponding "
+                      "author; decision of the first author, 3 Nov 2026). Affiliation: the four lines of the original cover letter "
+                      "(provisional until the co-author confirms; the submitted title page omits the faculty line and the postal code). "
+                      "In the marked copy the title page is not highlighted (it reproduces the submission, not a change). The Word comment "
+                      "'remove if KBS requires anonymized main document; check Editorial Manager' on the CRediT heading and the 'T7 draft' "
+                      "comment on the 'Authors:' line of the response letter are removed; the comments 'confirm roles with coauthor' and "
+                      "'confirm no funding with coauthor' stay (Q2, Q3 open).")
 
     # ---- Introduction --------------------------------------------------------------------------
     pos = paras(block(blocks, "Paragraf de pozitionare"))[0]
@@ -1054,10 +1127,13 @@ def assemble_manuscript(blocks: dict, v8_path: Path | None = None) -> None:
         bp = new_body(genai_h, text, before=True)
         note = ""
         if head.startswith("CRediT"):
+            # T11.3 (2026-11-03): the author names of the F4 block must be the T11 parameters (the F4 text stays the source)
+            if not text.startswith(f"{FIRST_AUTHOR}: ") or f" {SECOND_AUTHOR}: " not in text:
+                raise SystemExit(f"STOP: CRediT statement does not carry '{FIRST_AUTHOR}: ' and ' {SECOND_AUTHOR}: '")
             doc.add_comment(runs=bp.runs, text="confirm roles with coauthor", author="T6.2 draft", initials="T62")
-            doc.add_comment(runs=hp.runs, text="remove if KBS requires anonymized main document; check Editorial Manager",
-                            author="T6.2 draft", initials="T62")
-            note = " + comments 'confirm roles with coauthor' (text), 'remove if KBS requires anonymized main document; check Editorial Manager' (heading)"
+            # T11.2 (2026-11-03): the heading comment 'remove if KBS requires anonymized main document; check Editorial Manager'
+            # (T6.2) is no longer placed: the review is single-blind (Editorial Manager PDF of the original submission)
+            note = " + comment 'confirm roles with coauthor' (text); the T6.2 heading comment on anonymization is no longer placed (T11.2)"
         elif head.startswith("Funding"):
             doc.add_comment(runs=bp.runs, text="confirm no funding with coauthor", author="T6.2 draft", initials="T62")
             note = " + comment 'confirm no funding with coauthor'"
@@ -1066,7 +1142,8 @@ def assemble_manuscript(blocks: dict, v8_path: Path | None = None) -> None:
                       "competing interest, Funding) inserted after Conclusions and before the GenAI declaration as a DRAFT for the coauthor (text in "
                       "F4_manuscript_changes.md, block DECLARATIONS), with Word comments 'confirm roles with coauthor', 'confirm no funding with "
                       "coauthor' and, because the v8 base is anonymized (no authors on the title page), 'remove if KBS requires anonymized main "
-                      "document; check Editorial Manager' on the CRediT heading. Final order: CRediT, competing interest, Funding, GenAI declaration, "
+                      "document; check Editorial Manager' on the CRediT heading (this third comment was removed at T11.2, 2026-11-03: single-blind "
+                      "review confirmed from the Editorial Manager PDF). Final order: CRediT, competing interest, Funding, GenAI declaration, "
                       "Data availability, Appendix A, References. No Acknowledgements section (nobody to acknowledge; added only if the coauthor asks).")
 
     # ---- Appendix A before References ----------------------------------------------------------
@@ -1251,6 +1328,70 @@ def append_picture(doc, tmpl: Paragraph, path: Path, width_cm=16.0) -> None:
     p.runs[0].add_picture(str(path), width=Cm(width_cm))
 
 
+def add_title_page_style(doc) -> None:
+    """T11.2: paragraph style of the title-page lines (based on Normal), so that checkers can skip or find them by style."""
+    from docx.enum.style import WD_STYLE_TYPE
+    if any(s.name == TITLE_PAGE_STYLE for s in doc.styles):
+        return
+    st = doc.styles.add_style(TITLE_PAGE_STYLE, WD_STYLE_TYPE.PARAGRAPH)
+    st.base_style = doc.styles["Normal"]
+    st.hidden = False
+    st.quick_style = True
+
+
+def cover_letter_paragraphs(md_text: str) -> list[str]:
+    """T11.5: paragraphs of the cover letter from the markdown source. The '# ' title line, 'Stare:' lines and '---' are
+    skipped; before 'Dear Editor,' and from 'Sincerely,' on, every non-empty line is one paragraph (date, manuscript number,
+    title, signature block); in between, paragraphs are separated by blank lines and their lines are joined with a space."""
+    out, buf, body = [], [], False
+    for raw in md_text.splitlines():
+        line = raw.rstrip()
+        if line.startswith("# ") or line.startswith("Stare:") or line.strip() == "---":
+            continue
+        if line.strip() == "Sincerely,":
+            if buf:
+                out.append(" ".join(buf)); buf = []
+            body = False
+        if not line.strip():
+            if buf:
+                out.append(" ".join(buf)); buf = []
+            continue
+        if body:
+            buf.append(line.strip())
+        else:
+            out.append(line.strip())
+        if line.strip() == "Dear Editor,":
+            body = True
+    if buf:
+        out.append(" ".join(buf))
+    return out
+
+
+def make_cover_letter() -> list[str]:
+    """T11.5 (2026-11-03): KBS_Cover_Letter_R1.docx from revision/F4_cover_letter_R1.md (empty_doc_from_base, so no
+    sensitivity-label marking). '[date of submission]' is the only placeholder allowed."""
+    text = COVER_MD.read_text(encoding="utf-8")
+    placeholders = sorted(set(re.findall(r"\[[^\]]+\]", text)))
+    if placeholders != ["[date of submission]"]:
+        raise SystemExit(f"STOP: cover letter placeholders {placeholders}; only '[date of submission]' is allowed")
+    pars = cover_letter_paragraphs(text)
+    signatory_line = f"{COVER_SIGNATORY}, on behalf of the authors {FIRST_AUTHOR} and {SECOND_AUTHOR}"
+    expected_block = [signatory_line, *AFFILIATION_LINES, EMAIL_SECOND if COVER_SIGNATORY == SECOND_AUTHOR else EMAIL_FIRST]
+    if pars[-len(expected_block):] != expected_block:
+        raise SystemExit(f"STOP: cover letter signature block differs from the T11 parameters: {pars[-len(expected_block):]}")
+    if "Manuscript KNOSYS-D-26-14863" not in pars or TITLE not in pars:
+        raise SystemExit("STOP: cover letter must carry the manuscript number line and the title line")
+    doc, tm = empty_doc_from_base()
+    for ptxt in pars:
+        p = append(doc, tm.body, ptxt)
+        if ptxt in expected_block or ptxt == "[date of submission]" or ptxt.startswith("Manuscript KNOSYS") or ptxt == TITLE or ptxt in ("Dear Editor,", "Sincerely,"):
+            p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+            if ptxt in expected_block[:-1] or ptxt == "[date of submission]" or ptxt.startswith("Manuscript KNOSYS"):
+                p.paragraph_format.space_after = Pt(0)
+    doc.save(str(OUT_COVER))
+    return pars
+
+
 def make_highlights(blocks: dict) -> list[str]:
     hl = bullets(block(blocks, "HIGHLIGHTS"))
     if not 3 <= len(hl) <= 5:
@@ -1425,16 +1566,10 @@ def make_response() -> None:
         else:
             p = append(doc, tm.body, text)
             if text.startswith("Manuscript: ") and " Authors: " in text:
-                # T7.6g (2026-10-22): the authors line stays; Word comment for the coauthor on the 'Authors: ...' run only
-                from docx.text.run import Run
-                head, authors = text.split(" Authors: ", 1)
-                r1 = p.runs[0]
-                r1.text = head + " "
-                el = copy.deepcopy(r1._r)
-                r1._r.addnext(el)
-                r2 = Run(el, p)
-                r2.text = "Authors: " + authors
-                doc.add_comment(runs=[r2], text=RESPONSE_AUTHORS_COMMENT, author="T7 draft", initials="T7")
+                # T7.6g (2026-10-22): the authors line stays. T11.2 (2026-11-03): its 'T7 draft' Word comment is no longer placed
+                # (single-blind review); T11.3: the names must be the T11 parameters (the F4 line stays the source)
+                if not text.endswith(f" Authors: {FIRST_AUTHOR}, {SECOND_AUTHOR}."):
+                    raise SystemExit(f"STOP: response letter 'Authors:' line does not read '{FIRST_AUTHOR}, {SECOND_AUTHOR}.'")
         para_buf = []
 
     quote_buf: list[str] = []
@@ -1570,9 +1705,13 @@ def make_marked_copy() -> dict:
     removed: list[str] = []
     matched_base: set[int] = set()
     n_marked_pars = 0
+    n_title_page = 0
     for p in doc.paragraphs:
         txt = p.text
         if not txt.strip():
+            continue
+        if p.style is not None and p.style.name == TITLE_PAGE_STYLE:
+            n_title_page += 1  # T11.2: the title page reproduces the submitted one; it is not a change and is not highlighted
             continue
         if txt in base_pars:
             matched_base.add(base_pars.index(txt))
@@ -1623,7 +1762,7 @@ def make_marked_copy() -> dict:
     for item in removed:
         sect.addprevious(clone_paragraph(tmpl_body, item))
     doc.save(str(OUT_MARKED))
-    return {"paragraphs_marked": n_marked_pars, "cells_marked": n_marked_cells, "removed_items": len(removed)}
+    return {"paragraphs_marked": n_marked_pars, "cells_marked": n_marked_cells, "removed_items": len(removed), "title_page_not_marked": n_title_page}
 
 
 # ----------------------------------------------------------------------------------------------
@@ -1705,7 +1844,12 @@ def write_plan(fig_rows, highlights, base_sha, legacy_dir) -> None:
     L.append("- Supplementary: captions of Tables S1-S3, the introductory sentences of the Supplementary file and the legends of Figures S1-S3 were written at assembly (not in F4). Table values are formatted from the results csv files (4 decimals for S1 and S2, as in the source tables; medians and Cliff's delta in S3 as in main Table 10).")
     L.append("- Response letter: the heading '(draft, ...)' was rendered as '(Revision 1, Knowledge-Based Systems)'; '[title as submitted]' -> the base title; reviewer comments are italic indented paragraphs; placeholders resolved with the same mapping as the manuscript. "
              "T7.6 (2026-10-22): corrections a-f of the internal review made in F4_response_letter.md ('eight analyses'; Reviewer 2, Weakness 1: 'placed second among the items of future work, immediately after multi-subject validation' and 'The abstract and the Introduction describe'; R1.5 'Figure S1'; R1.2 'which the search only partly corrects (tuned TabNet 0.341)'; R1.7 sentence on the per-variable ablation not run); "
-             "the line 'Authors: Adrian Lazar, Catalin Buiu' is kept and carries the Word comment '" + RESPONSE_AUTHORS_COMMENT + "' (author 'T7 draft'), placed by make_response on the 'Authors: ...' run only.")
+             "the line 'Authors: " + FIRST_AUTHOR + ", " + SECOND_AUTHOR + "' is kept; its Word comment 'T7 draft: remove if KBS review is double-anonymized; pending coauthor (title page question)' "
+             "(T7.6g) was removed at T11.2 (2026-11-03): the review is single-blind.")
+    L.append("- Cover letter (T11.5, 2026-11-03): `KBS_Cover_Letter_R1.docx` is built by make_cover_letter from `revision/F4_cover_letter_R1.md` "
+             "(text verbatim, parameters resolved: signatory " + COVER_SIGNATORY + ", provisional; affiliation lines as on the title page; e-mail " +
+             (EMAIL_SECOND if COVER_SIGNATORY == SECOND_AUTHOR else EMAIL_FIRST) + "); '[date of submission]' is the only placeholder left, "
+             "to be filled at upload. Header lines and the signature block are one paragraph per line; the body paragraphs are separated by blank lines.")
     L.append("- Discussion paragraphs 'Temporal robustness', 'Choice of classifier' and 'Generalization from a single subject' received a bold run-in lead (base convention); in 4.7 the run-in leads 'Threshold sensitivity.' and 'Agreement with label-independent indicators.' present in F4 were set in bold.")
     L.append("- Keywords: 'Keywords:' label kept from the base, list replaced by the F4 list (Random Forest -> Decision support systems).")
     L.append("- New references: six APA 7 entries inserted alphabetically, each carrying the Word comment 'verify in Zotero' (kept until the Zotero import); T4.1-F (2026-10-20): authors, titles, volumes, pages, editors, DOIs / stable proceedings URLs verified on the publishers' pages (revision/references_new_verified.md, revision/references_new.bib); NeurIPS and AAAI papers cited as proceedings, not arXiv.")
@@ -1757,14 +1901,16 @@ def main() -> None:
         print(f"NOTE: {OUT_RESP.name} not rebuilt (--skip-response); run --only response when the file is no longer locked")
     else:
         make_response()
+    cover = make_cover_letter()
     fig_rows = make_figures(Path(args.legacy_figures_dir))
     marked = make_marked_copy()
     DEVIATIONS.append(f"Marked copy statistics: {marked['paragraphs_marked']} paragraphs with highlighted text, {marked['cells_marked']} highlighted table cells, "
-                      f"{marked['removed_items']} removed items listed at the end.")
+                      f"{marked['removed_items']} removed items listed at the end; {marked['title_page_not_marked']} title-page paragraphs not highlighted (T11.2). "
+                      f"Cover letter: {len(cover)} paragraphs, {sum(len(p.split()) for p in cover)} words (split on spaces).")
     write_plan(fig_rows, highlights, base_sha, args.legacy_figures_dir)
     if sha256(BASE) != base_sha:
         raise SystemExit("STOP: BASE_MANUSCRIPT.docx changed during assembly")
-    print(f"OK: {OUT_MAN.name}, {OUT_MARKED.name}, {OUT_HIGH.name}, {OUT_SUPP.name}, {OUT_RESP.name}, {len(fig_rows)} figure files, {len(PLAN_ROWS)} plan rows; marked {marked}")
+    print(f"OK: {OUT_MAN.name}, {OUT_MARKED.name}, {OUT_HIGH.name}, {OUT_SUPP.name}, {OUT_RESP.name}, {OUT_COVER.name}, {len(fig_rows)} figure files, {len(PLAN_ROWS)} plan rows; marked {marked}")
 
 
 if __name__ == "__main__":

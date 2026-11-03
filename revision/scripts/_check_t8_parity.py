@@ -7,7 +7,7 @@ numbers (regex [-+]?\\d[\\d,]*\\.?\\d* of the brief, trailing '.' / ',' stripped
 exception (Generalization: citation years 2024 and 2025 of Zignoli et al. and Kim et al.). Section / Table / Figure labels
 are compared separately and reported, not failed (Generalization adds the cross-reference 'Section 2'). Also checks:
 0 lower-case 'random forest' and 0 'distinguish' in paragraphs (prose, captions, legends), 3.12 byte-identical (paragraph
-XML between the 3.12 and 3.13 headings), 9 Word comments, Abstract <= 249 words (split on spaces), marked copy changed.
+XML between the 3.12 and 3.13 headings), 8 Word comments (9 until T11.2), Abstract <= 249 words (split on spaces), marked copy changed.
 For the response letter (T8.4, --response): the 28 authors' paragraphs (intro, Response, Changes) in order must equal
 revision/f8/f8_response_new.txt and the whole-document number set must be identical to the one before T8.
 For Supplementary and Highlights (T8.3, --supp): 0 lower-case 'random forest', highlights <= 85 characters, number sets
@@ -150,7 +150,8 @@ def check_manuscript(before: Path, after: Path) -> None:
     rec("'we' in the manuscript paragraphs <= 6", we <= 6, str(we))
     rec("3.12 paragraphs byte-identical (c14n XML between the 3.12 and 3.13 headings)",
         section_xml(old, "3.12.", "3.13.") == section_xml(new, "3.12.", "3.13.") and len(section_xml(new, "3.12.", "3.13.")) > 0)
-    rec("9 Word comments in the manuscript", len(list(new.comments)) == 9, str(len(list(new.comments))))
+    # T11.2 (2026-11-03): the T6.2 anonymization comment on the CRediT heading was removed (single-blind review), 9 -> 8
+    rec("8 Word comments in the manuscript (9 before T11.2)", len(list(new.comments)) == 8, str(len(list(new.comments))))
     idx = next(i for i, p in enumerate(new.paragraphs) if p.text.strip() == "Abstract")
     n_abs = len(new.paragraphs[idx + 1].text.split())
     rec("Abstract <= 249 words (split on spaces, as R1)", n_abs <= 249, f"{n_abs} words")
@@ -208,7 +209,8 @@ def check_response(before: Path, after: Path) -> None:
     rec("response letter: 0 'distinguish'", "distinguish" not in txt, str(txt.count("distinguish")))
     rec("response letter: 0 'significant' / 'significantly'", not re.search(r"\bsignificant(ly)?\b", txt), "")
     rec("response letter: 0 lower-case 'random forest'", "random forest" not in txt, str(txt.count("random forest")))
-    rec("response letter: 1 Word comment (Authors line)", len(list(new.comments)) == 1, str(len(list(new.comments))))
+    # T11.2 (2026-11-03): the 'T7 draft' comment on the Authors line was removed (single-blind review), 1 -> 0
+    rec("response letter: 0 Word comments (the Authors-line comment removed at T11.2)", len(list(new.comments)) == 0, str(len(list(new.comments))))
     bullets = [p.text for p in new.paragraphs if p.text.startswith("The wording of the text added in revision was aligned")]
     rec("response letter: 'General changes' bullet on the style alignment present once", len(bullets) == 1, str(len(bullets)))
 

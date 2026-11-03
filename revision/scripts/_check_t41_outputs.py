@@ -24,6 +24,7 @@ BASE_SHA = "e7de5f0a5932576666273d9abc089cef005995b4f818e39926fd61870064c4ff"  #
 DOCS = {"manuscript": MAN / "KBS_Manuscript_R1.docx", "highlights": MAN / "KBS_Highlights_R1.docx",
         "supplementary": MAN / "KBS_Supplementary_R1.docx", "response": MAN / "KBS_Response_R1.docx",
         "marked": MAN / "KBS_Manuscript_R1_marked.docx"}
+COVER = MAN / "KBS_Cover_Letter_R1.docx"  # T11.5 (2026-11-03): sixth docx, covered by the marking check (75) and check 76
 PLACEHOLDER = re.compile(r"\[t\d+\]|\[Section 4\.x\]|\b3\.x\b|\[Figure tNN\]|\[Table X\]|\[title as submitted\]|\[t11\]")
 RESULTS: list[tuple[str, bool, str]] = []
 
@@ -143,7 +144,7 @@ def main() -> None:
     # ClassificationContentMarking* / MSIP_Label_* properties in docProps/custom.xml, docMetadata/LabelInfo.xml) must
     # not reach any generated docx. Checked on the zip parts, not on the python-docx text (text boxes are invisible to it).
     marking_hits = []
-    for k, path in DOCS.items():
+    for k, path in list(DOCS.items()) + [("cover", COVER)]:  # T11.5: the cover letter docx is checked too (6 docx)
         with zipfile.ZipFile(path) as z:
             for name in z.namelist():
                 low = name.lower()
@@ -156,7 +157,7 @@ def main() -> None:
                         marking_hits.append(f"{path.name}:{name}:classification property")
                 if low == "docmetadata/labelinfo.xml":
                     marking_hits.append(f"{path.name}:{name}:present")
-    rec("T10.5: 0 sensitivity-label marking in the 5 docx ('Internal' in header/footer XML, ClassificationContentMarking / MSIP_Label in docProps/custom.xml, docMetadata/LabelInfo.xml)",
+    rec("T10.5: 0 sensitivity-label marking in the 6 docx ('Internal' in header/footer XML, ClassificationContentMarking / MSIP_Label in docProps/custom.xml, docMetadata/LabelInfo.xml; cover letter included since T11.5)",
         not marking_hits, "; ".join(marking_hits) if marking_hits else "0 hits")
 
     # T6.4 (F5): American spelling in the body text of every docx, checked with the UK -> US pair list of
@@ -263,12 +264,37 @@ def main() -> None:
     # comments on new references
     cm = [c for c in man.comments if "verify in Zotero" in c.text]
     rec("6 Word comments 'verify in Zotero' on the new references", len(cm) == 6, f"{len(cm)} comments")
-    # T7.9 (2026-10-22): comment inventory: 9 in the manuscript (6 'verify in Zotero' + 3 'T6.2 draft' on the declaration
-    # sections) and 1 in the response letter ('T7 draft', on the Authors line); 0 in the other files
-    n_man = len(list(man.comments)); n_resp = len(list(docs["response"].comments))
+    # T7.9 (2026-10-22): comment inventory was 9 in the manuscript (6 'verify in Zotero' + 3 'T6.2 draft' on the declaration
+    # sections) and 1 in the response letter ('T7 draft', on the Authors line). T11.2 (2026-11-03): the CRediT heading comment
+    # on anonymization and the 'T7 draft' comment are gone (single-blind review): 8 in the manuscript and in the marked copy,
+    # 0 in the response letter, 0 in the other files
+    n_man = len(list(man.comments)); n_resp = len(list(docs["response"].comments)); n_marked = len(list(docs["marked"].comments))
     n_other = len(list(docs["highlights"].comments)) + len(list(docs["supplementary"].comments))
-    resp_ok = n_resp == 1 and all(c.author == "T7 draft" for c in docs["response"].comments)
-    rec("Word comments: 9 in the manuscript, 1 in the response letter ('T7 draft'), 0 elsewhere", n_man == 9 and resp_ok and n_other == 0, f"manuscript {n_man}, response {n_resp}, others {n_other}")
+    rec("Word comments: 8 in the manuscript and in the marked copy (6 'verify in Zotero' + 2 'T6.2 draft'), 0 in the response letter, 0 elsewhere",
+        n_man == 8 and n_marked == 8 and n_resp == 0 and n_other == 0, f"manuscript {n_man}, marked {n_marked}, response {n_resp}, others {n_other}")
+
+    # T11.2 (2026-11-03): title page reproduced from the Editorial Manager submission (single-blind), built from the T11
+    # parameters of assemble_manuscript.py; not highlighted in the marked copy; the two anonymization comments removed;
+    # the initialed form of the EM record ('Adrian A. Lazar') appears in no deliverable (decision of the first author, 3 Nov 2026)
+    from assemble_manuscript import FIRST_AUTHOR, SECOND_AUTHOR, TITLE_PAGE, TITLE_PAGE_STYLE, EMAIL_FIRST, EMAIL_SECOND
+    man_pars = list(man.paragraphs)
+    idx_abs = next(i for i, p in enumerate(man_pars) if p.text.strip() == "Abstract")
+    tp_idx = [i for i, p in enumerate(man_pars) if p.style is not None and p.style.name == TITLE_PAGE_STYLE]
+    tp_lines = [man_pars[i].text for i in tp_idx]
+    tp_text = "\n".join(tp_lines)
+    placed = bool(tp_idx) and all(0 < i < idx_abs for i in tp_idx)
+    mk_tp = [p for p in docs["marked"].paragraphs if p.style is not None and p.style.name == TITLE_PAGE_STYLE]
+    mk_hl = sum(1 for p in mk_tp for r in p.runs if r.font.highlight_color is not None)
+    cover_doc = docx.Document(str(COVER))
+    n_initial = sum(all_text(d).count("Adrian A. Lazar") for d in docs.values()) + all_text(cover_doc).count("Adrian A. Lazar")
+    n_anon = sum(1 for d in docs.values() for c in d.comments if "remove if KBS requires anonymized" in c.text)
+    n_t7 = sum(1 for d in docs.values() for c in d.comments if c.author == "T7 draft" or "T7 draft" in c.text)
+    ok = (tp_lines == TITLE_PAGE and placed and FIRST_AUTHOR in tp_lines[0] and SECOND_AUTHOR in tp_lines[0]
+          and "* Corresponding author" in tp_lines and tp_text.count("@") == 2 and EMAIL_FIRST in tp_text and EMAIL_SECOND in tp_text
+          and len(mk_tp) == len(TITLE_PAGE) and mk_hl == 0 and n_initial == 0 and n_anon == 0 and n_t7 == 0)
+    rec("T11.2: title page present (2 author names, corresponding marker, 2 e-mails), not highlighted in marked copy, 0 'Adrian A. Lazar' in the 6 docx, 0 CRediT anonymity comment, 0 'T7 draft' comment",
+        ok, f"{len(tp_idx)} title-page paragraphs between the title and 'Abstract' ({'as TITLE_PAGE' if tp_lines == TITLE_PAGE else 'DIFFER from TITLE_PAGE'}); "
+            f"marked copy: {len(mk_tp)} title-page paragraphs, {mk_hl} highlighted runs; 'Adrian A. Lazar' {n_initial}; anonymity comment {n_anon}; 'T7 draft' {n_t7}")
 
     # response letter structure
     rtext = [p.text for p in docs["response"].paragraphs]

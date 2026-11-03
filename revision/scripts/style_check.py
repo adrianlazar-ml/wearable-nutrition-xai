@@ -105,6 +105,8 @@ def prose_paragraphs(path: Path, mode: str) -> list[str]:
             continue
         if p.style is not None and p.style.name.startswith("Heading"):
             continue
+        if p.style is not None and p.style.name == "TitlePage":
+            continue  # T11.2 (2026-11-03): title page (authors, affiliation, e-mails) is not prose
         if CAPTION_RE.match(text) or text.startswith("Keywords") or text.startswith("* "):
             continue
         if text.startswith("Manuscript: ") or text.startswith("Highlights") or text.startswith("Supplementary Material"):

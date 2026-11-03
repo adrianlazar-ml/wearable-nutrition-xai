@@ -124,6 +124,10 @@ def extract_text_md(path: Path) -> str:
     return "\n".join(out)
 
 
+TITLE_PAGE_STYLE = "TitlePage"  # T11.2 (2026-11-03): the title-page paragraphs of assemble_manuscript.py (street number,
+TITLE_PAGE_SKIPPED = {"paragraphs": 0, "numbers": 0}  # postal code, telephone) are not result figures and are skipped
+
+
 def extract_text_docx(path: Path) -> str:
     import docx
     from docx.table import Table
@@ -133,9 +137,14 @@ def extract_text_docx(path: Path) -> str:
     for child in d.element.body.iterchildren():
         tag = child.tag.split("}")[1]
         if tag == "p":
-            t = Paragraph(child, d).text
+            par = Paragraph(child, d)
+            t = par.text
             if t.strip() == "References":
                 break
+            if par.style is not None and par.style.name == TITLE_PAGE_STYLE:
+                TITLE_PAGE_SKIPPED["paragraphs"] += 1
+                TITLE_PAGE_SKIPPED["numbers"] += len(NUM_RE.findall(t))
+                continue
             out.append(t)
         elif tag == "tbl":
             for row in Table(child, d).rows:
@@ -266,7 +275,9 @@ def main() -> None:
          f"Source files: CIFRE_REVIZIE.md, CIFRE_CANONICE.md, {len(list(RESULTS.glob('*.csv')))} csv and {len(list(RESULTS.glob('*.md')))} md files in revision/results/. "
          f"Numbers extracted: {len(rows)}; FOUND {n_found}; NEGASIT {n_neg}; NEGASIT (explained, base-manuscript numbers outside the cifre files) {n_expl}; "
          f"SKIPPED {n_skip} (labels, heading numbers, years, dates, CI levels, integers below 20). A FOUND match at d decimals means some source value rounds to the text value; "
-         "with about 10,000 source values, short decimals (two decimals or fewer) can match by coincidence, so the source location is given for every number in the last table.", ""]
+         "with about 10,000 source values, short decimals (two decimals or fewer) can match by coincidence, so the source location is given for every number in the last table. "
+         f"Title-page paragraphs skipped (T11.2, style {TITLE_PAGE_STYLE}): {TITLE_PAGE_SKIPPED['paragraphs']} paragraphs, {TITLE_PAGE_SKIPPED['numbers']} numbers "
+         "(street number, postal code, telephone; not result figures).", ""]
     L.append("## NEGASIT (not found at the matching rounding; to be explained or corrected by hand, never automatically)\n")
     L.append("| # | Number | Status | Context | Closest source values / explanation |\n|---|---|---|---|---|")
     k = 0
@@ -284,7 +295,8 @@ def main() -> None:
     for i, r in enumerate(rows, 1):
         L.append(f"| {i} | {r['number']} | {r['status']} | {r['detail']} | ...{r['context']}... |")
     Path(args.out).write_text("\n".join(L) + "\n", encoding="utf-8", newline="\n")
-    print(f"{src.name}: {len(rows)} numbers, FOUND {n_found}, NEGASIT {n_neg}, SKIPPED {n_skip} -> {args.out}")
+    print(f"{src.name}: {len(rows)} numbers, FOUND {n_found}, NEGASIT {n_neg}, SKIPPED {n_skip}; title page skipped: "
+          f"{TITLE_PAGE_SKIPPED['paragraphs']} paragraphs, {TITLE_PAGE_SKIPPED['numbers']} numbers -> {args.out}")
     sys.exit(0)
 
 
