@@ -30,7 +30,7 @@ Other tracked csv, json and log files outside the 11 aggregates, `apple_watch_ap
 
 The three removed files remain in the old commits of the public history (no rewrite in this task): `apple_health_auto.csv` and `api_sync.log` were kept by the T12b.1 exclusion list and are visible in every commit before this one, as is `sleep_detailed_HEADER.csv`. A later filter would be needed to purge them; this task does not do it.
 
-Tracked files: 502 before, 499 after.
+Tracked files: 502 before, 499 after the three removals, 500 with this summary file added.
 
 ## A2.3 Consistency
 
