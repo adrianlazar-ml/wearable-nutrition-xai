@@ -5,7 +5,8 @@ Patterns (the T12b brief): e-mail regex, 0040 (Romanian telephone prefix), tel:,
 C:\\Users, invoice. Every hit is classified by rule:
   (real) a sensitive value: an e-mail address that is not a no-reply / documentation address, a telephone number
          (0040 followed by nine digits, or tel: followed by a number), a credential value (OURA_* / client_secret /
-         token= assigned a literal of 8+ characters, Bearer followed by a literal of 16+ characters);
+         token= assigned a literal of 16+ characters without spaces, as the Oura values are 36 to 45 characters long;
+         Bearer followed by such a literal);
   (b)    the word in a credential or local-path sense but without a value: the mechanism in oura_auth.py / oura_collect.py
          and in the process documents (os.environ, 'the token was revoked'), the local Windows paths that carry the author's
          own user name, the names of removed files (Oura subscription documents) in the inventories;
@@ -41,8 +42,8 @@ REAL = {
     "e-mail address": lambda m, line: not re.search(r"noreply|no-reply|@example\.(org|com|net)\b", m.group(0), re.I),
     "0040": lambda m, line: bool(re.search(r"(?<![\w.])0040[ \d]{9,}(?!\d)", line)) and not re.search(r"[\d.]0040|0040\d*[.,]\d", line),
     "tel:": lambda m, line: bool(re.search(r"tel:\s*[+\d]", line)),
-    "OURA_": lambda m, line: bool(re.search(r"OURA_\w+\s*=\s*[\"']?[A-Za-z0-9\-_.:/]{8,}", line)) and "os.environ" not in line and "getenv" not in line,
-    "client_secret": lambda m, line: bool(re.search(r"client_secret[\"']?\s*[=:]\s*[\"']?[A-Za-z0-9\-_.]{8,}", line)) and "os.environ" not in line and "getenv" not in line,
+    "OURA_": lambda m, line: bool(re.search(r"OURA_\w*\s*[=:]\s*[\"']?[A-Za-z0-9\-_.]{16,}", line)),
+    "client_secret": lambda m, line: bool(re.search(r"client_secret[\"']?\s*[=:]\s*[\"']?[A-Za-z0-9\-_.]{16,}", line)),
     "Bearer": lambda m, line: bool(re.search(r"Bearer\s+[A-Za-z0-9\-_.]{16,}", line)),
     "token=": lambda m, line: bool(re.search(r"token=[\"']?[A-Za-z0-9\-_.]{16,}", line)),
     "C:\\Users": lambda m, line: False,

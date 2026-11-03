@@ -1,0 +1,41 @@
+cff-version: 1.2.0
+message: "If you use this code or the daily aggregates, please cite the article (preferred-citation) and this repository."
+type: software
+title: "wearable-nutrition-xai: code and daily aggregates of an AI system for personalized nutrition recommendations from wearable and mHealth data"
+version: 1.0-R1
+authors:
+  - family-names: Lazar
+    given-names: Adrian
+    affiliation: "Department of Automatic Control and Systems Engineering, Faculty of Automatic Control and Computers, National University of Science and Technology POLITEHNICA Bucharest, Romania"
+  - family-names: Buiu
+    given-names: Catalin
+    affiliation: "Department of Automatic Control and Systems Engineering, Faculty of Automatic Control and Computers, National University of Science and Technology POLITEHNICA Bucharest, Romania"
+repository-code: "https://github.com/adrianlazar-ml/wearable-nutrition-xai"
+license:
+  - MIT
+  - CC-BY-4.0
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.XXXXXXX
+    description: "Zenodo archive of release v1.0-R1 (placeholder until the release is archived)"
+keywords:
+  - personalized nutrition
+  - wearable devices
+  - multimodal physiological data
+  - knowledge-based decision support
+  - explainable artificial intelligence (XAI)
+  - decision support systems
+  - SHAP
+abstract: "Scripts, saved predictions, result tables, figure registers and verification reports of Revision 1 of the manuscript, plus the daily aggregates (one row per day) from which the 958-day dataset is rebuilt. Raw record-level health data and the manuscript files are not part of the repository."
+preferred-citation:
+  type: article
+  title: "AI System for Personalized Nutrition and Diet Recommendations Based on Wearable and mHealth Data"
+  authors:
+    - family-names: Lazar
+      given-names: Adrian
+    - family-names: Buiu
+      given-names: Catalin
+  journal: "Knowledge-Based Systems"
+  year: 2026
+  status: submitted
+  notes: "Revision 1, under review."
