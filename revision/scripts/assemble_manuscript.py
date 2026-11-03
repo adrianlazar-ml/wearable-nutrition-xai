@@ -248,17 +248,17 @@ FIRST_AUTHOR = "Adrian Lazar"    # decision of the first author (3 Nov 2026): th
 #                                  page is the father's initial of the Romanian civil records, not a middle name; the EM record
 #                                  is to be corrected by the corresponding author; the manuscript uses the dissertation form
 SECOND_AUTHOR = "Catalin Buiu"   # without diacritics, as in Editorial Manager and on the submitted title page
-AFFILIATION_LINES = [            # PROVISIONAL: the four lines of the original cover letter (the submitted title page omits the
-    "Department of Automatic Control and Systems Engineering",   # faculty line and the postal code); only this list changes
-    "Faculty of Automatic Control and Computers",                # if the co-author answers otherwise
+AFFILIATION_LINES = [            # the four lines of the original cover letter, full form; CONFIRMED by the co-author on 3 Nov 2026
+    "Department of Automatic Control and Systems Engineering",   # (T11b.2; the submitted title page omits the faculty line and
+    "Faculty of Automatic Control and Computers",                # the postal code; the co-author corrects the EM name record)
     "National University of Science and Technology POLITEHNICA Bucharest",
     "Splaiul Independentei 313, 060042 Bucharest, Romania",
 ]
-EMAIL_FIRST = "***REMOVED-EMAIL***"   # submitted title page
+EMAIL_FIRST = "***REMOVED-EMAIL***"   # submitted title page; cover letter signature block (T11b.2)
 EMAIL_SECOND = "***REMOVED-EMAIL***"           # submitted title page
 TEL_SECOND = "***REMOVED-TEL***"              # submitted title page
 CORRESPONDING = SECOND_AUTHOR                  # Editorial Manager: Corresponding Author Catalin Buiu
-COVER_SIGNATORY = SECOND_AUTHOR                # PROVISIONAL: co-author's decision
+COVER_SIGNATORY = FIRST_AUTHOR                 # co-author's decision, 3 Nov 2026 (T11b.2): signed by the first author, "as on the first"
 KEYWORDS = {
     # 'manuscript': the Revision 1 list of F4_manuscript_changes.md (ABSTRACT block; T4.1-D: 'Random Forest' -> 'Decision
     # support systems'); the F4 line stays the source and must equal this list (checked at assembly)
@@ -719,7 +719,7 @@ def assemble_manuscript(blocks: dict, v8_path: Path | None = None) -> None:
                       "'" + FIRST_AUTHOR + "' (the submitted title page and the EM record read 'Adrian A. Lazar'; the 'A.' is the father's "
                       "initial of the Romanian civil records, not a middle name; the EM record is to be corrected by the corresponding "
                       "author; decision of the first author, 3 Nov 2026). Affiliation: the four lines of the original cover letter "
-                      "(provisional until the co-author confirms; the submitted title page omits the faculty line and the postal code). "
+                      "(full form confirmed by the co-author on 3 Nov 2026, T11b.2; the submitted title page omits the faculty line and the postal code). "
                       "In the marked copy the title page is not highlighted (it reproduces the submission, not a change). The Word comment "
                       "'remove if KBS requires anonymized main document; check Editorial Manager' on the CRediT heading and the 'T7 draft' "
                       "comment on the 'Authors:' line of the response letter are removed; the comments 'confirm roles with coauthor' and "
@@ -1378,8 +1378,10 @@ def make_cover_letter() -> list[str]:
     if placeholders != ["[date of submission]"]:
         raise SystemExit(f"STOP: cover letter placeholders {placeholders}; only '[date of submission]' is allowed")
     pars = cover_letter_paragraphs(text)
-    signatory_line = f"{COVER_SIGNATORY}, on behalf of the authors {FIRST_AUTHOR} and {SECOND_AUTHOR}"
-    expected_block = [signatory_line, *AFFILIATION_LINES, EMAIL_SECOND if COVER_SIGNATORY == SECOND_AUTHOR else EMAIL_FIRST]
+    # T11b.2 (2026-11-03): signature block as in the original cover letter (em_submission_diff.md, section 6), one paragraph per
+    # line: signatory name alone, 'on behalf of the authors ...', the affiliation lines, the signatory's e-mail
+    expected_block = [COVER_SIGNATORY, f"on behalf of the authors {FIRST_AUTHOR} and {SECOND_AUTHOR}", *AFFILIATION_LINES,
+                      EMAIL_SECOND if COVER_SIGNATORY == SECOND_AUTHOR else EMAIL_FIRST]
     if pars[-len(expected_block):] != expected_block:
         raise SystemExit(f"STOP: cover letter signature block differs from the T11 parameters: {pars[-len(expected_block):]}")
     if "Manuscript KNOSYS-D-26-14863" not in pars or TITLE not in pars:
@@ -1850,9 +1852,11 @@ def write_plan(fig_rows, highlights, base_sha, legacy_dir) -> None:
              "the line 'Authors: " + FIRST_AUTHOR + ", " + SECOND_AUTHOR + "' is kept; its Word comment 'T7 draft: remove if KBS review is double-anonymized; pending coauthor (title page question)' "
              "(T7.6g) was removed at T11.2 (2026-11-03): the review is single-blind.")
     L.append("- Cover letter (T11.5, 2026-11-03): `KBS_Cover_Letter_R1.docx` is built by make_cover_letter from `revision/F4_cover_letter_R1.md` "
-             "(text verbatim, parameters resolved: signatory " + COVER_SIGNATORY + ", provisional; affiliation lines as on the title page; e-mail " +
+             "(text verbatim, parameters resolved: signatory " + COVER_SIGNATORY + " (co-author's decision of 3 Nov 2026, T11b.2: signed by the first author as the "
+             "original cover letter was); affiliation lines as on the title page (confirmed 3 Nov 2026); e-mail " +
              (EMAIL_SECOND if COVER_SIGNATORY == SECOND_AUTHOR else EMAIL_FIRST) + "); '[date of submission]' is the only placeholder left, "
-             "to be filled at upload. Header lines and the signature block are one paragraph per line; the body paragraphs are separated by blank lines.")
+             "to be filled at upload. Header lines and the signature block are one paragraph per line (name, 'on behalf of the authors ...', affiliation, "
+             "e-mail, as in the original cover letter); the body paragraphs are separated by blank lines.")
     L.append("- Discussion paragraphs 'Temporal robustness', 'Choice of classifier' and 'Generalization from a single subject' received a bold run-in lead (base convention); in 4.7 the run-in leads 'Threshold sensitivity.' and 'Agreement with label-independent indicators.' present in F4 were set in bold.")
     L.append("- Keywords: 'Keywords:' label kept from the base, list replaced by the F4 list (KEYWORDS_MODE = " + KEYWORDS_MODE + "). T11b.1 (2026-11-03, co-author's decision): "
              "the five keywords of the Editorial Manager record of the original submission, in EM order, completed with 'Decision support systems' (co-author) and 'SHAP' "
