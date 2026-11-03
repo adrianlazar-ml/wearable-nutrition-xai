@@ -18,6 +18,10 @@ from pathlib import Path
 import docx
 
 ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT / "revision" / "scripts") not in sys.path:
+    sys.path.insert(0, str(ROOT / "revision" / "scripts"))
+# T12b (2026-11-03): the two e-mail addresses come from revision/authors.json through assemble_manuscript (no literal here)
+from assemble_manuscript import EMAIL_FIRST, EMAIL_SECOND  # noqa: E402
 MAN = ROOT / "revision" / "manuscript"
 SOURCES = {
     "assemble_manuscript.py": ROOT / "revision" / "scripts" / "assemble_manuscript.py",
@@ -46,7 +50,7 @@ BEFORE = [
     ("General changes bullet on keywords", 'One keyword was changed ("Random Forest" to "Decision support systems").',
      {"F4_response_letter.md": 1, "response": 1}),
     ("cover letter signatory", "Catalin Buiu, on behalf of", {"F4_cover_letter_R1.md": 1, "cover": 1}),
-    ("cover letter e-mail", "***REMOVED-EMAIL***", {"F4_cover_letter_R1.md": 1, "cover": 1}),
+    ("cover letter e-mail", EMAIL_SECOND, {"F4_cover_letter_R1.md": 1, "cover": 1}),
     ("CRediT comment", "confirm roles with coauthor", {"manuscript#comments": 1, "marked#comments": 1}),
     ("Funding comment", "confirm no funding with coauthor", {"manuscript#comments": 1, "marked#comments": 1}),
     ("Funding paragraph", FUNDING, {"F4_manuscript_changes.md": 1, "manuscript": 1, "marked": 1}),
@@ -63,8 +67,8 @@ AFTER = [
     ("General changes bullet on keywords (old)", 'One keyword was changed ("Random Forest" to "Decision support systems").', {"F4_response_letter.md": 0, "response": 0}),
     ("cover letter signatory (old)", "Catalin Buiu, on behalf of", {"F4_cover_letter_R1.md": 0, "cover": 0}),
     ("cover letter signatory (new)", "on behalf of the authors Adrian Lazar and Catalin Buiu", {"F4_cover_letter_R1.md": 1, "cover": 1}),
-    ("cover letter e-mail (old)", "***REMOVED-EMAIL***", {"F4_cover_letter_R1.md": 0, "cover": 0}),
-    ("cover letter e-mail (new)", "***REMOVED-EMAIL***", {"F4_cover_letter_R1.md": 1, "cover": 1}),
+    ("cover letter e-mail (old)", EMAIL_SECOND, {"F4_cover_letter_R1.md": 0, "cover": 0}),
+    ("cover letter e-mail (new)", EMAIL_FIRST, {"F4_cover_letter_R1.md": 1, "cover": 1}),
     ("CRediT comment", "confirm roles with coauthor", {"manuscript#comments": 0, "marked#comments": 0}),
     ("Funding comment", "confirm no funding with coauthor", {"manuscript#comments": 0, "marked#comments": 0}),
     ("Funding paragraph", FUNDING, {"F4_manuscript_changes.md": 1, "manuscript": 1, "marked": 1}),

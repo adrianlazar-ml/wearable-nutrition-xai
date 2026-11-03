@@ -14,6 +14,8 @@ Outputs (revision/manuscript/):
   KBS_Response_R1.docx, KBS_Manuscript_R1_marked.docx, KBS_Cover_Letter_R1.docx (T11.5, from revision/F4_cover_letter_R1.md), figures/
 T11 (2026-11-03): title page (authors, affiliation, e-mails) built from the parameters FIRST_AUTHOR .. COVER_SIGNATORY below;
   KEYWORDS_MODE selects the keyword list.
+T12b (2026-11-03): the e-mail addresses and the telephone number are read from revision/authors.json (gitignored;
+  template revision/authors.example.json); the script stops if only the template is present.
 
 Run from the repo root:  python revision/scripts/assemble_manuscript.py [--legacy-figures-dir DIR]
 Only dependency beyond the frozen environment: python-docx 1.2.0 (revision/requirements.txt).
@@ -23,6 +25,7 @@ from __future__ import annotations
 import argparse
 import copy
 import hashlib
+import json
 import re
 import shutil
 import sys
@@ -254,9 +257,18 @@ AFFILIATION_LINES = [            # the four lines of the original cover letter, 
     "National University of Science and Technology POLITEHNICA Bucharest",
     "Splaiul Independentei 313, 060042 Bucharest, Romania",
 ]
-EMAIL_FIRST = "***REMOVED-EMAIL***"   # submitted title page; cover letter signature block (T11b.2)
-EMAIL_SECOND = "***REMOVED-EMAIL***"           # submitted title page
-TEL_SECOND = "***REMOVED-TEL***"              # submitted title page
+# T12b (2026-11-03, public release): the e-mail addresses and the telephone number of the submitted title page are not
+# kept in the code. They are read at runtime from revision/authors.json (gitignored; copy revision/authors.example.json
+# and fill the three values). Without authors.json the placeholders of authors.example.json are loaded, so that the
+# module still imports (checkers, tests); main() stops before assembling a title page with placeholders.
+AUTHORS_JSON = ROOT / "revision" / "authors.json"
+AUTHORS_EXAMPLE = ROOT / "revision" / "authors.example.json"
+AUTHORS_SRC = AUTHORS_JSON if AUTHORS_JSON.exists() else AUTHORS_EXAMPLE
+_AUTHORS = json.loads(AUTHORS_SRC.read_text(encoding="utf-8"))
+EMAIL_FIRST = _AUTHORS["EMAIL_FIRST"]          # submitted title page; cover letter signature block (T11b.2)
+EMAIL_SECOND = _AUTHORS["EMAIL_SECOND"]        # submitted title page
+TEL_SECOND = _AUTHORS["TEL_SECOND"]            # submitted title page, in the form 'tel: <number>'
+AUTHORS_PLACEHOLDERS = AUTHORS_SRC == AUTHORS_EXAMPLE
 CORRESPONDING = SECOND_AUTHOR                  # Editorial Manager: Corresponding Author Catalin Buiu
 COVER_SIGNATORY = FIRST_AUTHOR                 # co-author's decision, 3 Nov 2026 (T11b.2): signed by the first author, "as on the first"
 KEYWORDS = {
@@ -1913,6 +1925,9 @@ def main() -> None:
         make_response()
         print(f"OK: {OUT_RESP.name} rebuilt from {LETTER.name}; no other file touched")
         return
+    if AUTHORS_PLACEHOLDERS:
+        raise SystemExit(f"STOP: {AUTHORS_JSON} not found; the title page and the cover letter would carry the placeholders of "
+                         f"{AUTHORS_EXAMPLE.name} (T12b: copy it to authors.json and fill the three values)")
     base_sha = sha256(BASE)
     blocks = parse_md_blocks(F4)
     assemble_manuscript(blocks, Path(args.v8_docx))

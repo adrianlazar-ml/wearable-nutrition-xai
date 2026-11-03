@@ -1,0 +1,5 @@
+{
+  "EMAIL_FIRST": "first.author@example.org",
+  "EMAIL_SECOND": "second.author@example.org",
+  "TEL_SECOND": "tel: <telephone of the corresponding author>"
+}
