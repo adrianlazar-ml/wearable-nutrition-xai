@@ -32,7 +32,7 @@ Models: the frozen Random Forest `models/rf_frozen_20260331.joblib` and its impu
 Code:
 
 - The dissertation pipeline scripts at the repository root: data collection (`oura_auth.py`, `oura_collect.py`, `oura_merge.py`, `parse_health_auto_export.py`), the classification pipelines (`cap5_pipeline*.py`, `cap5_compare_algorithms*.py`, `t3_labels.py`), the validation experiments (`threshold_sensitivity.py`, `ablation_study.py`, `confidence_threshold.py`, `smote_comparison.py`, `experiments_new.py`, `learning_curves_comparison.py`, `circularity_sanity_check.py`), the SHAP figures (`generate_waterfall_*.py`), the frozen model (`freeze_production_model.py`, `sanity_check_frozen.py`, `prospective_validation.py`), the recommender and the demo (`nutrition_recommender.py`, `demo_end_to_end_v2.py`, `streamlit_app_v2.py`), and `generate_canonical_numbers.py`, which writes `CIFRE_CANONICE.md`. Older versions are under `scripts_archive/`; the dissertation outputs (tables, figures) are under `outputs/`. The dissertation-era documents at the root (audit and remediation reports, `PIPELINE_MAP.md`) are written in Romanian.
-- `revision/`: the revision scripts (`revision/scripts/`), the saved test predictions, result tables, bootstrap indices and saved models (`revision/results/`), the figures (`revision/figures/`), the registers (`CIFRE_CANONICE.md` at the root for the submitted manuscript, `revision/CIFRE_REVIZIE.md` for every figure produced in the revision), the plan (`revision/KBS_Revision_Plan.md`) and the audit reports (`revision/audit/`).
+- `revision/`: the revision scripts (`revision/scripts/`), the saved test predictions, result tables, bootstrap indices and saved models (`revision/results/`), the figures written by the scripts (`revision/results/figures/`) and the figure files exported for the manuscript (`revision/figures/`, see its `FIGURES_MANIFEST.md`), the registers (`CIFRE_CANONICE.md` at the root for the submitted manuscript, `revision/CIFRE_REVIZIE.md` for every figure produced in the revision), the plan (`revision/KBS_Revision_Plan.md`) and the audit reports (`revision/audit/`).
 
 ## 5. What is excluded and why
 
@@ -69,7 +69,7 @@ python -W error revision/scripts/group_ablation.py
 python -W error revision/scripts/label_agreement.py
 ```
 
-- `group_ablation.py` (T1.5, about 23 s) writes `revision/results/t15_logo.csv`, `t15_logo_table.md`, `t15_kogi.csv`, `t15_kogi_table.md`, `t15_run_meta.json` and `revision/figures/t15_group_ablation.png` / `.pdf`. Full Random Forest: macro F1 0.5063, balanced accuracy 0.6406, MCC 0.1416.
+- `group_ablation.py` (T1.5, about 23 s) writes `revision/results/t15_logo.csv`, `t15_logo_table.md`, `t15_kogi.csv`, `t15_kogi_table.md`, `t15_run_meta.json` and `revision/results/figures/t15_group_ablation.png` / `.pdf`. Full Random Forest: macro F1 0.5063, balanced accuracy 0.6406, MCC 0.1416.
 - `label_agreement.py` (T3.2, about 5 s) writes `revision/results/t32_inventory.csv`, `t32_descriptives.csv`, `t32_descriptives_table.md`, `t32_tests.csv`, `t32_tests_table.md`, `t32_run_meta.json`. Cliff's delta Active minus Rest of `aw_hr_mean`: -0.840 [-0.912, -0.749].
 
 Every csv, png and pdf is byte-identical to the committed file; the md tables and the run_meta json differ only in the run date. The order of the other revision scripts, with their running times, is in `revision/README.md`.
