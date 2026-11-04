@@ -88,4 +88,4 @@ Parts of the audit and drafting workflow used an LLM assistant (Claude, Anthropi
 
 ## 9. Citation
 
-See `CITATION.cff` (software citation and the preferred citation of the article). The archived release v1.0-R1 will carry the Zenodo DOI 10.5281/zenodo.XXXXXXX (placeholder, filled after the release is archived); the research data statement of the Knowledge-Based Systems manuscript (Option C) will cite this DOI.
+The article citation is given in section 1 and in the Zenodo record; `CITATION.cff` covers the software. The archived release v1.0-R1 will carry the Zenodo DOI 10.5281/zenodo.XXXXXXX (placeholder, filled after the release is archived); the research data statement of the Knowledge-Based Systems manuscript (Option C) will cite this DOI.

@@ -3,6 +3,7 @@ message: "If you use this code or the daily aggregates, please cite the article 
 type: software
 title: "wearable-nutrition-xai: code and daily aggregates of an AI system for personalized nutrition recommendations from wearable and mHealth data"
 version: 1.0-R1
+date-released: 2026-11-04
 authors:
   - family-names: Lazar
     given-names: Adrian
@@ -11,13 +12,7 @@ authors:
     given-names: Catalin
     affiliation: "Department of Automatic Control and Systems Engineering, Faculty of Automatic Control and Computers, National University of Science and Technology POLITEHNICA Bucharest, Romania"
 repository-code: "https://github.com/adrianlazar-ml/wearable-nutrition-xai"
-license:
-  - MIT
-  - CC-BY-4.0
-identifiers:
-  - type: doi
-    value: 10.5281/zenodo.XXXXXXX
-    description: "Zenodo archive of release v1.0-R1 (placeholder until the release is archived)"
+license: MIT
 keywords:
   - personalized nutrition
   - wearable devices
@@ -27,15 +22,3 @@ keywords:
   - decision support systems
   - SHAP
 abstract: "Scripts, saved predictions, result tables, figure registers and verification reports of Revision 1 of the manuscript, plus the daily aggregates (one row per day) from which the 958-day dataset is rebuilt. Raw record-level health data and the manuscript files are not part of the repository."
-preferred-citation:
-  type: article
-  title: "Explainable Artificial Intelligence for Personalized Nutrition: A Multimodal Framework Integrating Smart Ring and Smartwatch Data"
-  authors:
-    - family-names: Lazar
-      given-names: Adrian
-    - family-names: Buiu
-      given-names: Catalin
-  journal: "Knowledge-Based Systems"
-  year: 2026
-  status: submitted
-  notes: "Revision 1, under review."
