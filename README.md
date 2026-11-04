@@ -16,6 +16,7 @@ The repository holds the code and the daily aggregate data supporting the Revisi
 - The frozen pipeline of 31 March 2026 (the frozen Random Forest, its imputer and the canonical figures) is tagged `canonical-8020-20260331`.
 - The tag `b3-abandoned` marks a single commit off the main line that records the abandoned experiment B3, a 70/10/20 train / validation / test split that exposed the ring-generation confound. It is the evidence for Limitation 7 of the manuscript.
 - The public repository is a filtered copy of the authors' private working repository, with the raw data and the manuscript files removed from the whole history. Two commit-maps (old hash to new hash) exist outside the repository, so the private commit hashes cited in `revision/CIFRE_REVIZIE.md` and in `revision/audit/` map to the public history through them.
+- The folders `scripts_archive/` and `audit/`, the root reports `AUDIT_*.md`, `PLAN_REMEDIERE_v0.5.md`, `SANITY_CHECK_NUMERIC_19042026.md`, `ghid_actualizare_valori.md` and `audit_prompt.md`, and the figure folders `outputs/figures/xml_pipeline/` and `outputs/figures/json_pipeline/` (the two superseded 16-feature pipelines) are pre-revision history from the dissertation (March to June 2026), kept for the record and not used by any revision script; the manuscript figures come from `outputs/figures/json_extended_pipeline/`, `outputs/figures/experiments/` and `revision/`.
 
 ## 4. What is included
 

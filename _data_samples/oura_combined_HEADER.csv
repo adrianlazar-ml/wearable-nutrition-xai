@@ -1,4 +1,0 @@
-﻿date,readiness_score,sleep_score,hrv_mean,rhr_lowest,rhr_avg,recovery_index,hrv_balance,activity_score,steps_oura,respiratory_rate,temp_deviation,oura_device,aw_device
-2023-06-09,,,,,,,,93.0,5018.0,,,Gen3,Ultra
-2023-06-10,66.0,84.0,23.0,70.0,79.84,9.0,,94.0,7675.0,15.25,-0.32,Gen3,Ultra
-2023-06-11,67.0,75.0,20.0,74.0,81.8,60.0,,93.0,5080.0,15.875,-0.07,Gen3,Ultra
