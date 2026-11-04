@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-message: "If you use this code or the daily aggregates, please cite the article (preferred-citation) and this repository."
+message: "If you use this code or the daily aggregates, please cite this repository (Zenodo DOI 10.5281/zenodo.23937499) and the article named in README.md."
 type: software
 title: "wearable-nutrition-xai: code and daily aggregates of an AI system for personalized nutrition recommendations from wearable and mHealth data"
 version: 1.0-R1
@@ -12,6 +12,10 @@ authors:
     given-names: Catalin
     affiliation: "Department of Automatic Control and Systems Engineering, Faculty of Automatic Control and Computers, National University of Science and Technology POLITEHNICA Bucharest, Romania"
 repository-code: "https://github.com/adrianlazar-ml/wearable-nutrition-xai"
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.23937499
+    description: "Zenodo archive of release v1.0-R1"
 license: MIT
 keywords:
   - personalized nutrition

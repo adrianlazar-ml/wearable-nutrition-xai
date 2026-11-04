@@ -4,7 +4,7 @@ This folder holds the scripts, result files, figure registers and verification r
 
 - Manuscript: "Explainable Artificial Intelligence for Personalized Nutrition: A Multimodal Framework Integrating Smart Ring and Smartwatch Data", Adrian Lazar and Catalin Buiu (National University of Science and Technology POLITEHNICA Bucharest), Knowledge-Based Systems, Revision 1 under review (2026).
 - Public repository: `wearable-nutrition-xai` (GitHub, https://github.com/adrianlazar-ml/wearable-nutrition-xai); release v1.0-R1 is the state of the revised submission.
-- Archived release: Zenodo DOI 10.5281/zenodo.XXXXXXX (placeholder, filled at the first release).
+- Archived release: Zenodo DOI 10.5281/zenodo.23937499 (release v1.0-R1).
 - License: MIT for the code and the documentation (`LICENSE` at the repository root); CC BY 4.0 for the daily aggregates published under `data/`, `apple_watch_api/` and `models/dataset_snapshot_20260331.csv` (`LICENSE-DATA`). How to cite: `CITATION.cff`.
 
 The canonical figures of the submitted manuscript are in `../CIFRE_CANONICE.md`; every figure produced in the revision is in `CIFRE_REVIZIE.md` with its script, seed, run date and note. Text decisions are in `TEXT_DECISIONS.md`, the audit of the revision in `audit/`.
