@@ -1,5 +1,7 @@
 # Explainable Artificial Intelligence for Personalized Nutrition: A Multimodal Framework Integrating Smart Ring and Smartwatch Data
 
+## 1. Title and authors
+
 Adrian Lazar, Catalin Buiu
 
 National University of Science and Technology POLITEHNICA Bucharest, Faculty of Automatic Control and Computers, Department of Automatic Control and Systems Engineering.
@@ -46,10 +48,10 @@ The raw biometric data are sensitive personal data of one participant and are no
 
 ## 6. How to reproduce
 
-Environment: Python 3.11.9 with the frozen package versions recorded in `models/frozen_meta_20260331.json` (scikit-learn 1.8.0, numpy 2.4.3, pandas 2.3.3, imbalanced-learn 0.14.1, xgboost 3.2.0, scipy 1.17.1) and the revision-only packages pinned in `revision/requirements.txt`:
+Environment: Python 3.11.9 with the frozen package versions recorded in `models/frozen_meta_20260331.json` (scikit-learn 1.8.0, numpy 2.4.3, pandas 2.3.3, imbalanced-learn 0.14.1, xgboost 3.2.0, scipy 1.17.1) and the revision-only packages pinned in `revision/requirements.txt` (which also pins matplotlib 3.10.8, the version of the committed figures, and pytest 9.1.1):
 
 ```
-python -m pip install scikit-learn==1.8.0 numpy==2.4.3 pandas==2.3.3 imbalanced-learn==0.14.1 xgboost==3.2.0 scipy==1.17.1
+python -m pip install scikit-learn==1.8.0 numpy==2.4.3 pandas==2.3.3 imbalanced-learn==0.14.1 xgboost==3.2.0 scipy==1.17.1 pytest==9.1.1
 python -m pip install -r revision/requirements.txt
 ```
 
@@ -66,16 +68,16 @@ Expected on this clone: 111 passed, 2 failed. The two failures are in `revision/
 Two scripts verified to run end to end on the published aggregates (they rebuild the dataset from `data/oura_combined.csv` and `apple_watch_api/apple_health_daily.csv` and check it against the snapshot):
 
 ```
-python -W error revision/scripts/group_ablation.py
-python -W error revision/scripts/label_agreement.py
+python revision/scripts/group_ablation.py
+python revision/scripts/label_agreement.py
 ```
 
 - `group_ablation.py` (T1.5, about 23 s) writes `revision/results/t15_logo.csv`, `t15_logo_table.md`, `t15_kogi.csv`, `t15_kogi_table.md`, `t15_run_meta.json` and `revision/results/figures/t15_group_ablation.png` / `.pdf`. Full Random Forest: macro F1 0.5063, balanced accuracy 0.6406, MCC 0.1416.
 - `label_agreement.py` (T3.2, about 5 s) writes `revision/results/t32_inventory.csv`, `t32_descriptives.csv`, `t32_descriptives_table.md`, `t32_tests.csv`, `t32_tests_table.md`, `t32_run_meta.json`. Cliff's delta Active minus Rest of `aw_hr_mean`: -0.840 [-0.912, -0.749].
 
-Every csv, png and pdf is byte-identical to the committed file; the md tables and the run_meta json differ only in the run date. The order of the other revision scripts, with their running times, is in `revision/README.md`.
+The csv outputs are byte-identical to the committed files. The figures are identical in values; their rendering (the png and pdf bytes) depends on the matplotlib version, 3.10.8 for the committed files. The md tables and the run_meta json differ only in the run date. The order of the other revision scripts, with their running times, is in `revision/README.md`.
 
-Checks that cannot run from this repository because they need the excluded manuscript docx: `revision/scripts/assemble_manuscript.py` and its checkers `_check_t41_outputs.py`, `_check_t41_numbers.py`, `_check_table_rounding.py`, `style_check.py`, `_check_t8_parity.py`, `_check_t11*.py`, `_check_t115_cover_letter.py`, `_t11_em_diff.py`. The root scripts that read the raw folders (`cap5_pipeline.py`, `cap5_compare_algorithms.py`, `parse_health_auto_export.py` on the JSON folder, `oura_collect.py`) cannot run either; `sanity_check_frozen.py` and the frozen 19-feature pipeline on `data/dataset_combinat_json_extended.csv` can.
+Checks that cannot run from this repository because they need the excluded manuscript docx: `revision/scripts/assemble_manuscript.py` and its checkers `_check_t41_outputs.py`, `_check_t41_numbers.py`, `_check_table_rounding.py`, `style_check.py`, `_check_t8_parity.py`, `_check_t11*.py`, `_check_t115_cover_letter.py`, `_t11_em_diff.py`. Two of them, `_check_t41_outputs.py` and `_check_t11b_inventory.py`, also need `revision/authors.json` (gitignored; template `revision/authors.example.json`), from which the title-page e-mail addresses are read; with the template alone they report failures on the title page and the cover letter. The root scripts that read the raw folders (`cap5_pipeline.py`, `cap5_compare_algorithms.py`, `parse_health_auto_export.py` on the JSON folder, `oura_collect.py`) cannot run either; `sanity_check_frozen.py` and the frozen 19-feature pipeline on `data/dataset_combinat_json_extended.csv` can.
 
 ## 7. LLM use
 
